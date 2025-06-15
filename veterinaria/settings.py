@@ -130,3 +130,9 @@ if DEBUG is False:
 
     # Agrega WhiteNoise para archivos estáticos
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://web-production-77526.up.railway.app"
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

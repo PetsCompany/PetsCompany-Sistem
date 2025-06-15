@@ -22,3 +22,4 @@ except Exception as e:
     print(f"Error en migraciones: {e}")
 
 application = get_wsgi_application()
+call_command('collectstatic', '--noinput')

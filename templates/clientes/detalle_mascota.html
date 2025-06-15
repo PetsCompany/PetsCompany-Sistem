@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .pet-detail-header {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(108, 117, 125, 0.1) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(52, 152, 219, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(52, 152, 219, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -58,14 +58,14 @@
     }
 
     .breadcrumb-modern .breadcrumb-item a {
-        color: var(--primary-color);
+        color: #dc3545;
         text-decoration: none;
         font-weight: 500;
         transition: var(--transition);
     }
 
     .breadcrumb-modern .breadcrumb-item a:hover {
-        color: var(--primary-dark);
+        color: #c82333;
     }
 
     .breadcrumb-modern .breadcrumb-item.active {
@@ -77,7 +77,7 @@
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+        background: linear-gradient(45deg, #dc3545, #343a40);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -85,7 +85,7 @@
         font-weight: 700;
         font-size: 2rem;
         margin-bottom: 1.5rem;
-        box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
     }
 
     .pet-name {
@@ -100,7 +100,7 @@
 
     .pet-name .icon {
         font-size: 1.8rem;
-        color: var(--secondary-color);
+        color: #dc3545;
     }
 
     .pet-subtitle {
@@ -125,7 +125,7 @@
     }
 
     .card-header-modern {
-        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         color: white;
         padding: 1.5rem 2rem;
         border: none;
@@ -137,15 +137,15 @@
     }
 
     .card-header-modern.bg-primary-custom {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #b52d3c 100%);
     }
 
     .card-header-modern.bg-success-custom {
-        background: linear-gradient(135deg, var(--success-color) 0%, #1e8449 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #a02834 100%);
     }
 
     .card-header-modern.bg-info-custom {
-        background: linear-gradient(135deg, var(--info-color) 0%, #2e86c1 100%);
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
     }
 
     .card-header-modern::before {
@@ -202,10 +202,10 @@
     }
 
     .btn-modern.btn-edit:hover {
-        background: var(--warning-color);
+        background: #6c757d;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
     }
 
     .btn-modern.btn-delete {
@@ -215,10 +215,10 @@
     }
 
     .btn-modern.btn-delete:hover {
-        background: var(--danger-color);
+        background: #343a40;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 12px rgba(52, 58, 64, 0.3);
     }
 
     .card-body-modern {
@@ -237,14 +237,14 @@
         flex-direction: column;
         gap: 0.5rem;
         padding: 1.5rem;
-        background: rgba(52, 152, 219, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius-sm);
-        border-left: 4px solid var(--secondary-color);
+        border-left: 4px solid #dc3545;
         transition: var(--transition);
     }
 
     .info-item:hover {
-        background: rgba(52, 152, 219, 0.05);
+        background: rgba(220, 53, 69, 0.05);
         transform: translateX(4px);
     }
 
@@ -260,7 +260,7 @@
     }
 
     .info-label i {
-        color: var(--secondary-color);
+        color: #dc3545;
         font-size: 1rem;
     }
 
@@ -329,68 +329,68 @@
     }
 
     .btn-outline-info-custom {
-        color: var(--info-color);
-        border-color: var(--info-color);
-        background: rgba(93, 173, 226, 0.05);
+        color: #6c757d;
+        border-color: #6c757d;
+        background: rgba(108, 117, 125, 0.05);
     }
 
     .btn-outline-info-custom:hover {
-        background: var(--info-color);
+        background: #6c757d;
         color: white;
-        border-color: var(--info-color);
+        border-color: #6c757d;
     }
 
     .btn-outline-secondary-custom {
-        color: var(--text-secondary);
-        border-color: var(--text-secondary);
-        background: rgba(127, 140, 141, 0.05);
+        color: #343a40;
+        border-color: #343a40;
+        background: rgba(52, 58, 64, 0.05);
     }
 
     .btn-outline-secondary-custom:hover {
-        background: var(--text-secondary);
+        background: #343a40;
         color: white;
-        border-color: var(--text-secondary);
+        border-color: #343a40;
     }
 
     .btn-outline-success-custom {
-        color: var(--success-color);
-        border-color: var(--success-color);
-        background: rgba(39, 174, 96, 0.05);
+        color: #dc3545;
+        border-color: #dc3545;
+        background: rgba(220, 53, 69, 0.05);
     }
 
     .btn-outline-success-custom:hover {
-        background: var(--success-color);
+        background: #dc3545;
         color: white;
-        border-color: var(--success-color);
+        border-color: #dc3545;
     }
 
     .btn-outline-warning-custom {
-        color: var(--warning-color);
-        border-color: var(--warning-color);
-        background: rgba(243, 156, 18, 0.05);
+        color: #6c757d;
+        border-color: #6c757d;
+        background: rgba(108, 117, 125, 0.05);
     }
 
     .btn-outline-warning-custom:hover {
-        background: var(--warning-color);
+        background: #6c757d;
         color: white;
-        border-color: var(--warning-color);
+        border-color: #6c757d;
     }
 
     .btn-outline-primary-custom {
-        color: var(--primary-color);
-        border-color: var(--primary-color);
-        background: rgba(22, 160, 133, 0.05);
+        color: #dc3545;
+        border-color: #dc3545;
+        background: rgba(220, 53, 69, 0.05);
     }
 
     .btn-outline-primary-custom:hover {
-        background: var(--primary-color);
+        background: #dc3545;
         color: white;
-        border-color: var(--primary-color);
+        border-color: #dc3545;
     }
 
     .nav-tabs-modern {
         border: none;
-        background: rgba(52, 152, 219, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         padding: 0.5rem;
         border-radius: var(--border-radius);
         margin-bottom: 1.5rem;
@@ -407,14 +407,14 @@
     }
 
     .nav-tabs-modern .nav-link:hover {
-        background: rgba(52, 152, 219, 0.1);
-        color: var(--secondary-color);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
     }
 
     .nav-tabs-modern .nav-link.active {
-        background: var(--secondary-color);
+        background: #dc3545;
         color: white;
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .table-modern {
@@ -425,7 +425,7 @@
     }
 
     .table-modern thead th {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(108, 117, 125, 0.1) 100%);
         border: none;
         font-weight: 600;
         color: var(--text-primary);
@@ -440,7 +440,7 @@
     }
 
     .table-modern tbody tr:hover {
-        background: rgba(52, 152, 219, 0.02);
+        background: rgba(220, 53, 69, 0.02);
     }
 
     .badge-modern {
@@ -456,14 +456,14 @@
     .empty-state {
         text-align: center;
         padding: 3rem 2rem;
-        background: rgba(52, 152, 219, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius);
-        border: 2px dashed rgba(52, 152, 219, 0.2);
+        border: 2px dashed rgba(220, 53, 69, 0.2);
     }
 
     .empty-state-icon {
         font-size: 3rem;
-        color: rgba(52, 152, 219, 0.3);
+        color: rgba(220, 53, 69, 0.3);
         margin-bottom: 1rem;
     }
 
@@ -478,33 +478,33 @@
     }
 
     .status-active {
-        background: rgba(39, 174, 96, 0.1);
-        color: var(--success-color);
-        border: 1px solid rgba(39, 174, 96, 0.2);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
     }
 
     .status-inactive {
-        background: rgba(231, 76, 60, 0.1);
-        color: var(--danger-color);
-        border: 1px solid rgba(231, 76, 60, 0.2);
+        background: rgba(52, 58, 64, 0.1);
+        color: #343a40;
+        border: 1px solid rgba(52, 58, 64, 0.2);
     }
 
     .status-expired {
-        background: rgba(231, 76, 60, 0.1);
-        color: var(--danger-color);
-        border: 1px solid rgba(231, 76, 60, 0.2);
+        background: rgba(52, 58, 64, 0.1);
+        color: #343a40;
+        border: 1px solid rgba(52, 58, 64, 0.2);
     }
 
     .status-current {
-        background: rgba(39, 174, 96, 0.1);
-        color: var(--success-color);
-        border: 1px solid rgba(39, 174, 96, 0.2);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
     }
 
     .status-na {
-        background: rgba(127, 140, 141, 0.1);
-        color: var(--text-secondary);
-        border: 1px solid rgba(127, 140, 141, 0.2);
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
     }
 
     @media (max-width: 768px) {

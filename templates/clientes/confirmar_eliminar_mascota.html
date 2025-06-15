@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .delete-header {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(255, 255, 255, 0.95) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(231, 76, 60, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.2);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(231, 76, 60, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -41,7 +41,7 @@
     .delete-title {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--danger-color);
+        color: #dc3545;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -52,27 +52,27 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: linear-gradient(45deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.2));
+        background: linear-gradient(45deg, rgba(220, 53, 69, 0.15), rgba(220, 53, 69, 0.25));
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--danger-color);
+        color: #dc3545;
         font-size: 1.8rem;
     }
 
     .delete-subtitle {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 1.1rem;
         margin: 0;
     }
 
     .breadcrumb-container {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1rem 1.5rem;
         margin-bottom: 2rem;
-        box-shadow: var(--box-shadow);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
     }
 
     .breadcrumb {
@@ -82,33 +82,33 @@
 
     .breadcrumb-item + .breadcrumb-item::before {
         content: "›";
-        color: var(--primary-color);
+        color: #dc3545;
         font-weight: 600;
     }
 
     .breadcrumb-item a {
-        color: var(--primary-color);
+        color: #dc3545;
         text-decoration: none;
         font-weight: 500;
         transition: var(--transition);
     }
 
     .breadcrumb-item a:hover {
-        color: var(--primary-dark);
+        color: #b02a37;
         text-decoration: underline;
     }
 
     .breadcrumb-item.active {
-        color: var(--danger-color);
+        color: #dc3545;
         font-weight: 600;
     }
 
     .confirmation-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         overflow: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         position: relative;
     }
 
@@ -119,12 +119,12 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--danger-color), #c0392b);
+        background: linear-gradient(90deg, #dc3545, #b02a37);
     }
 
     .card-header-custom {
-        background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
-        color: white;
+        background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+        color: #ffffff;
         padding: 1.5rem 2rem;
         border: none;
     }
@@ -151,11 +151,12 @@
 
     .card-body-custom {
         padding: 2rem;
+        background: #ffffff;
     }
 
     .warning-section {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.05) 0%, rgba(192, 57, 43, 0.05) 100%);
-        border: 1px solid rgba(231, 76, 60, 0.2);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.08) 0%, rgba(255, 255, 255, 0.95) 100%);
+        border: 1px solid rgba(220, 53, 69, 0.3);
         border-radius: var(--border-radius);
         padding: 1.5rem;
         margin-bottom: 2rem;
@@ -169,7 +170,7 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: var(--danger-color);
+        background: #dc3545;
         border-radius: 2px 0 0 2px;
     }
 
@@ -177,11 +178,11 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background: linear-gradient(45deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.2));
+        background: linear-gradient(45deg, rgba(220, 53, 69, 0.15), rgba(220, 53, 69, 0.25));
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--danger-color);
+        color: #dc3545;
         font-size: 1.5rem;
         margin-bottom: 1rem;
     }
@@ -189,36 +190,37 @@
     .warning-title {
         font-size: 1.2rem;
         font-weight: 600;
-        color: var(--danger-color);
+        color: #dc3545;
         margin-bottom: 0.5rem;
     }
 
     .warning-text {
-        color: var(--text-secondary);
+        color: #6c757d;
         margin-bottom: 0.75rem;
         line-height: 1.6;
     }
 
     .mascot-info {
-        background: rgba(22, 160, 133, 0.05);
-        border: 1px solid rgba(22, 160, 133, 0.1);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(220, 53, 69, 0.15);
         border-radius: var(--border-radius);
         padding: 1.5rem;
         margin: 1.5rem 0;
         display: flex;
         align-items: center;
         gap: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .mascot-avatar {
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(45deg, #dc3545, #b02a37);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: #ffffff;
         font-size: 1.5rem;
         flex-shrink: 0;
     }
@@ -226,12 +228,12 @@
     .mascot-details h4 {
         margin: 0;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #212529;
         font-size: 1.2rem;
     }
 
     .mascot-details small {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 0.9rem;
     }
 
@@ -246,9 +248,9 @@
     }
 
     .btn-cancel {
-        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-        color: white;
-        border: none;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        color: #212529;
+        border: 2px solid #dc3545;
         padding: 0.875rem 1.75rem;
         border-radius: var(--border-radius-sm);
         font-weight: 600;
@@ -257,19 +259,19 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
 
     .btn-cancel:hover {
-        background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
-        color: white;
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        color: #dc3545;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.2);
     }
 
     .btn-delete {
-        background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
-        color: white;
+        background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+        color: #ffffff;
         border: none;
         padding: 0.875rem 1.75rem;
         border-radius: var(--border-radius-sm);
@@ -278,7 +280,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.75rem;
-        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
         position: relative;
         overflow: hidden;
     }
@@ -299,10 +301,10 @@
     }
 
     .btn-delete:hover {
-        background: linear-gradient(135deg, #c0392b 0%, var(--danger-color) 100%);
-        color: white;
+        background: linear-gradient(135deg, #b02a37 0%, #dc3545 100%);
+        color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.5);
     }
 
     .fade-in {

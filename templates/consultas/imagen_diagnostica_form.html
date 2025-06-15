@@ -15,34 +15,34 @@
 <style>
         /* Root variables para consistencia */
         :root {
-            --primary-color: #16a085;
-            --secondary-color: #3498db;
-            --primary-dark: #138d75;
-            --success-color: #27ae60;
-            --danger-color: #e74c3c;
-            --warning-color: #f39c12;
-            --info-color: #17a2b8;
-            --text-primary: #2c3e50;
+            --primary-color: #dc2626;
+            --secondary-color: #b91c1c;
+            --primary-dark: #991b1b;
+            --success-color: #16a34a;
+            --danger-color: #dc2626;
+            --warning-color: #f59e0b;
+            --info-color: #dc2626;
+            --text-primary: #1f2937;
             --text-light: #ffffff;
             --bg-white: #ffffff;
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
-            --input-bg: #f8fafc;
-            --input-border: #e2e8f0;
+            --input-bg: #f9fafb;
+            --input-border: #e5e7eb;
         }
         
         .form-container {
             background: var(--bg-white);
             border-radius: 24px;
             box-shadow: 
-                0 32px 64px -12px rgba(22, 160, 133, 0.15),
-                0 16px 32px -8px rgba(52, 152, 219, 0.1),
+                0 32px 64px -12px rgba(220, 38, 38, 0.15),
+                0 16px 32px -8px rgba(185, 28, 28, 0.1),
                 0 8px 16px -4px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-bottom: 2rem;
             position: relative;
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(22, 160, 133, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.1);
         }
 
         .form-container::before {
@@ -53,9 +53,9 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.02) 0%, 
-                rgba(52, 152, 219, 0.02) 50%, 
-                rgba(155, 89, 182, 0.02) 100%);
+                rgba(220, 38, 38, 0.02) 0%, 
+                rgba(185, 28, 28, 0.02) 50%, 
+                rgba(31, 41, 55, 0.02) 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -140,14 +140,14 @@
         /* Alerta de información de mascota */
         .mascota-info {
             background: linear-gradient(135deg, 
-                rgba(23, 162, 184, 0.08) 0%, 
-                rgba(52, 152, 219, 0.08) 100%);
-            border: 1px solid rgba(23, 162, 184, 0.2);
+                rgba(220, 38, 38, 0.08) 0%, 
+                rgba(185, 28, 28, 0.08) 100%);
+            border: 1px solid rgba(220, 38, 38, 0.2);
             border-radius: 16px;
             padding: 1.5rem 2rem;
             margin-bottom: 2rem;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(23, 162, 184, 0.1);
+            box-shadow: 0 8px 32px rgba(220, 38, 38, 0.1);
             position: relative;
             overflow: hidden;
         }
@@ -189,9 +189,9 @@
         /* Contenedor de previsualización de imagen */
         .image-preview-container {
             background: linear-gradient(135deg, 
-                rgba(248, 250, 252, 0.95) 0%, 
+                rgba(249, 250, 251, 0.95) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
-            border: 2px dashed rgba(22, 160, 133, 0.3);
+            border: 2px dashed rgba(220, 38, 38, 0.3);
             border-radius: 20px;
             padding: 2rem;
             text-align: center;
@@ -204,10 +204,10 @@
         .image-preview-container:hover {
             border-color: var(--primary-color);
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.05) 0%, 
+                rgba(220, 38, 38, 0.05) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(22, 160, 133, 0.15);
+            box-shadow: 0 12px 24px rgba(220, 38, 38, 0.15);
         }
 
         .image-preview-container img {
@@ -282,17 +282,17 @@
         }
 
         .form-control:hover {
-            border-color: rgba(22, 160, 133, 0.4);
+            border-color: rgba(220, 38, 38, 0.4);
             background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(22, 160, 133, 0.08);
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
         }
 
         .form-control:focus {
             border-color: var(--primary-color);
             background-color: #ffffff;
             box-shadow: 
-                0 0 0 3px rgba(22, 160, 133, 0.1),
-                0 4px 12px rgba(22, 160, 133, 0.15);
+                0 0 0 3px rgba(220, 38, 38, 0.1),
+                0 4px 12px rgba(220, 38, 38, 0.15);
             transform: translateY(-1px);
         }
 
@@ -307,7 +307,7 @@
             padding: 1.25rem;
             border: 2px dashed var(--primary-color);
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.05) 0%, 
+                rgba(220, 38, 38, 0.05) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             cursor: pointer;
             position: relative;
@@ -315,7 +315,7 @@
 
         input[type="file"].form-control:hover {
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.08) 0%, 
+                rgba(220, 38, 38, 0.08) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             border-color: var(--primary-dark);
         }
@@ -330,14 +330,14 @@
         /* Estados de validación */
         .form-control.is-valid {
             border-color: var(--success-color);
-            background-color: rgba(39, 174, 96, 0.02);
-            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            background-color: rgba(22, 163, 74, 0.02);
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
         }
 
         .form-control.is-invalid {
             border-color: var(--danger-color);
-            background-color: rgba(231, 76, 60, 0.02);
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            background-color: rgba(220, 38, 38, 0.02);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
             animation: shake 0.5s ease-in-out;
         }
 
@@ -357,8 +357,8 @@
             font-weight: 500;
             padding: 0.75rem 1rem;
             background: linear-gradient(135deg, 
-                rgba(231, 76, 60, 0.08) 0%, 
-                rgba(231, 76, 60, 0.05) 100%);
+                rgba(220, 38, 38, 0.08) 0%, 
+                rgba(220, 38, 38, 0.05) 100%);
             border-radius: 12px;
             border-left: 3px solid var(--danger-color);
             backdrop-filter: blur(8px);
@@ -378,7 +378,7 @@
             justify-content: flex-end;
             align-items: center;
             padding-top: 2.5rem;
-            border-top: 1px solid rgba(22, 160, 133, 0.1);
+            border-top: 1px solid rgba(220, 38, 38, 0.1);
             margin-top: 2.5rem;
         }
 
@@ -395,8 +395,8 @@
             font-size: 1rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 
-                0 10px 15px -3px rgba(22, 160, 133, 0.3),
-                0 4px 6px -2px rgba(22, 160, 133, 0.1);
+                0 10px 15px -3px rgba(220, 38, 38, 0.3),
+                0 4px 6px -2px rgba(220, 38, 38, 0.1);
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -428,8 +428,8 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 
-                0 20px 25px -5px rgba(22, 160, 133, 0.4),
-                0 10px 10px -5px rgba(22, 160, 133, 0.2);
+                0 20px 25px -5px rgba(220, 38, 38, 0.4),
+                0 10px 10px -5px rgba(220, 38, 38, 0.2);
             background: linear-gradient(135deg, 
                 var(--secondary-color) 0%, 
                 var(--primary-color) 50%, 
@@ -439,8 +439,8 @@
         .btn-secondary, .btn-outline-secondary {
             background: linear-gradient(145deg, 
                 rgba(255, 255, 255, 0.95) 0%, 
-                rgba(248, 250, 252, 0.95) 100%);
-            border: 2px solid rgba(22, 160, 133, 0.2);
+                rgba(249, 250, 251, 0.95) 100%);
+            border: 2px solid rgba(220, 38, 38, 0.2);
             color: var(--text-primary);
             padding: 1rem 2.5rem;
             border-radius: 16px;
@@ -462,29 +462,29 @@
 
         .btn-secondary:hover, .btn-outline-secondary:hover {
             background: linear-gradient(145deg, 
-                rgba(22, 160, 133, 0.08) 0%, 
+                rgba(220, 38, 38, 0.08) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             border-color: var(--primary-color);
             color: var(--primary-color);
             text-decoration: none;
             transform: translateY(-2px);
             box-shadow: 
-                0 10px 15px -3px rgba(22, 160, 133, 0.2),
-                0 4px 6px -2px rgba(22, 160, 133, 0.1);
+                0 10px 15px -3px rgba(220, 38, 38, 0.2),
+                0 4px 6px -2px rgba(220, 38, 38, 0.1);
         }
 
         /* Breadcrumb glassmorphism */
         .breadcrumb-container {
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.1) 0%, 
-                rgba(52, 152, 219, 0.08) 100%);
+                rgba(220, 38, 38, 0.1) 0%, 
+                rgba(185, 28, 28, 0.08) 100%);
             backdrop-filter: blur(16px);
             border-radius: 16px;
             padding: 1.25rem 2rem;
             margin-bottom: 2rem;
-            border: 1px solid rgba(22, 160, 133, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.15);
             box-shadow: 
-                0 8px 32px rgba(22, 160, 133, 0.1),
+                0 8px 32px rgba(220, 38, 38, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
@@ -677,7 +677,7 @@
         /* Sobrescribir cualquier estilo de Bootstrap que cause problemas */
         .form-control:focus {
             border-color: var(--primary-color) !important;
-            box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.1) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
 
         /* Estilos específicos para crispy forms */
@@ -701,7 +701,7 @@
             padding: 2rem;
             text-align: center;
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.05) 0%, 
+                rgba(220, 38, 38, 0.05) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             transition: all 0.3s ease;
             cursor: pointer;
@@ -710,7 +710,7 @@
         .file-drop-zone:hover {
             border-color: var(--primary-dark);
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.08) 0%, 
+                rgba(220, 38, 38, 0.08) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             transform: translateY(-2px);
         }
@@ -718,10 +718,10 @@
         .file-drop-zone.dragover {
             border-color: var(--success-color);
             background: linear-gradient(135deg, 
-                rgba(39, 174, 96, 0.08) 0%, 
+                rgba(22, 163, 74, 0.08) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
         }
-    </style>
+</style>
 {% endblock %}
 
 {% block content %}

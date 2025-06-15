@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .species-header {
-        background: linear-gradient(135deg, rgba(22, 160, 133, 0.1) 0%, rgba(52, 152, 219, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 38, 50, 0.08) 0%, rgba(0, 0, 0, 0.05) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(22, 160, 133, 0.1);
+        border: 1px solid rgba(220, 38, 50, 0.1);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(22, 160, 133, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 38, 50, 0.05) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -41,7 +41,7 @@
     .species-title {
         font-size: 2.25rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #1a1a1a;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -50,14 +50,14 @@
 
     .species-title .icon {
         font-size: 2.5rem;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(45deg, #dc2632, #8b0000);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .species-subtitle {
-        color: var(--text-secondary);
+        color: #4a4a4a;
         font-size: 1.1rem;
         margin: 0;
     }
@@ -70,11 +70,11 @@
     }
 
     .stat-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1.5rem;
-        box-shadow: var(--box-shadow);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(220, 38, 50, 0.08);
         transition: var(--transition);
         position: relative;
         overflow: hidden;
@@ -87,12 +87,12 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(90deg, #dc2632, #8b0000);
     }
 
     .stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     }
 
     .stat-icon {
@@ -107,35 +107,35 @@
     }
 
     .stat-icon.primary {
-        background: linear-gradient(45deg, rgba(22, 160, 133, 0.1), rgba(22, 160, 133, 0.2));
-        color: var(--primary-color);
+        background: linear-gradient(45deg, rgba(220, 38, 50, 0.1), rgba(220, 38, 50, 0.2));
+        color: #dc2632;
     }
 
     .stat-icon.secondary {
-        background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.2));
-        color: var(--secondary-color);
+        background: linear-gradient(45deg, rgba(139, 0, 0, 0.1), rgba(139, 0, 0, 0.2));
+        color: #8b0000;
     }
 
     .stat-icon.accent {
-        background: linear-gradient(45deg, rgba(243, 156, 18, 0.1), rgba(243, 156, 18, 0.2));
-        color: var(--accent-color);
+        background: linear-gradient(45deg, rgba(26, 26, 26, 0.1), rgba(26, 26, 26, 0.2));
+        color: #1a1a1a;
     }
 
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #1a1a1a;
         margin-bottom: 0.25rem;
     }
 
     .stat-label {
-        color: var(--text-secondary);
+        color: #4a4a4a;
         font-size: 0.9rem;
         margin: 0;
     }
 
     .add-species-btn {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #dc2632 0%, #8b0000 100%);
         color: white;
         border: none;
         padding: 0.875rem 1.75rem;
@@ -146,23 +146,23 @@
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
-        box-shadow: 0 4px 15px rgba(22, 160, 133, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 38, 50, 0.3);
     }
 
     .add-species-btn:hover {
-        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+        background: linear-gradient(135deg, #8b0000 0%, #dc2632 100%);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(22, 160, 133, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 38, 50, 0.4);
     }
 
     .search-filter-section {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1.5rem;
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         margin-bottom: 2rem;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 38, 50, 0.08);
     }
 
     .search-box {
@@ -181,8 +181,8 @@
 
     .search-input:focus {
         outline: none;
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.1);
+        border-color: #dc2632;
+        box-shadow: 0 0 0 3px rgba(220, 38, 50, 0.1);
         background: white;
     }
 
@@ -191,20 +191,20 @@
         left: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--text-secondary);
+        color: #4a4a4a;
         font-size: 1.1rem;
     }
 
     .species-table-container {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 38, 50, 0.08);
     }
 
     .table-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #dc2632 0%, #8b0000 100%);
         color: white;
         padding: 1.5rem 2rem;
         display: flex;
@@ -237,8 +237,8 @@
     }
 
     .species-table thead th {
-        background: rgba(22, 160, 133, 0.05);
-        color: var(--text-primary);
+        background: rgba(220, 38, 50, 0.05);
+        color: #1a1a1a;
         font-weight: 600;
         border: none;
         padding: 1rem 1.5rem;
@@ -252,7 +252,7 @@
         left: 0;
         right: 0;
         height: 2px;
-        background: linear-gradient(90deg, var(--primary-color), transparent);
+        background: linear-gradient(90deg, #dc2632, transparent);
     }
 
     .species-table tbody tr {
@@ -261,7 +261,7 @@
     }
 
     .species-table tbody tr:hover {
-        background: rgba(22, 160, 133, 0.03);
+        background: rgba(220, 38, 50, 0.03);
         transform: scale(1.01);
     }
 
@@ -282,7 +282,7 @@
         width: 45px;
         height: 45px;
         border-radius: 50%;
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(45deg, #dc2632, #8b0000);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -295,12 +295,12 @@
     .species-details h6 {
         margin: 0;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #1a1a1a;
         font-size: 1rem;
     }
 
     .species-description {
-        color: var(--text-secondary);
+        color: #4a4a4a;
         font-size: 0.875rem;
         margin: 0.25rem 0 0 0;
         font-style: italic;
@@ -314,8 +314,8 @@
         border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 500;
-        background: rgba(52, 152, 219, 0.1);
-        color: var(--secondary-color);
+        background: rgba(26, 26, 26, 0.1);
+        color: #1a1a1a;
     }
 
     .action-buttons {
@@ -339,23 +339,23 @@
     }
 
     .btn-action.edit {
-        background: rgba(243, 156, 18, 0.1);
-        color: var(--warning-color);
+        background: rgba(220, 38, 50, 0.1);
+        color: #dc2632;
     }
 
     .btn-action.edit:hover {
-        background: var(--warning-color);
+        background: #dc2632;
         color: white;
         transform: scale(1.1);
     }
 
     .btn-action.delete {
-        background: rgba(231, 76, 60, 0.1);
-        color: var(--danger-color);
+        background: rgba(26, 26, 26, 0.1);
+        color: #1a1a1a;
     }
 
     .btn-action.delete:hover {
-        background: var(--danger-color);
+        background: #1a1a1a;
         color: white;
         transform: scale(1.1);
     }
@@ -363,17 +363,17 @@
     .empty-state {
         text-align: center;
         padding: 3rem 2rem;
-        color: var(--text-secondary);
+        color: #4a4a4a;
     }
 
     .empty-state-icon {
         font-size: 4rem;
-        color: rgba(22, 160, 133, 0.2);
+        color: rgba(220, 38, 50, 0.2);
         margin-bottom: 1rem;
     }
 
     .empty-state h3 {
-        color: var(--text-primary);
+        color: #1a1a1a;
         margin-bottom: 0.5rem;
     }
 

@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .appointment-detail-header {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.08) 0%, rgba(248, 249, 250, 0.1) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(52, 152, 219, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(52, 152, 219, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.03) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -39,12 +39,12 @@
     }
 
     .breadcrumb-modern {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1rem 1.5rem;
         margin-bottom: 2rem;
         box-shadow: var(--box-shadow);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 53, 69, 0.1);
     }
 
     .breadcrumb-modern .breadcrumb {
@@ -58,18 +58,18 @@
     }
 
     .breadcrumb-modern .breadcrumb-item a {
-        color: var(--primary-color);
+        color: #dc3545;
         text-decoration: none;
         font-weight: 500;
         transition: var(--transition);
     }
 
     .breadcrumb-modern .breadcrumb-item a:hover {
-        color: var(--primary-dark);
+        color: #b02a37;
     }
 
     .breadcrumb-modern .breadcrumb-item.active {
-        color: var(--text-secondary);
+        color: #343a40;
         font-weight: 600;
     }
 
@@ -77,7 +77,7 @@
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
+        background: linear-gradient(45deg, #dc3545, #c82333);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -85,13 +85,13 @@
         font-weight: 700;
         font-size: 2rem;
         margin-bottom: 1.5rem;
-        box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
     }
 
     .appointment-title {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #212529;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -100,20 +100,20 @@
 
     .appointment-title .icon {
         font-size: 1.8rem;
-        color: var(--secondary-color);
+        color: #dc3545;
     }
 
     .appointment-subtitle {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 1.1rem;
         margin: 0;
     }
 
     .detail-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         overflow: hidden;
         margin-bottom: 2rem;
         transition: var(--transition);
@@ -125,7 +125,7 @@
     }
 
     .card-header-modern {
-        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         color: white;
         padding: 1.5rem 2rem;
         border: none;
@@ -137,12 +137,12 @@
     }
 
     .card-header-modern.bg-success-modern {
-        background: linear-gradient(135deg, var(--success-color) 0%, #27ae60 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
     }
 
     .card-header-modern.bg-light-modern {
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        color: var(--text-primary);
+        color: #212529;
     }
 
     .card-header-modern::before {
@@ -201,10 +201,10 @@
     }
 
     .btn-modern.btn-edit:hover {
-        background: var(--warning-color);
+        background: #dc3545;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .btn-modern.btn-delete {
@@ -214,10 +214,10 @@
     }
 
     .btn-modern.btn-delete:hover {
-        background: var(--danger-color);
+        background: #212529;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 12px rgba(33, 37, 41, 0.3);
     }
 
     .btn-modern.btn-primary {
@@ -227,46 +227,46 @@
     }
 
     .btn-modern.btn-primary:hover {
-        background: var(--secondary-color);
+        background: #dc3545;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .btn-modern.btn-success {
-        background: var(--success-color);
+        background: #dc3545;
         color: white;
-        border: 1px solid var(--success-color);
+        border: 1px solid #dc3545;
     }
 
     .btn-modern.btn-success:hover {
-        background: #27ae60;
+        background: #c82333;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .btn-modern.btn-info {
-        background: var(--info-color);
+        background: #dc3545;
         color: white;
-        border: 1px solid var(--info-color);
+        border: 1px solid #dc3545;
     }
 
     .btn-modern.btn-info:hover {
-        background: #2980b9;
+        background: #b02a37;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .btn-modern.btn-outline-secondary {
         background: transparent;
-        color: var(--text-secondary);
-        border: 1px solid var(--text-secondary);
+        color: #6c757d;
+        border: 1px solid #6c757d;
     }
 
     .btn-modern.btn-outline-secondary:hover {
-        background: var(--text-secondary);
+        background: #6c757d;
         color: white;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
@@ -274,20 +274,20 @@
 
     .card-body-modern {
         padding: 2rem;
-        background: var(--bg-white);
+        background: #ffffff;
     }
 
     .info-item {
         margin-bottom: 1.5rem;
         padding: 1rem;
-        background: rgba(52, 152, 219, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius-sm);
-        border-left: 4px solid var(--secondary-color);
+        border-left: 4px solid #dc3545;
         transition: var(--transition);
     }
 
     .info-item:hover {
-        background: rgba(52, 152, 219, 0.05);
+        background: rgba(220, 53, 69, 0.05);
         transform: translateX(4px);
     }
 
@@ -297,7 +297,7 @@
 
     .info-item strong {
         font-weight: 600;
-        color: var(--text-primary);
+        color: #212529;
         display: block;
         margin-bottom: 0.5rem;
         font-size: 0.9rem;
@@ -307,25 +307,25 @@
 
     .info-item p {
         margin: 0;
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 1rem;
         line-height: 1.6;
     }
 
     .info-item a {
-        color: var(--primary-color);
+        color: #dc3545;
         text-decoration: none;
         font-weight: 500;
         transition: var(--transition);
     }
 
     .info-item a:hover {
-        color: var(--primary-dark);
+        color: #b02a37;
         text-decoration: underline;
     }
 
     .info-item .text-muted {
-        color: var(--text-secondary) !important;
+        color: #6c757d !important;
         font-size: 0.875rem;
         margin-top: 0.25rem;
     }
@@ -343,27 +343,27 @@
     }
 
     .badge-modern.badge-primary {
-        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        background: linear-gradient(45deg, #dc3545, #c82333);
         color: white;
     }
 
     .badge-modern.badge-warning {
-        background: linear-gradient(45deg, var(--warning-color), #f39c12);
+        background: linear-gradient(45deg, #dc3545, #b02a37);
         color: white;
     }
 
     .badge-modern.badge-success {
-        background: linear-gradient(45deg, var(--success-color), #27ae60);
+        background: linear-gradient(45deg, #dc3545, #c82333);
         color: white;
     }
 
     .badge-modern.badge-danger {
-        background: linear-gradient(45deg, var(--danger-color), #c0392b);
+        background: linear-gradient(45deg, #212529, #343a40);
         color: white;
     }
 
     .consultation-content {
-        background: rgba(46, 204, 113, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius);
         padding: 2rem;
     }
@@ -371,9 +371,9 @@
     .consultation-section {
         margin-bottom: 2rem;
         padding: 1.5rem;
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius-sm);
-        border-left: 4px solid var(--success-color);
+        border-left: 4px solid #dc3545;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -382,7 +382,7 @@
     }
 
     .consultation-section h5 {
-        color: var(--text-primary);
+        color: #212529;
         font-weight: 600;
         margin-bottom: 1rem;
         display: flex;
@@ -392,11 +392,11 @@
     }
 
     .consultation-section h5 i {
-        color: var(--success-color);
+        color: #dc3545;
     }
 
     .consultation-section p {
-        color: var(--text-secondary);
+        color: #6c757d;
         line-height: 1.6;
         margin: 0;
     }
@@ -413,9 +413,9 @@
     }
 
     .alert-modern.alert-warning {
-        background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(241, 196, 15, 0.1) 100%);
-        color: #8b4513;
-        border-left: 4px solid var(--warning-color);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(248, 249, 250, 0.1) 100%);
+        color: #721c24;
+        border-left: 4px solid #dc3545;
     }
 
     .alert-modern i {
@@ -424,14 +424,14 @@
     }
 
     .register-consultation-card {
-        background: linear-gradient(135deg, rgba(46, 204, 113, 0.05) 0%, rgba(39, 174, 96, 0.05) 100%);
-        border: 2px dashed rgba(46, 204, 113, 0.3);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.05) 0%, rgba(248, 249, 250, 0.05) 100%);
+        border: 2px dashed rgba(220, 53, 69, 0.3);
         text-align: center;
         padding: 2rem;
     }
 
     .register-consultation-card p {
-        color: var(--text-secondary);
+        color: #6c757d;
         margin-bottom: 1.5rem;
         font-size: 1.1rem;
     }
@@ -443,7 +443,7 @@
         flex-wrap: wrap;
         margin-top: 2rem;
         padding: 2rem;
-        background: rgba(52, 152, 219, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius);
     }
 
@@ -453,11 +453,11 @@
         align-items: center;
         margin-top: 1.5rem;
         padding-top: 1.5rem;
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-top: 1px solid rgba(220, 53, 69, 0.1);
     }
 
     .consultation-meta small {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 0.875rem;
         display: flex;
         align-items: center;

@@ -10,12 +10,13 @@
     .perfil-container {
         min-height: 70vh;
         padding: 2rem 0;
+        background: #ffffff;
     }
 
     .perfil-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 10px 30px rgba(220, 20, 60, 0.1);
         border: none;
         overflow: hidden;
         transition: var(--transition);
@@ -23,11 +24,11 @@
 
     .perfil-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 20px 40px rgba(220, 20, 60, 0.15);
     }
 
     .perfil-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #dc143c 0%, #b91c3c 100%);
         color: white;
         padding: 2rem;
         text-align: center;
@@ -78,7 +79,7 @@
         width: 140px;
         height: 140px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent-color), #e67e22);
+        background: linear-gradient(135deg, #dc143c, #b91c3c);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -86,7 +87,7 @@
         color: white;
         margin: 0 auto;
         border: 6px solid white;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 30px rgba(220, 20, 60, 0.2);
         transition: var(--transition);
         position: relative;
         overflow: hidden;
@@ -106,7 +107,7 @@
 
     .avatar-circle:hover {
         transform: scale(1.05);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 15px 40px rgba(220, 20, 60, 0.3);
     }
 
     .avatar-circle:hover::before {
@@ -116,12 +117,12 @@
     .user-title {
         font-size: 1.75rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #2c2c2c;
         margin: 1rem 0 0.5rem;
     }
 
     .user-subtitle {
-        color: var(--text-secondary);
+        color: #666666;
         font-size: 1.1rem;
         display: flex;
         align-items: center;
@@ -131,12 +132,12 @@
     }
 
     .info-section {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 1.5rem;
-        border-left: 4px solid var(--primary-color);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid #dc143c;
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.05);
         transition: var(--transition);
         position: relative;
         overflow: hidden;
@@ -156,21 +157,21 @@
     }
 
     .info-section.personal::before {
-        background: var(--primary-color);
+        background: #dc143c;
     }
 
     .info-section.professional::before {
-        background: var(--success-color);
+        background: #b91c3c;
     }
 
     .info-section.account::before {
-        background: var(--info-color);
+        background: #2c2c2c;
     }
 
     .info-section:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-        border-left-color: var(--accent-color);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.1);
+        border-left-color: #b91c3c;
     }
 
     .info-section:hover::before {
@@ -179,7 +180,7 @@
     }
 
     .section-title {
-        color: var(--text-primary);
+        color: #2c2c2c;
         font-weight: 700;
         font-size: 1.25rem;
         margin-bottom: 1.5rem;
@@ -203,15 +204,15 @@
     }
 
     .info-section.personal .section-icon {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        background: linear-gradient(135deg, #dc143c, #b91c3c);
     }
 
     .info-section.professional .section-icon {
-        background: linear-gradient(135deg, var(--success-color), #2ecc71);
+        background: linear-gradient(135deg, #b91c3c, #a01836);
     }
 
     .info-section.account .section-icon {
-        background: linear-gradient(135deg, var(--info-color), var(--secondary-color));
+        background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
     }
 
     .section-title:hover .section-icon {
@@ -222,7 +223,7 @@
         display: flex;
         align-items: center;
         padding: 1rem 0;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(220, 20, 60, 0.05);
         transition: var(--transition);
         position: relative;
         z-index: 1;
@@ -242,7 +243,7 @@
 
     .info-label {
         font-weight: 600;
-        color: var(--text-primary);
+        color: #2c2c2c;
         width: 180px;
         flex-shrink: 0;
         display: flex;
@@ -251,14 +252,14 @@
     }
 
     .info-label i {
-        color: var(--primary-color);
+        color: #dc143c;
         margin-right: 0.5rem;
         width: 16px;
         text-align: center;
     }
 
     .info-value {
-        color: var(--text-secondary);
+        color: #666666;
         flex-grow: 1;
         font-size: 0.95rem;
         font-weight: 500;
@@ -270,7 +271,7 @@
     }
 
     .status-badge {
-        background: linear-gradient(135deg, var(--success-color), #2ecc71);
+        background: linear-gradient(135deg, #dc143c, #b91c3c);
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 20px;
@@ -279,7 +280,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        box-shadow: 0 2px 10px rgba(39, 174, 96, 0.3);
+        box-shadow: 0 2px 10px rgba(220, 20, 60, 0.3);
     }
 
     .action-buttons {
@@ -292,7 +293,7 @@
     }
 
     .btn-modern {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        background: linear-gradient(135deg, #dc143c, #b91c3c);
         border: none;
         border-radius: 25px;
         padding: 1rem 2rem;
@@ -303,7 +304,7 @@
         align-items: center;
         gap: 0.5rem;
         transition: var(--transition);
-        box-shadow: 0 4px 15px rgba(22, 160, 133, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
         position: relative;
         overflow: hidden;
     }
@@ -321,7 +322,7 @@
 
     .btn-modern:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(22, 160, 133, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.4);
         color: white;
         text-decoration: none;
     }
@@ -331,12 +332,12 @@
     }
 
     .btn-password {
-        background: linear-gradient(135deg, var(--success-color), #2ecc71);
-        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        background: linear-gradient(135deg, #b91c3c, #a01836);
+        box-shadow: 0 4px 15px rgba(185, 28, 60, 0.3);
     }
 
     .btn-password:hover {
-        box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        box-shadow: 0 8px 25px rgba(185, 28, 60, 0.4);
     }
 
     /* Stats Section */
@@ -348,11 +349,11 @@
     }
 
     .stat-mini-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1.5rem;
         text-align: center;
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.08);
         transition: var(--transition);
         position: relative;
         overflow: hidden;
@@ -365,14 +366,14 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        background: linear-gradient(135deg, #dc143c, #b91c3c);
         transform: scaleX(0);
         transition: transform 0.3s ease;
     }
 
     .stat-mini-card:hover {
         transform: translateY(-4px);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.12);
     }
 
     .stat-mini-card:hover::before {
@@ -382,12 +383,12 @@
     .stat-mini-value {
         font-size: 1.75rem;
         font-weight: 700;
-        color: var(--primary-color);
+        color: #dc143c;
         margin-bottom: 0.5rem;
     }
 
     .stat-mini-label {
-        color: var(--text-secondary);
+        color: #666666;
         font-size: 0.9rem;
         font-weight: 500;
     }

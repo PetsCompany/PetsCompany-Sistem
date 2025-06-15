@@ -13,9 +13,9 @@
     }
 
     .config-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 15px 35px rgba(220, 38, 38, 0.1);
         border: none;
         overflow: hidden;
         position: relative;
@@ -24,11 +24,11 @@
 
     .config-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15);
     }
 
     .config-header {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
         color: white;
         padding: 2rem;
         text-align: center;
@@ -73,15 +73,15 @@
     }
 
     .form-section {
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border-left: 4px solid var(--accent-color);
+        border-left: 4px solid #dc2626;
         position: relative;
         overflow: hidden;
         transition: var(--transition);
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
 
     .form-section::before {
@@ -99,7 +99,7 @@
 
     .form-section:hover {
         transform: translateY(-2px);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 15px 35px rgba(220, 38, 38, 0.1);
     }
 
     .form-section:hover::before {
@@ -108,19 +108,19 @@
     }
 
     .form-section:nth-child(1)::before {
-        background: var(--primary-color);
+        background: #dc2626;
     }
 
     .form-section:nth-child(2)::before {
-        background: var(--accent-color);
+        background: #dc2626;
     }
 
     .form-section:nth-child(3)::before {
-        background: var(--info-color);
+        background: #1f2937;
     }
 
     .section-title {
-        color: var(--text-primary);
+        color: #1f2937;
         font-weight: 700;
         font-size: 1.2rem;
         margin-bottom: 1.5rem;
@@ -164,15 +164,15 @@
     }
 
     .section-icon.personal {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        background: linear-gradient(135deg, #dc2626, #991b1b);
     }
 
     .section-icon.professional {
-        background: linear-gradient(135deg, var(--accent-color), #e67e22);
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
     }
 
     .section-icon.account {
-        background: linear-gradient(135deg, var(--info-color), var(--secondary-color));
+        background: linear-gradient(135deg, #374151, #1f2937);
     }
 
     .form-group {
@@ -182,7 +182,7 @@
 
     .form-label {
         font-weight: 600;
-        color: var(--text-primary);
+        color: #1f2937;
         margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
@@ -190,7 +190,7 @@
     }
 
     .form-label i {
-        color: var(--accent-color);
+        color: #dc2626;
         margin-right: 0.5rem;
     }
 
@@ -198,16 +198,16 @@
         position: relative;
         border-radius: var(--border-radius);
         overflow: hidden;
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: var(--transition);
     }
 
     .input-group:hover {
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 15px 35px rgba(220, 38, 38, 0.1);
     }
 
     .input-group-text {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        background: linear-gradient(135deg, #dc2626, #991b1b);
         color: white;
         border: none;
         font-weight: 600;
@@ -216,36 +216,36 @@
     }
 
     .form-control {
-        border: 2px solid #e9ecef;
+        border: 2px solid #f3f4f6;
         padding: 0.75rem 1rem;
         font-size: 1rem;
         transition: var(--transition);
-        background: var(--bg-white);
+        background: #ffffff;
     }
 
     .form-control:focus {
-        border-color: var(--primary-color);
-        box-shadow: 0 0 0 0.2rem rgba(22, 160, 133, 0.25);
-        background: var(--bg-white);
+        border-color: #dc2626;
+        box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+        background: #ffffff;
     }
 
     .form-control:hover {
-        border-color: var(--primary-color);
+        border-color: #dc2626;
     }
 
     .form-control[readonly] {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        color: var(--text-secondary);
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        color: #6b7280;
         cursor: not-allowed;
     }
 
     .alert-info {
-        background: linear-gradient(135deg, rgba(22, 160, 133, 0.1) 0%, rgba(93, 173, 226, 0.1) 100%);
-        border: 1px solid rgba(22, 160, 133, 0.3);
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+        border: 1px solid rgba(220, 38, 38, 0.3);
         border-radius: var(--border-radius);
         padding: 1rem 1.25rem;
         margin-bottom: 2rem;
-        color: var(--text-primary);
+        color: #1f2937;
         position: relative;
         overflow: hidden;
     }
@@ -257,23 +257,23 @@
         left: 0;
         width: 4px;
         height: 100%;
-        background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
     }
 
     .alert-info i {
-        color: var(--primary-color);
+        color: #dc2626;
         font-size: 1.1rem;
     }
 
     .btn-save {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        background: linear-gradient(135deg, #dc2626, #991b1b);
         border: none;
         border-radius: var(--border-radius);
         padding: 0.875rem 2rem;
         font-weight: 600;
         color: white;
         transition: var(--transition);
-        box-shadow: 0 4px 15px rgba(22, 160, 133, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
         text-transform: uppercase;
         letter-spacing: 0.5px;
         font-size: 0.9rem;
@@ -293,9 +293,9 @@
     }
 
     .btn-save:hover {
-        background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+        background: linear-gradient(135deg, #991b1b, #dc2626);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(22, 160, 133, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
         color: white;
     }
 
@@ -304,9 +304,9 @@
     }
 
     .btn-cancel {
-        border: 2px solid var(--text-secondary);
+        border: 2px solid #6b7280;
         background: transparent;
-        color: var(--text-secondary);
+        color: #6b7280;
         border-radius: var(--border-radius);
         padding: 0.875rem 2rem;
         font-weight: 600;
@@ -317,14 +317,15 @@
     }
 
     .btn-cancel:hover {
-        background: var(--text-secondary);
+        background: #1f2937;
         color: white;
+        border-color: #1f2937;
         transform: translateY(-2px);
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .text-danger {
-        color: var(--danger-color) !important;
+        color: #dc2626 !important;
         font-size: 0.875rem;
         margin-top: 0.25rem;
         display: flex;
@@ -339,14 +340,14 @@
 
     .invalid-feedback {
         display: block;
-        color: var(--danger-color);
+        color: #dc2626;
         font-size: 0.875rem;
         margin-top: 0.25rem;
     }
 
     .is-invalid {
-        border-color: var(--danger-color) !important;
-        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+        border-color: #dc2626 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25) !important;
     }
 
     /* Responsive Design */
@@ -450,13 +451,13 @@
 
     @keyframes pulse {
         0% {
-            box-shadow: 0 0 0 0 rgba(22, 160, 133, 0.7);
+            box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
         }
         70% {
-            box-shadow: 0 0 0 10px rgba(22, 160, 133, 0);
+            box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
         }
         100% {
-            box-shadow: 0 0 0 0 rgba(22, 160, 133, 0);
+            box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
         }
     }
 </style>

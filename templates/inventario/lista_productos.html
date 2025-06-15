@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .products-header {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(255, 255, 255, 0.8) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(52, 152, 219, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(52, 152, 219, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -41,7 +41,7 @@
     .products-title {
         font-size: 2.25rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #212529;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -50,14 +50,14 @@
 
     .products-title .icon {
         font-size: 2.5rem;
-        background: linear-gradient(45deg, var(--secondary-color), var(--info-color));
+        background: linear-gradient(45deg, #dc3545, #ff6b7a);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .products-subtitle {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 1.1rem;
         margin: 0;
     }
@@ -70,11 +70,11 @@
     }
 
     .stat-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1.5rem;
-        box-shadow: var(--box-shadow);
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         transition: var(--transition);
         position: relative;
         overflow: hidden;
@@ -87,12 +87,12 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, var(--secondary-color), var(--info-color));
+        background: linear-gradient(90deg, #dc3545, #ff6b7a);
     }
 
     .stat-card:hover {
         transform: translateY(-2px);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.15);
     }
 
     .stat-icon {
@@ -107,44 +107,44 @@
     }
 
     .stat-icon.primary {
-        background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.2));
-        color: var(--secondary-color);
+        background: linear-gradient(45deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+        color: #dc3545;
     }
 
     .stat-icon.success {
-        background: linear-gradient(45deg, rgba(39, 174, 96, 0.1), rgba(39, 174, 96, 0.2));
-        color: var(--success-color);
+        background: linear-gradient(45deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+        color: #dc3545;
     }
 
     .stat-icon.info {
-        background: linear-gradient(45deg, rgba(93, 173, 226, 0.1), rgba(93, 173, 226, 0.2));
-        color: var(--info-color);
+        background: linear-gradient(45deg, rgba(255, 107, 122, 0.1), rgba(255, 107, 122, 0.2));
+        color: #ff6b7a;
     }
 
     .stat-number {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--text-primary);
+        color: #212529;
         margin-bottom: 0.25rem;
     }
 
     .stat-label {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 0.9rem;
         margin: 0;
     }
 
     .filter-section {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1.5rem;
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 53, 69, 0.1);
     }
 
     .add-product-btn {
-        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--info-color) 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #ff6b7a 100%);
         color: white;
         border: none;
         padding: 0.875rem 1.75rem;
@@ -155,14 +155,14 @@
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
-        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
     }
 
     .add-product-btn:hover {
-        background: linear-gradient(135deg, var(--info-color) 0%, var(--secondary-color) 100%);
+        background: linear-gradient(135deg, #c82333 0%, #e55a70 100%);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
     }
 
     .filter-buttons {
@@ -173,9 +173,9 @@
 
     .filter-btn {
         padding: 0.5rem 1rem;
-        border: 2px solid rgba(52, 152, 219, 0.2);
+        border: 2px solid rgba(220, 53, 69, 0.2);
         background: white;
-        color: var(--text-secondary);
+        color: #6c757d;
         border-radius: var(--border-radius-sm);
         text-decoration: none;
         transition: var(--transition);
@@ -184,27 +184,27 @@
     }
 
     .filter-btn:hover {
-        border-color: var(--secondary-color);
-        color: var(--secondary-color);
-        background: rgba(52, 152, 219, 0.05);
+        border-color: #dc3545;
+        color: #dc3545;
+        background: rgba(220, 53, 69, 0.05);
     }
 
     .filter-btn.active {
-        background: linear-gradient(135deg, var(--secondary-color), var(--info-color));
+        background: linear-gradient(135deg, #dc3545, #ff6b7a);
         color: white;
-        border-color: var(--secondary-color);
+        border-color: #dc3545;
     }
 
     .products-table-container {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(220, 53, 69, 0.1);
     }
 
     .table-header {
-        background: linear-gradient(135deg, var(--secondary-color) 0%, var(--info-color) 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #ff6b7a 100%);
         color: white;
         padding: 1.5rem 2rem;
         display: flex;
@@ -226,8 +226,8 @@
     }
 
     .products-table thead th {
-        background: rgba(52, 152, 219, 0.05);
-        color: var(--text-primary);
+        background: rgba(220, 53, 69, 0.05);
+        color: #212529;
         font-weight: 600;
         border: none;
         padding: 1rem 1.5rem;
@@ -241,7 +241,7 @@
         left: 0;
         right: 0;
         height: 2px;
-        background: linear-gradient(90deg, var(--secondary-color), transparent);
+        background: linear-gradient(90deg, #dc3545, transparent);
     }
 
     .products-table tbody tr {
@@ -250,14 +250,14 @@
     }
 
     .products-table tbody tr:hover {
-        background: rgba(52, 152, 219, 0.03);
+        background: rgba(220, 53, 69, 0.03);
         transform: scale(1.01);
     }
 
     .products-table tbody td {
         padding: 1.25rem 1.5rem;
         border: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(220, 53, 69, 0.1);
         vertical-align: middle;
     }
 
@@ -271,7 +271,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: linear-gradient(45deg, var(--secondary-color), var(--info-color));
+        background: linear-gradient(45deg, #dc3545, #ff6b7a);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -283,7 +283,7 @@
     .product-details h6 {
         margin: 0;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #212529;
         font-size: 1rem;
     }
 
@@ -298,17 +298,17 @@
     }
 
     .type-badge.vermifugo {
-        background: rgba(39, 174, 96, 0.1);
-        color: var(--success-color);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
     }
 
     .type-badge.antiparasitario {
-        background: rgba(93, 173, 226, 0.1);
-        color: var(--info-color);
+        background: rgba(255, 107, 122, 0.1);
+        color: #ff6b7a;
     }
 
     .product-description {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 0.9rem;
         line-height: 1.4;
         max-width: 300px;
@@ -334,34 +334,34 @@
     }
 
     .btn-action.view {
-        background: rgba(52, 152, 219, 0.1);
-        color: var(--secondary-color);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
     }
 
     .btn-action.view:hover {
-        background: var(--secondary-color);
+        background: #dc3545;
         color: white;
         transform: scale(1.1);
     }
 
     .btn-action.edit {
-        background: rgba(243, 156, 18, 0.1);
-        color: var(--warning-color);
+        background: rgba(255, 107, 122, 0.1);
+        color: #ff6b7a;
     }
 
     .btn-action.edit:hover {
-        background: var(--warning-color);
+        background: #ff6b7a;
         color: white;
         transform: scale(1.1);
     }
 
     .btn-action.delete {
-        background: rgba(231, 76, 60, 0.1);
-        color: var(--danger-color);
+        background: rgba(33, 37, 41, 0.1);
+        color: #212529;
     }
 
     .btn-action.delete:hover {
-        background: var(--danger-color);
+        background: #212529;
         color: white;
         transform: scale(1.1);
     }
@@ -369,17 +369,17 @@
     .empty-state {
         text-align: center;
         padding: 3rem 2rem;
-        color: var(--text-secondary);
+        color: #6c757d;
     }
 
     .empty-state-icon {
         font-size: 4rem;
-        color: rgba(52, 152, 219, 0.2);
+        color: rgba(220, 53, 69, 0.2);
         margin-bottom: 1rem;
     }
 
     .empty-state h3 {
-        color: var(--text-primary);
+        color: #212529;
         margin-bottom: 0.5rem;
     }
 

@@ -17,28 +17,28 @@
     
     <style>
         :root {
-            --primary-color: #16a085;
-            --primary-dark: #138d75;
-            --secondary-color: #3498db;
-            --accent-color: #f39c12;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --info-color: #5dade2;
+            --primary-color: #dc2626;
+            --primary-dark: #b91c1c;
+            --secondary-color: #ef4444;
+            --accent-color: #dc2626;
+            --success-color: #16a34a;
+            --warning-color: #f59e0b;
+            --danger-color: #dc2626;
+            --info-color: #3b82f6;
             
-            --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --bg-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --bg-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --bg-warning: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --bg-primary: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            --bg-secondary: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            --bg-success: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            --bg-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
             --text-light: #ffffff;
             
-            --bg-light: #f8f9fa;
+            --bg-light: #f9fafb;
             --bg-white: #ffffff;
-            --bg-sidebar: #2c3e50;
-            --bg-sidebar-hover: #34495e;
+            --bg-sidebar: #ffffff;
+            --bg-sidebar-hover: #fef2f2;
             
             --border-radius: 12px;
             --border-radius-sm: 8px;
@@ -56,7 +56,7 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
             min-height: 100vh;
             color: var(--text-primary);
             line-height: 1.6;
@@ -71,7 +71,7 @@
         .sidebar {
             width: 280px;
             background: var(--bg-sidebar);
-            color: var(--text-light);
+            color: var(--text-primary);
             position: fixed;
             height: 100vh;
             left: 0;
@@ -79,7 +79,8 @@
             z-index: 1000;
             transition: var(--transition);
             overflow-y: auto;
-            box-shadow: var(--box-shadow-lg);
+            box-shadow: 4px 0 15px rgba(220, 38, 38, 0.1);
+            border-right: 1px solid rgba(220, 38, 38, 0.1);
         }
 
         .sidebar.collapsed {
@@ -88,34 +89,47 @@
 
         .sidebar-header {
             padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.1);
             display: flex;
             align-items: center;
             gap: 1rem;
+            background: var(--bg-white);
+            min-height: 110px;
         }
 
         .sidebar-header .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--accent-color);
+            color: var(--text-primary);
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-white);
+            min-height: 90px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .sidebar-header .logo img {
+            max-height: 80px;
+            max-width: 240px;
+            object-fit: contain;
+            width: auto;
+            height: auto;
         }
 
         .sidebar-header .logo i {
             font-size: 2rem;
-            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-color);
         }
 
         .sidebar-toggle {
             background: none;
             border: none;
-            color: var(--text-light);
+            color: var(--text-primary);
             font-size: 1.2rem;
             cursor: pointer;
             padding: 0.5rem;
@@ -130,6 +144,7 @@
 
         .sidebar-nav {
             padding: 1rem 0;
+            background: var(--bg-white);
         }
 
         .nav-item {
@@ -140,7 +155,7 @@
             display: flex;
             align-items: center;
             padding: 0.875rem 1.5rem;
-            color: var(--text-light);
+            color: var(--text-primary);
             text-decoration: none;
             transition: var(--transition);
             border: none;
@@ -157,7 +172,7 @@
             top: 0;
             height: 100%;
             width: 4px;
-            background: var(--accent-color);
+            background: var(--primary-color);
             transform: scaleY(0);
             transition: var(--transition);
         }
@@ -170,7 +185,7 @@
         .nav-link:hover,
         .nav-link.active {
             background: var(--bg-sidebar-hover);
-            color: var(--accent-color);
+            color: var(--primary-color);
             transform: translateX(8px);
         }
 
@@ -178,6 +193,12 @@
             width: 20px;
             margin-right: 0.875rem;
             font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .nav-link:hover i,
+        .nav-link.active i {
+            color: var(--primary-color);
         }
 
         .nav-text {
@@ -188,7 +209,7 @@
         .nav-dropdown {
             background: none;
             border: none;
-            color: var(--text-light);
+            color: var(--text-primary);
             width: 100%;
         }
 
@@ -197,22 +218,22 @@
         }
 
         .dropdown-menu {
-            background: var(--bg-sidebar-hover);
-            border: none;
+            background: var(--bg-white);
+            border: 1px solid rgba(220, 38, 38, 0.1);
             box-shadow: var(--box-shadow);
             border-radius: var(--border-radius-sm);
             margin-left: 1rem;
         }
 
         .dropdown-item {
-            color: var(--text-light);
+            color: var(--text-primary);
             padding: 0.5rem 1rem;
             transition: var(--transition);
         }
 
         .dropdown-item:hover {
-            background: var(--primary-color);
-            color: var(--text-light);
+            background: var(--bg-sidebar-hover);
+            color: var(--primary-color);
         }
 
         /* Main Content */
@@ -239,7 +260,8 @@
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(220, 38, 38, 0.1);
         }
 
         .header-left h1 {
@@ -297,25 +319,25 @@
         }
 
         .alert-success {
-            background: linear-gradient(135deg, rgba(39, 174, 96, 0.1) 0%, rgba(39, 174, 96, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
             border-left: 4px solid var(--success-color);
             color: var(--success-color);
         }
 
         .alert-warning {
-            background: linear-gradient(135deg, rgba(243, 156, 18, 0.1) 0%, rgba(243, 156, 18, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
             border-left: 4px solid var(--warning-color);
             color: var(--warning-color);
         }
 
         .alert-danger {
-            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
             border-left: 4px solid var(--danger-color);
             color: var(--danger-color);
         }
 
         .alert-info {
-            background: linear-gradient(135deg, rgba(93, 173, 226, 0.1) 0%, rgba(93, 173, 226, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
             border-left: 4px solid var(--info-color);
             color: var(--info-color);
         }
@@ -329,7 +351,7 @@
         /* Footer */
         .footer {
             background: var(--bg-white);
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(220, 38, 38, 0.1);
             padding: 1.5rem 2rem;
             text-align: center;
             color: var(--text-secondary);
@@ -369,16 +391,16 @@
         }
 
         .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(220, 38, 38, 0.1);
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(220, 38, 38, 0.3);
             border-radius: 3px;
         }
 
         .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(220, 38, 38, 0.5);
         }
 
         /* Animation Classes */
@@ -425,8 +447,7 @@
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="{% url 'index' %}" class="logo">
-                    <i class="fas fa-paw"></i>
-                    <span class="nav-text">VetNova</span>
+                    <img src="{% static 'img/logo-empresa.png' %}" alt="Logo Empresa">
                 </a>
             </div>
             
@@ -564,7 +585,7 @@
             <!-- Footer -->
             <footer class="footer">
                 <div class="container-fluid">
-                    <span>© {% now "Y" %} Sistema Veterinario VetNova. Todos los derechos reservados.</span>
+                    <span> {% now "Y" %}.Sistema Veterinario Pets Company</span>
                 </div>
             </footer>
         </div>

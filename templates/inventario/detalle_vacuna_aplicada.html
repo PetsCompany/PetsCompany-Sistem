@@ -6,11 +6,11 @@
 {% block extra_css %}
 <style>
     .vaccine-detail-header {
-        background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(142, 68, 173, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.15) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(155, 89, 182, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         position: relative;
         overflow: hidden;
     }
@@ -22,7 +22,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(155, 89, 182, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -56,14 +56,14 @@
     }
 
     .breadcrumb-modern .breadcrumb-item a {
-        color: #9b59b6;
+        color: #dc3545;
         text-decoration: none;
         font-weight: 500;
         transition: var(--transition);
     }
 
     .breadcrumb-modern .breadcrumb-item a:hover {
-        color: #8e44ad;
+        color: #c82333;
     }
 
     .breadcrumb-modern .breadcrumb-item.active {
@@ -75,14 +75,14 @@
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        background: linear-gradient(45deg, #dc3545, #c82333);
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
         font-size: 2.5rem;
         margin-bottom: 1.5rem;
-        box-shadow: 0 8px 20px rgba(155, 89, 182, 0.3);
+        box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
     }
 
     .vaccine-title {
@@ -97,7 +97,7 @@
 
     .vaccine-title .icon {
         font-size: 1.8rem;
-        color: #9b59b6;
+        color: #dc3545;
     }
 
     .vaccine-subtitle {
@@ -122,7 +122,7 @@
     }
 
     .card-header-modern {
-        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         color: white;
         padding: 1.5rem 2rem;
         border: none;
@@ -187,10 +187,10 @@
     }
 
     .btn-modern.btn-edit:hover {
-        background: var(--warning-color);
+        background: #dc3545;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .btn-modern.btn-delete {
@@ -200,22 +200,22 @@
     }
 
     .btn-modern.btn-delete:hover {
-        background: var(--danger-color);
+        background: #212529;
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 12px rgba(33, 37, 41, 0.3);
     }
 
     .btn-modern.btn-primary {
-        background: #9b59b6;
+        background: #dc3545;
         color: white;
         border: 1px solid transparent;
     }
 
     .btn-modern.btn-primary:hover {
-        background: #8e44ad;
+        background: #c82333;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .btn-modern.btn-secondary {
@@ -246,14 +246,14 @@
         flex-direction: column;
         gap: 0.5rem;
         padding: 1.5rem;
-        background: rgba(155, 89, 182, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius-sm);
-        border-left: 4px solid #9b59b6;
+        border-left: 4px solid #dc3545;
         transition: var(--transition);
     }
 
     .info-item:hover {
-        background: rgba(155, 89, 182, 0.05);
+        background: rgba(220, 53, 69, 0.05);
         transform: translateX(4px);
     }
 
@@ -269,7 +269,7 @@
     }
 
     .info-label i {
-        color: #9b59b6;
+        color: #dc3545;
         font-size: 1rem;
     }
 
@@ -287,22 +287,22 @@
     }
 
     .info-value a {
-        color: #9b59b6;
+        color: #dc3545;
         text-decoration: none;
         font-weight: 600;
         transition: var(--transition);
     }
 
     .info-value a:hover {
-        color: #8e44ad;
+        color: #c82333;
         text-decoration: underline;
     }
 
     .pet-info-card {
-        background: linear-gradient(135deg, rgba(155, 89, 182, 0.05) 0%, rgba(142, 68, 173, 0.05) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.05) 0%, rgba(220, 53, 69, 0.08) 100%);
         border-radius: var(--border-radius);
         padding: 1.5rem;
-        border: 2px solid rgba(155, 89, 182, 0.1);
+        border: 2px solid rgba(220, 53, 69, 0.1);
         margin-bottom: 1.5rem;
     }
 
@@ -310,7 +310,7 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        background: linear-gradient(45deg, #dc3545, #c82333);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -318,7 +318,7 @@
         font-weight: 600;
         font-size: 1.5rem;
         margin-bottom: 1rem;
-        box-shadow: 0 4px 12px rgba(155, 89, 182, 0.3);
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
     }
 
     .pet-name {
@@ -344,7 +344,7 @@
     }
 
     .pet-detail i {
-        color: #9b59b6;
+        color: #dc3545;
         width: 16px;
         text-align: center;
     }
@@ -360,25 +360,25 @@
     }
 
     .status-badge.expired {
-        background: #e74c3c;
+        background: #212529;
         color: white;
     }
 
     .status-badge.upcoming {
-        background: #f39c12;
+        background: #dc3545;
         color: white;
     }
 
     .status-badge.completed {
-        background: #8e44ad;
+        background: #c82333;
         color: white;
     }
 
     .observations-section {
-        background: rgba(155, 89, 182, 0.02);
+        background: rgba(220, 53, 69, 0.02);
         border-radius: var(--border-radius-sm);
         padding: 1.5rem;
-        border-left: 4px solid #9b59b6;
+        border-left: 4px solid #dc3545;
         margin-top: 1rem;
     }
 
@@ -395,7 +395,7 @@
     }
 
     .observations-label i {
-        color: #9b59b6;
+        color: #dc3545;
         font-size: 1rem;
     }
 
@@ -418,7 +418,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(155, 89, 182, 0.05);
+        background: rgba(220, 53, 69, 0.05);
         padding: 1rem 1.5rem;
         border-radius: var(--border-radius-sm);
         margin-bottom: 1.5rem;
@@ -431,7 +431,7 @@
     .stat-mini-number {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #9b59b6;
+        color: #dc3545;
         display: block;
     }
 

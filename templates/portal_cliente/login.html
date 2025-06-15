@@ -8,31 +8,31 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4CAF50;
-            --primary-light: #66BB6A;
-            --primary-dark: #45a049;
-            --secondary-color: #8BC34A;
-            --secondary-light: #9CCC65;
-            --accent-color: #00BCD4;
-            --accent-light: #26C6DA;
-            --success-color: #4CAF50;
-            --warning-color: #FF9800;
-            --danger-color: #F44336;
-            --info-color: #2196F3;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-light: #94a3b8;
+            --primary-color: #DC2626;
+            --primary-light: #EF4444;
+            --primary-dark: #B91C1C;
+            --secondary-color: #F87171;
+            --secondary-light: #FCA5A5;
+            --accent-color: #DC2626;
+            --accent-light: #F87171;
+            --success-color: #DC2626;
+            --warning-color: #DC2626;
+            --danger-color: #DC2626;
+            --info-color: #DC2626;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-light: #6b7280;
             --bg-white: #ffffff;
-            --bg-light: #f8fafc;
-            --bg-overlay: rgba(255, 255, 255, 0.95);
+            --bg-light: #fefefe;
+            --bg-overlay: rgba(255, 255, 255, 0.98);
             --border-radius: 12px;
             --border-radius-lg: 20px;
-            --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --box-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --box-shadow: 0 8px 32px rgba(220, 38, 38, 0.1);
+            --box-shadow-lg: 0 20px 60px rgba(220, 38, 38, 0.15);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
-            --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-light) 100%);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-light) 100%);
         }
 
         * {
@@ -57,7 +57,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 50%, #e1f5fe 100%);    
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #f9fafb 100%);    
         }
 
         .login-background::before {
@@ -68,8 +68,8 @@
             right: 0;
             bottom: 0;
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(76, 175, 80, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(139, 195, 74, 0.03) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(220, 38, 38, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(248, 113, 113, 0.03) 0%, transparent 50%);
         }
 
         @keyframes gradientFlow {
@@ -108,7 +108,7 @@
             width: 100%;
             min-height: 600px;
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.1);
             animation: fadeIn 0.5s ease-out;
             margin: auto; 
         }
@@ -266,7 +266,7 @@
         .feature-icon {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
-            color: var(--accent-light);
+            color: #FCA5A5;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
@@ -367,14 +367,14 @@
             background-color: white;
             border-color: var(--primary-color);
             outline: 0;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
             transform: translateY(-1px);
         }
 
         .form-control:focus + .input-group-text,
         .input-group:focus-within .input-group-text {
             border-color: var(--primary-color);
-            background: rgba(76, 175, 80, 0.05);
+            background: rgba(220, 38, 38, 0.05);
             color: var(--primary-color);
         }
 
@@ -398,26 +398,26 @@
         }
 
         .alert-danger {
-            background: linear-gradient(135deg, rgba(244, 67, 54, 0.08), rgba(244, 67, 54, 0.04));
-            border: 1px solid rgba(244, 67, 54, 0.2);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+            border: 1px solid rgba(220, 38, 38, 0.2);
             color: var(--danger-color);
         }
 
         .alert-success {
-            background: linear-gradient(135deg, rgba(76, 175, 80, 0.08), rgba(76, 175, 80, 0.04));
-            border: 1px solid rgba(76, 175, 80, 0.2);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+            border: 1px solid rgba(220, 38, 38, 0.2);
             color: var(--success-color);
         }
 
         .alert-warning {
-            background: linear-gradient(135deg, rgba(255, 152, 0, 0.08), rgba(255, 152, 0, 0.04));
-            border: 1px solid rgba(255, 152, 0, 0.2);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+            border: 1px solid rgba(220, 38, 38, 0.2);
             color: var(--warning-color);
         }
 
         .alert-info {
-            background: linear-gradient(135deg, rgba(33, 150, 243, 0.08), rgba(33, 150, 243, 0.04));
-            border: 1px solid rgba(33, 150, 243, 0.2);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+            border: 1px solid rgba(220, 38, 38, 0.2);
             color: var(--info-color);
         }
 
@@ -448,7 +448,7 @@
             overflow: hidden;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.3);
             margin-top: 1rem;
             display: flex;
             align-items: center;
@@ -469,7 +469,7 @@
 
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
         }
 
         .btn-login:hover::before {
@@ -526,7 +526,7 @@
         }
 
         .security-badge i {
-            color: var(--success-color);
+            color: var(--primary-color);
         }
 
         /* Responsive Design */
@@ -694,6 +694,7 @@
                         <i class="fas fa-paw"></i>
                     </div>
                     <h1 class="brand-name">Portal de Clientes</h1>
+                    <h1 class="brand-name">Pets Company</h1>
                     <p class="brand-tagline">Accede a la información de tus mascotas</p>
                 </div>
                 
@@ -729,7 +730,7 @@
             <div class="form-panel">
                 <div class="form-header">
                     <h2 class="form-title">Bienvenido</h2>
-                    <p class="form-subtitle">Accede al portal de clientes</p>
+                    <p class="form-subtitle">Accede al portal de clientes de Pets Company</p>
                 </div>
 
                 <!-- Mensajes -->

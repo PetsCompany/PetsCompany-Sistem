@@ -16,7 +16,7 @@
             font-family: 'Arial', 'Helvetica', sans-serif;
             font-size: 11px;
             line-height: 1.4;
-            color: #1a202c;
+            color: #1a1a1a;
             background: #ffffff;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -30,17 +30,17 @@
                 @top-left {
                     content: "HISTORIA CLÍNICA VETERINARIA";
                     font-size: 8px;
-                    color: #6b7280;
+                    color: #666666;
                 }
                 @top-right {
                     content: "Fecha: " date();
                     font-size: 8px;
-                    color: #6b7280;
+                    color: #666666;
                 }
                 @bottom-center {
                     content: "Página " counter(page) " de " counter(pages);
                     font-size: 8px;
-                    color: #6b7280;
+                    color: #666666;
                     font-weight: 500;
                 }
             }
@@ -86,7 +86,7 @@
         /* Encabezado principal con diseño veterinario */
         .header {
             position: relative;
-            background: linear-gradient(135deg, #0f766e 0%, #047857 100%);
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
             color: white;
             padding: 25px;
             margin-bottom: 25px;
@@ -144,16 +144,16 @@
         }
 
         .btn-modern.btn-secondary {
-            background: linear-gradient(90deg, #0f766e, #047857);
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
             color: white;
-            border: 1px solid #0f766e;
+            border: 1px solid #dc2626;
         }
 
         .btn-modern.btn-secondary:hover {
-            background: linear-gradient(90deg, #0f766e, #047857);
+            background: linear-gradient(90deg, #b91c1c, #991b1b);
             color: white;
             transform: translateY(-4px);
-            box-shadow: 0 4px 12px linear-gradient(90deg, #0f766e, #047857));
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
         }
 
         .vet-logo {
@@ -183,31 +183,31 @@
 
         /* Información de la clínica */
         .clinic-info {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 25px;
             text-align: center;
-            border-left: 4px solid #0f766e;
+            border-left: 4px solid #dc2626;
         }
 
         .clinic-info h2 {
             font-size: 16px;
-            color: #0f766e;
+            color: #dc2626;
             font-weight: 700;
             margin-bottom: 8px;
         }
 
         .clinic-info p {
-            color: #64748b;
+            color: #666666;
             font-size: 10px;
             margin: 2px 0;
         }
 
         .clinic-info .slogan {
             font-style: italic;
-            color: #0f766e;
+            color: #dc2626;
             font-weight: 500;
             margin-top: 8px;
         }
@@ -215,7 +215,7 @@
         /* Información del paciente rediseñada */
         .patient-info {
             background: #ffffff;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e5e5e5;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
@@ -234,7 +234,7 @@
             background: #ffffff;
             padding: 0 10px;
             font-size: 16px;
-            color: #0f766e;
+            color: #dc2626;
         }
 
         .patient-details {
@@ -245,7 +245,7 @@
 
         .patient-photo {
             text-align: center;
-            border-left: 2px solid #e2e8f0;
+            border-left: 2px solid #e5e5e5;
             padding-left: 20px;
             display: flex;
             flex-direction: column;
@@ -257,21 +257,21 @@
             max-width: 140px;
             max-height: 140px;
             border-radius: 12px;
-            border: 3px solid #e2e8f0;
+            border: 3px solid #e5e5e5;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .patient-photo .no-photo {
             width: 140px;
             height: 140px;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            border: 2px dashed #cbd5e1;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border: 2px dashed #cccccc;
             border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #64748b;
+            color: #666666;
             font-size: 10px;
         }
 
@@ -285,17 +285,17 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            background: #f8fafc;
+            background: #fafafa;
             padding: 12px;
             border-radius: 8px;
-            border-left: 3px solid #0f766e;
+            border-left: 3px solid #dc2626;
         }
 
         .info-label {
             font-weight: 600;
             font-size: 9px;
             text-transform: uppercase;
-            color: #475569;
+            color: #404040;
             letter-spacing: 0.8px;
             display: flex;
             align-items: center;
@@ -303,7 +303,7 @@
 
         .info-value {
             font-size: 12px;
-            color: #1e293b;
+            color: #1a1a1a;
             font-weight: 600;
         }
 
@@ -318,15 +318,15 @@
         }
 
         .status-active {
-            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-            color: #166534;
-            border: 1px solid #16a34a;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            color: #dc2626;
+            border: 1px solid #dc2626;
         }
 
         .status-inactive {
-            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
-            color: #991b1b;
-            border: 1px solid #dc2626;
+            background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+            color: white;
+            border: 1px solid #333333;
         }
 
         /* Secciones principales mejoradas */
@@ -339,7 +339,7 @@
         }
 
         .section-header {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
             color: white;
             padding: 15px 25px;
             font-size: 13px;
@@ -359,7 +359,7 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(90deg, #0f766e, #047857);
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
         }
 
         .section-content {
@@ -379,7 +379,7 @@
             top: 0;
             bottom: 0;
             width: 2px;
-            background: linear-gradient(to bottom, #0f766e, #047857);
+            background: linear-gradient(to bottom, #dc2626, #b91c1c);
         }
 
         .timeline-item {
@@ -403,19 +403,19 @@
         }
 
         .timeline-consultation {
-            color: #2563eb;
+            color: #dc2626;
         }
 
         .timeline-vaccine {
-            color: #16a34a;
+            color: #b91c1c;
         }
 
         .timeline-product {
-            color: #ea580c;
+            color: #991b1b;
         }
 
         .timeline-image {
-            color: #7c3aed;
+            color: #333333;
         }
 
         .timeline-header {
@@ -428,29 +428,29 @@
         }
 
         .timeline-header.consultation {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            border-color: #2563eb;
+            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+            border-color: #dc2626;
         }
 
         .timeline-header.vaccine {
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            border-color: #16a34a;
+            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+            border-color: #b91c1c;
         }
 
         .timeline-header.product {
-            background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
-            border-color: #ea580c;
+            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+            border-color: #991b1b;
         }
 
         .timeline-header.image {
-            background: linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%);
-            border-color: #7c3aed;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            border-color: #333333;
         }
 
         .timeline-title {
             font-size: 12px;
             font-weight: 700;
-            color: #1e293b;
+            color: #1a1a1a;
             margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -458,7 +458,7 @@
 
         .timeline-date {
             font-size: 10px;
-            color: #64748b;
+            color: #666666;
             font-weight: 500;
         }
 
@@ -477,7 +477,7 @@
         }
 
         .timeline-field {
-            background: #f8fafc;
+            background: #fafafa;
             padding: 12px;
             border-radius: 6px;
             border-left: 3px solid currentColor;
@@ -486,7 +486,7 @@
         .timeline-field-label {
             font-size: 9px;
             font-weight: 700;
-            color: #475569;
+            color: #404040;
             text-transform: uppercase;
             margin-bottom: 6px;
             letter-spacing: 0.5px;
@@ -494,7 +494,7 @@
 
         .timeline-field-value {
             font-size: 11px;
-            color: #1e293b;
+            color: #1a1a1a;
             line-height: 1.4;
             font-weight: 500;
         }
@@ -509,10 +509,10 @@
 
         .summary-item {
             text-align: center;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
             padding: 25px 20px;
             border-radius: 12px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e5e5e5;
             position: relative;
             overflow: hidden;
         }
@@ -524,20 +524,20 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #0f766e, #047857);
+            background: linear-gradient(90deg, #dc2626, #b91c1c);
         }
 
         .summary-number {
             font-size: 28px;
             font-weight: 800;
-            color: #0f766e;
+            color: #dc2626;
             margin-bottom: 8px;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .summary-label {
             font-size: 10px;
-            color: #475569;
+            color: #404040;
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.8px;
@@ -553,10 +553,10 @@
 
         .image-item {
             text-align: center;
-            background: #f8fafc;
+            background: #fafafa;
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #e5e5e5;
             transition: all 0.2s ease;
         }
 
@@ -575,7 +575,7 @@
 
         .image-info {
             font-size: 9px;
-            color: #64748b;
+            color: #666666;
             font-weight: 500;
         }
 
@@ -583,11 +583,11 @@
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: #64748b;
+            color: #666666;
             font-style: italic;
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
             border-radius: 12px;
-            border: 2px dashed #cbd5e1;
+            border: 2px dashed #cccccc;
         }
 
         .empty-state::before {
@@ -602,11 +602,11 @@
         .footer {
             margin-top: 30px;
             padding: 20px;
-            border-top: 2px solid #e2e8f0;
+            border-top: 2px solid #e5e5e5;
             text-align: center;
             font-size: 9px;
-            color: #64748b;
-            background: #f8fafc;
+            color: #666666;
+            background: #fafafa;
             border-radius: 8px;
         }
 
@@ -619,16 +619,16 @@
 
         .footer-logo {
             font-weight: 700;
-            color: #0f766e;
+            color: #dc2626;
         }
 
         .footer-confidential {
-            background: #fef3c7;
-            color: #92400e;
+            background: #ffffff;
+            color: #dc2626;
             padding: 8px 15px;
             border-radius: 20px;
             font-weight: 600;
-            border: 1px solid #fbbf24;
+            border: 1px solid #dc2626;
         }
 
         /* Iconos mejorados */
@@ -643,7 +643,7 @@
 
         /* Utilidades */
         .text-center { text-align: center; }
-        .text-muted { color: #64748b; }
+        .text-muted { color: #666666; }
         .font-weight-bold { font-weight: 600; }
         .mb-10 { margin-bottom: 10px; }
         .mb-15 { margin-bottom: 15px; }
@@ -652,25 +652,25 @@
         /* Mejoras específicas para impresión */
         @media print {
             .header {
-                background: #0f766e !important;
+                background: #dc2626 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
             .section-header {
-                background: #1e293b !important;
+                background: #1a1a1a !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
             .timeline::before {
-                background: #0f766e !important;
+                background: #dc2626 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
             .timeline-item::before {
-                box-shadow: 0 0 0 2px #0f766e !important;
+                box-shadow: 0 0 0 2px #dc2626 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }

@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .vaccines-header {
-        background: linear-gradient(135deg, rgba(155, 89, 182, 0.1) 0%, rgba(142, 68, 173, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(185, 45, 59, 0.1) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(155, 89, 182, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(155, 89, 182, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -50,7 +50,7 @@
 
     .vaccines-title .icon {
         font-size: 2.5rem;
-        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        background: linear-gradient(45deg, #dc3545, #b92d3c);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -87,7 +87,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #9b59b6, #8e44ad);
+        background: linear-gradient(90deg, #dc3545, #b92d3c);
     }
 
     .stat-card:hover {
@@ -104,8 +104,8 @@
         justify-content: center;
         font-size: 1.5rem;
         margin-bottom: 1rem;
-        background: linear-gradient(45deg, rgba(155, 89, 182, 0.1), rgba(155, 89, 182, 0.2));
-        color: #9b59b6;
+        background: linear-gradient(45deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
+        color: #dc3545;
     }
 
     .stat-number {
@@ -146,8 +146,8 @@
 
     .search-input:focus {
         outline: none;
-        border-color: #9b59b6;
-        box-shadow: 0 0 0 3px rgba(155, 89, 182, 0.1);
+        border-color: #dc3545;
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
         background: white;
     }
 
@@ -161,7 +161,7 @@
     }
 
     .add-vaccine-btn {
-        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #b92d3c 100%);
         color: white;
         border: none;
         padding: 0.875rem 1.75rem;
@@ -172,14 +172,14 @@
         align-items: center;
         gap: 0.75rem;
         text-decoration: none;
-        box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
     }
 
     .add-vaccine-btn:hover {
-        background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+        background: linear-gradient(135deg, #b92d3c 0%, #dc3545 100%);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
     }
 
     .vaccines-table-container {
@@ -191,7 +191,7 @@
     }
 
     .table-header {
-        background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #b92d3c 100%);
         color: white;
         padding: 1.5rem 2rem;
         display: flex;
@@ -237,7 +237,7 @@
     }
 
     .vaccines-table thead th {
-        background: rgba(155, 89, 182, 0.05);
+        background: rgba(220, 53, 69, 0.05);
         color: var(--text-primary);
         font-weight: 600;
         border: none;
@@ -252,7 +252,7 @@
         left: 0;
         right: 0;
         height: 2px;
-        background: linear-gradient(90deg, #9b59b6, transparent);
+        background: linear-gradient(90deg, #dc3545, transparent);
     }
 
     .vaccines-table tbody tr {
@@ -261,7 +261,7 @@
     }
 
     .vaccines-table tbody tr:hover {
-        background: rgba(155, 89, 182, 0.03);
+        background: rgba(220, 53, 69, 0.03);
         transform: scale(1.01);
     }
 
@@ -282,7 +282,7 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        background: linear-gradient(45deg, #9b59b6, #8e44ad);
+        background: linear-gradient(45deg, #dc3545, #b92d3c);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -305,7 +305,7 @@
     }
 
     .vaccine-details h6 a:hover {
-        color: #9b59b6;
+        color: #dc3545;
     }
 
     .vaccine-description {
@@ -323,8 +323,8 @@
         border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 500;
-        background: rgba(155, 89, 182, 0.1);
-        color: #9b59b6;
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
     }
 
     .action-buttons {
@@ -370,12 +370,12 @@
     }
 
     .btn-action.delete {
-        background: rgba(231, 76, 60, 0.1);
-        color: var(--danger-color);
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
     }
 
     .btn-action.delete:hover {
-        background: var(--danger-color);
+        background: #dc3545;
         color: white;
         transform: scale(1.1);
     }
@@ -388,7 +388,7 @@
 
     .empty-state-icon {
         font-size: 4rem;
-        color: rgba(155, 89, 182, 0.2);
+        color: rgba(220, 53, 69, 0.2);
         margin-bottom: 1rem;
     }
 

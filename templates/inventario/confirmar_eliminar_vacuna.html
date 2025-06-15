@@ -8,11 +8,11 @@
 {% block extra_css %}
 <style>
     .confirm-delete-header {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(192, 57, 43, 0.1) 100%);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
         border-radius: var(--border-radius);
         padding: 2rem;
         margin-bottom: 2rem;
-        border: 1px solid rgba(231, 76, 60, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.15);
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(231, 76, 60, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.08) 0%, transparent 50%);
         animation: float 6s ease-in-out infinite;
     }
 
@@ -41,7 +41,7 @@
     .confirm-delete-title {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--danger-color);
+        color: #dc3545;
         margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
@@ -50,23 +50,23 @@
 
     .confirm-delete-title .icon {
         font-size: 2.5rem;
-        background: linear-gradient(45deg, var(--danger-color), #c0392b);
+        background: linear-gradient(45deg, #dc3545, #b02a37);
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 
     .confirm-delete-subtitle {
-        color: var(--text-secondary);
+        color: #6c757d;
         font-size: 1.1rem;
         margin: 0;
     }
 
     .breadcrumb-container {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
         padding: 1rem 1.5rem;
-        box-shadow: var(--box-shadow);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
         border: 1px solid rgba(0, 0, 0, 0.05);
     }
@@ -82,31 +82,31 @@
     }
 
     .breadcrumb-item a {
-        color: var(--primary-color);
+        color: #dc3545;
         text-decoration: none;
         font-weight: 500;
         transition: var(--transition);
     }
 
     .breadcrumb-item a:hover {
-        color: var(--primary-dark);
+        color: #b02a37;
     }
 
     .breadcrumb-item.active {
-        color: var(--danger-color);
+        color: #212529;
         font-weight: 600;
     }
 
     .breadcrumb-item + .breadcrumb-item::before {
         content: "/";
-        color: var(--text-secondary);
+        color: #6c757d;
         font-weight: 400;
     }
 
     .confirmation-card {
-        background: var(--bg-white);
+        background: #ffffff;
         border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow-lg);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
         overflow: hidden;
         border: 1px solid rgba(0, 0, 0, 0.05);
         position: relative;
@@ -119,11 +119,11 @@
         left: 0;
         right: 0;
         height: 5px;
-        background: linear-gradient(90deg, var(--danger-color), #c0392b);
+        background: linear-gradient(90deg, #dc3545, #b02a37);
     }
 
     .card-header {
-        background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
         color: white;
         padding: 1.5rem 2rem;
         border: none;
@@ -153,7 +153,7 @@
 
     .warning-icon {
         font-size: 4rem;
-        color: var(--danger-color);
+        color: #dc3545;
         margin-bottom: 1.5rem;
         opacity: 0.8;
         animation: pulse 2s infinite;
@@ -168,22 +168,22 @@
     .warning-message {
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--text-primary);
+        color: #212529;
         margin-bottom: 1rem;
     }
 
     .vaccine-name {
-        color: var(--danger-color);
+        color: #dc3545;
         font-weight: 700;
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.05));
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
         padding: 0.25rem 0.75rem;
         border-radius: var(--border-radius-sm);
         display: inline-block;
     }
 
     .danger-warning {
-        background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(231, 76, 60, 0.05) 100%);
-        border: 1px solid rgba(231, 76, 60, 0.2);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(220, 53, 69, 0.05) 100%);
+        border: 1px solid rgba(220, 53, 69, 0.2);
         border-radius: var(--border-radius);
         padding: 1.5rem;
         margin: 1.5rem 0;
@@ -197,7 +197,7 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: var(--danger-color);
+        background: #dc3545;
         border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
     }
 
@@ -206,20 +206,20 @@
         align-items: center;
         gap: 0.75rem;
         font-weight: 600;
-        color: var(--danger-color);
+        color: #dc3545;
         margin-bottom: 0.75rem;
         font-size: 1.1rem;
     }
 
     .danger-warning .warning-text {
-        color: var(--text-primary);
+        color: #212529;
         margin: 0;
         line-height: 1.6;
     }
 
     .warning-alert {
-        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 193, 7, 0.05) 100%);
-        border: 1px solid rgba(255, 193, 7, 0.2);
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.08) 0%, rgba(220, 53, 69, 0.03) 100%);
+        border: 1px solid rgba(220, 53, 69, 0.15);
         border-radius: var(--border-radius);
         padding: 1.5rem;
         margin: 1.5rem 0;
@@ -233,7 +233,7 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: #ffc107;
+        background: #dc3545;
         border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
     }
 
@@ -242,13 +242,13 @@
         align-items: center;
         gap: 0.75rem;
         font-weight: 600;
-        color: #b8860b;
+        color: #b02a37;
         margin-bottom: 0.75rem;
         font-size: 1rem;
     }
 
     .warning-alert .alert-text {
-        color: var(--text-primary);
+        color: #212529;
         margin: 0;
         line-height: 1.6;
     }
@@ -262,7 +262,7 @@
     }
 
     .btn-cancel {
-        background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
         color: white;
         border: none;
         padding: 0.875rem 2rem;
@@ -275,18 +275,18 @@
         text-decoration: none;
         min-width: 140px;
         justify-content: center;
-        box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
     }
 
     .btn-cancel:hover {
-        background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+        background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(149, 165, 166, 0.4);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
     }
 
     .btn-delete {
-        background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
+        background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
         color: white;
         border: none;
         padding: 0.875rem 2rem;
@@ -298,7 +298,7 @@
         gap: 0.75rem;
         min-width: 180px;
         justify-content: center;
-        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
         position: relative;
         overflow: hidden;
     }
@@ -319,15 +319,15 @@
     }
 
     .btn-delete:hover {
-        background: linear-gradient(135deg, #c0392b 0%, var(--danger-color) 100%);
+        background: linear-gradient(135deg, #b02a37 0%, #dc3545 100%);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
     }
 
     .vaccine-info-box {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.05) 0%, rgba(52, 152, 219, 0.02) 100%);
-        border: 1px solid rgba(52, 152, 219, 0.1);
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+        border: 1px solid rgba(220, 53, 69, 0.1);
         border-radius: var(--border-radius);
         padding: 1.5rem;
         margin: 1.5rem 0;
@@ -341,7 +341,7 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: var(--secondary-color);
+        background: #dc3545;
         border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
     }
 
@@ -350,7 +350,7 @@
         align-items: center;
         gap: 0.75rem;
         font-weight: 600;
-        color: var(--secondary-color);
+        color: #dc3545;
         margin-bottom: 1rem;
         font-size: 1.1rem;
     }
@@ -360,7 +360,7 @@
         align-items: center;
         gap: 0.75rem;
         padding: 0.75rem;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.9);
         border-radius: var(--border-radius-sm);
         border: 1px solid rgba(0, 0, 0, 0.05);
         margin-bottom: 0.75rem;
@@ -370,11 +370,11 @@
         width: 35px;
         height: 35px;
         border-radius: 50%;
-        background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.2));
+        background: linear-gradient(45deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.2));
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--secondary-color);
+        color: #dc3545;
         font-size: 0.9rem;
         flex-shrink: 0;
     }
@@ -385,14 +385,14 @@
 
     .vaccine-detail-label {
         font-size: 0.8rem;
-        color: var(--text-secondary);
+        color: #6c757d;
         margin-bottom: 0.25rem;
         font-weight: 500;
     }
 
     .vaccine-detail-value {
         font-weight: 600;
-        color: var(--text-primary);
+        color: #212529;
         margin: 0;
     }
 

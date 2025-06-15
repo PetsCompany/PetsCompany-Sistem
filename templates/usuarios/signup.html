@@ -6,31 +6,31 @@
 {% block extra_css %}
 <style>
     :root {
-        --primary-color: #2563eb;
-        --primary-light: #3b82f6;
-        --primary-dark: #1d4ed8;
-        --secondary-color: #8b5cf6;
-        --secondary-light: #a78bfa;
-        --accent-color: #06b6d4;
-        --accent-light: #22d3ee;
+        --primary-color: #dc2626;
+        --primary-light: #ef4444;
+        --primary-dark: #b91c1c;
+        --secondary-color: #1f2937;
+        --secondary-light: #374151;
+        --accent-color: #dc2626;
+        --accent-light: #f87171;
         --success-color: #10b981;
         --warning-color: #f59e0b;
-        --danger-color: #ef4444;
-        --info-color: #06b6d4;
-        --text-primary: #1e293b;
-        --text-secondary: #64748b;
-        --text-light: #94a3b8;
+        --danger-color: #dc2626;
+        --info-color: #dc2626;
+        --text-primary: #111827;
+        --text-secondary: #4b5563;
+        --text-light: #6b7280;
         --bg-white: #ffffff;
-        --bg-light: #f8fafc;
-        --bg-overlay: rgba(255, 255, 255, 0.95);
+        --bg-light: #fefefe;
+        --bg-overlay: rgba(255, 255, 255, 0.98);
         --border-radius: 12px;
         --border-radius-lg: 20px;
-        --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        --box-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+        --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        --box-shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
         --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
-        --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-light) 100%);
+        --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-light) 100%);
+        --gradient-accent: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
     }
 
     * {
@@ -55,7 +55,7 @@
         width: 100%;
         height: 100%;
         z-index: -1;
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 50%, #fef3c7 100%);    
+        background: linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #f9fafb 100%);    
     }
 
     .signup-background::before {
@@ -66,9 +66,9 @@
         right: 0;
         bottom: 0;
         background-image: 
-            radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.04) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+            radial-gradient(circle at 20% 30%, rgba(220, 38, 38, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(31, 41, 55, 0.02) 0%, transparent 50%),
+            radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.02) 0%, transparent 50%);
     }
 
     @keyframes gradientFlow {
@@ -107,7 +107,7 @@
         width: 100%;
         min-height: 700px;
         backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(220, 38, 38, 0.1);
         animation: fadeIn 0.5s ease-out;
         margin: auto; 
     }
@@ -158,7 +158,7 @@
         right: 0;
         bottom: 0;
         background: 
-            radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
     }
 
     .logo-section {
@@ -178,7 +178,7 @@
         margin: 0 auto 1.5rem;
         font-size: 2.5rem;
         backdrop-filter: blur(10px);
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.25);
         transition: transform 0.3s ease;
         animation: logoGlow 3s ease-in-out infinite;
     }
@@ -190,7 +190,7 @@
     @keyframes logoGlow {
         0%, 100% { 
             transform: scale(1); 
-            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
         }
         50% { 
             transform: scale(1.05); 
@@ -206,13 +206,13 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
         letter-spacing: -1px;
     }
 
     .brand-tagline {
         font-size: 1.1rem;
-        opacity: 0.9;
+        opacity: 0.95;
         font-weight: 300;
         margin-bottom: 2.5rem;
         line-height: 1.5;
@@ -233,24 +233,24 @@
         align-items: center;
         gap: 1rem;
         padding: 1.25rem;
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.12);
         border-radius: var(--border-radius);
         backdrop-filter: blur(10px);
         transition: var(--transition);
         text-align: left;
-        border-left: 4px solid rgba(255, 255, 255, 0.3);
+        border-left: 4px solid rgba(255, 255, 255, 0.35);
     }
 
     .benefit-item:hover {
         transform: translateX(5px);
-        background: rgba(255, 255, 255, 0.15);
-        border-left-color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.18);
+        border-left-color: rgba(255, 255, 255, 0.8);
     }
 
     .benefit-icon {
         font-size: 1.8rem;
-        color: var(--accent-light);
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        color: rgba(255, 255, 255, 0.9);
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
         min-width: 40px;
     }
 
@@ -266,7 +266,7 @@
 
     .benefit-text {
         font-size: 0.85rem;
-        opacity: 0.85;
+        opacity: 0.9;
         font-weight: 400;
         line-height: 1.4;
     }
@@ -359,11 +359,11 @@
     .form-control {
         width: 100%;
         padding: 1rem 1.25rem;
-        border: 2px solid #e1e8ed;
+        border: 2px solid #e5e7eb;
         border-radius: var(--border-radius);
         font-size: 1rem;
         transition: var(--transition);
-        background: #fafbfc;
+        background: #fafafa;
         color: var(--text-primary);
         font-weight: 500;
     }
@@ -372,7 +372,7 @@
         outline: none;
         border-color: var(--primary-color);
         background: white;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         transform: translateY(-1px);
     }
 
@@ -399,7 +399,7 @@
 
     .password-toggle:hover {
         color: var(--primary-color);
-        background: rgba(37, 99, 235, 0.05);
+        background: rgba(220, 38, 38, 0.05);
     }
 
     /* Password Strength Indicator */
@@ -414,7 +414,7 @@
 
     .strength-bar {
         height: 4px;
-        background: #e1e8ed;
+        background: #e5e7eb;
         border-radius: 2px;
         overflow: hidden;
         margin-bottom: 0.5rem;
@@ -490,8 +490,8 @@
     }
 
     .alert-danger {
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.04));
-        border: 1px solid rgba(239, 68, 68, 0.2);
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(220, 38, 38, 0.04));
+        border: 1px solid rgba(220, 38, 38, 0.2);
         color: var(--danger-color);
         padding: 1rem;
         border-radius: var(--border-radius);
@@ -530,7 +530,7 @@
         overflow: hidden;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        box-shadow: 0 6px 20px rgba(220, 38, 38, 0.25);
         margin-top: 1.5rem;
     }
 
@@ -547,7 +547,7 @@
 
     .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+        box-shadow: 0 10px 30px rgba(220, 38, 38, 0.35);
     }
 
     .btn-submit:hover::before {
@@ -584,7 +584,7 @@
         text-align: center;
         margin-top: 1.5rem;
         padding-top: 1.5rem;
-        border-top: 1px solid #e1e8ed;
+        border-top: 1px solid #e5e7eb;
     }
 
     .login-link {
@@ -628,7 +628,7 @@
 
     .field-invalid .form-control {
         border-color: var(--danger-color);
-        background: rgba(239, 68, 68, 0.02);
+        background: rgba(220, 38, 38, 0.02);
     }
 
     .field-valid .form-control:focus {
@@ -636,7 +636,7 @@
     }
 
     .field-invalid .form-control:focus {
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
     }
 
     /* Responsive Design */
@@ -845,7 +845,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-user-plus"></i>
                 </div>
-                <h1 class="brand-name">VetNova</h1>
+                <h1 class="brand-name">Pets Company</h1>
                 <p class="brand-tagline">Únete a la innovación veterinaria</p>
             </div>
             

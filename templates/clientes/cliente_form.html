@@ -22,34 +22,34 @@
 <style>
         /* Root variables para consistencia */
         :root {
-            --primary-color: #16a085;
-            --secondary-color: #3498db;
-            --primary-dark: #138d75;
-            --success-color: #27ae60;
-            --danger-color: #e74c3c;
-            --warning-color: #f39c12;
-            --info-color: #17a2b8;
-            --text-primary: #2c3e50;
+            --primary-color: #dc2626;
+            --secondary-color: #ef4444;
+            --primary-dark: #991b1b;
+            --success-color: #dc2626;
+            --danger-color: #dc2626;
+            --warning-color: #dc2626;
+            --info-color: #ef4444;
+            --text-primary: #1f2937;
             --text-light: #ffffff;
             --bg-white: #ffffff;
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
-            --input-bg: #f8fafc;
-            --input-border: #e2e8f0;
+            --input-bg: #f9fafb;
+            --input-border: #e5e7eb;
         }
         
         .form-container {
             background: var(--bg-white);
             border-radius: 24px;
             box-shadow: 
-                0 32px 64px -12px rgba(22, 160, 133, 0.15),
-                0 16px 32px -8px rgba(52, 152, 219, 0.1),
+                0 32px 64px -12px rgba(220, 38, 38, 0.15),
+                0 16px 32px -8px rgba(239, 68, 68, 0.1),
                 0 8px 16px -4px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             margin-bottom: 2rem;
             position: relative;
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(22, 160, 133, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.1);
         }
 
         .form-container::before {
@@ -60,9 +60,9 @@
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.02) 0%, 
-                rgba(52, 152, 219, 0.02) 50%, 
-                rgba(155, 89, 182, 0.02) 100%);
+                rgba(220, 38, 38, 0.02) 0%, 
+                rgba(239, 68, 68, 0.02) 50%, 
+                rgba(31, 41, 55, 0.02) 100%);
             pointer-events: none;
             z-index: 1;
         }
@@ -199,22 +199,22 @@
 
         /* Estados del input mejorados */
         .form-control:hover {
-            border-color: rgba(22, 160, 133, 0.4);
+            border-color: rgba(220, 38, 38, 0.4);
             background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(22, 160, 133, 0.08);
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
         }
 
         .form-control:focus {
             border-color: var(--primary-color);
             background-color: #ffffff;
             box-shadow: 
-                0 0 0 3px rgba(22, 160, 133, 0.1),
-                0 4px 12px rgba(22, 160, 133, 0.15);
+                0 0 0 3px rgba(220, 38, 38, 0.1),
+                0 4px 12px rgba(220, 38, 38, 0.15);
             transform: translateY(-1px);
         }
 
         .form-control::placeholder {
-            color: #94a3b8;
+            color: #9ca3af;
             font-weight: 400;
             font-style: italic;
         }
@@ -229,14 +229,14 @@
         /* Estados de validación limpios */
         .form-control.is-valid {
             border-color: var(--success-color);
-            background-color: rgba(39, 174, 96, 0.02);
-            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            background-color: rgba(220, 38, 38, 0.02);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
         }
 
         .form-control.is-invalid {
             border-color: var(--danger-color);
-            background-color: rgba(231, 76, 60, 0.02);
-            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            background-color: rgba(220, 38, 38, 0.02);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
             animation: shake 0.5s ease-in-out;
         }
 
@@ -257,8 +257,8 @@
             font-weight: 500;
             padding: 0.75rem 1rem;
             background: linear-gradient(135deg, 
-                rgba(231, 76, 60, 0.08) 0%, 
-                rgba(231, 76, 60, 0.05) 100%);
+                rgba(220, 38, 38, 0.08) 0%, 
+                rgba(220, 38, 38, 0.05) 100%);
             border-radius: 12px;
             border-left: 3px solid var(--danger-color);
             backdrop-filter: blur(8px);
@@ -278,7 +278,7 @@
             justify-content: flex-end;
             align-items: center;
             padding-top: 2.5rem;
-            border-top: 1px solid rgba(22, 160, 133, 0.1);
+            border-top: 1px solid rgba(220, 38, 38, 0.1);
             margin-top: 2.5rem;
         }
 
@@ -295,8 +295,8 @@
             font-size: 1rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 
-                0 10px 15px -3px rgba(22, 160, 133, 0.3),
-                0 4px 6px -2px rgba(22, 160, 133, 0.1);
+                0 10px 15px -3px rgba(220, 38, 38, 0.3),
+                0 4px 6px -2px rgba(220, 38, 38, 0.1);
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -328,8 +328,8 @@
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 
-                0 20px 25px -5px rgba(22, 160, 133, 0.4),
-                0 10px 10px -5px rgba(22, 160, 133, 0.2);
+                0 20px 25px -5px rgba(220, 38, 38, 0.4),
+                0 10px 10px -5px rgba(220, 38, 38, 0.2);
             background: linear-gradient(135deg, 
                 var(--secondary-color) 0%, 
                 var(--primary-color) 50%, 
@@ -339,8 +339,8 @@
         .btn-secondary {
             background: linear-gradient(145deg, 
                 rgba(255, 255, 255, 0.95) 0%, 
-                rgba(248, 250, 252, 0.95) 100%);
-            border: 2px solid rgba(22, 160, 133, 0.2);
+                rgba(249, 250, 251, 0.95) 100%);
+            border: 2px solid rgba(220, 38, 38, 0.2);
             color: var(--text-primary);
             padding: 1rem 2.5rem;
             border-radius: 16px;
@@ -362,29 +362,29 @@
 
         .btn-secondary:hover {
             background: linear-gradient(145deg, 
-                rgba(22, 160, 133, 0.08) 0%, 
+                rgba(220, 38, 38, 0.08) 0%, 
                 rgba(255, 255, 255, 0.95) 100%);
             border-color: var(--primary-color);
             color: var(--primary-color);
             text-decoration: none;
             transform: translateY(-2px);
             box-shadow: 
-                0 10px 15px -3px rgba(22, 160, 133, 0.2),
-                0 4px 6px -2px rgba(22, 160, 133, 0.1);
+                0 10px 15px -3px rgba(220, 38, 38, 0.2),
+                0 4px 6px -2px rgba(220, 38, 38, 0.1);
         }
 
         /* Breadcrumb glassmorphism */
         .breadcrumb-container {
             background: linear-gradient(135deg, 
-                rgba(22, 160, 133, 0.1) 0%, 
-                rgba(52, 152, 219, 0.08) 100%);
+                rgba(220, 38, 38, 0.1) 0%, 
+                rgba(239, 68, 68, 0.08) 100%);
             backdrop-filter: blur(16px);
             border-radius: 16px;
             padding: 1.25rem 2rem;
             margin-bottom: 2rem;
-            border: 1px solid rgba(22, 160, 133, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.15);
             box-shadow: 
-                0 8px 32px rgba(22, 160, 133, 0.1),
+                0 8px 32px rgba(220, 38, 38, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.5);
         }
 
@@ -570,9 +570,9 @@
         /* Sobrescribir cualquier estilo de Bootstrap que cause problemas */
         .form-control:focus {
             border-color: var(--primary-color) !important;
-            box-shadow: 0 0 0 3px rgba(22, 160, 133, 0.1) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
-    </style>
+</style>
 {% endblock %}
 
 {% block content %}

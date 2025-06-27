@@ -9,6 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Cliente, Mascota
 from .forms import ClienteForm, MascotaForm
 from django.http import HttpResponseRedirect
+from veterinaria.utils.mixins import CanDeleteMixin
 
 
 # Vistas para Clientes
@@ -54,7 +55,7 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class ClienteDeleteView(LoginRequiredMixin, DeleteView):
+class ClienteDeleteView(CanDeleteMixin, DeleteView):
     model = Cliente
     template_name = 'clientes/confirmar_eliminar_cliente.html'
     success_url = reverse_lazy('clientes:lista_clientes')
@@ -148,7 +149,7 @@ class MascotaUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class MascotaDeleteView(LoginRequiredMixin, DeleteView):
+class MascotaDeleteView(CanDeleteMixin, DeleteView):
     model = Mascota
     template_name = 'clientes/confirmar_eliminar_mascota.html'
     

@@ -1,0 +1,1100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Desparasitantes Agendados{% endblock %}
+{% block page_title %}Desparasitantes Agendados{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Vacunas Agendadas - Nueva Paleta Corporativa */
+    :root {
+        /* Paleta Corporativa: 60% Blanco, 35% Rojo, 5% Negro */
+        --color-primary-red: #dc143c;
+        --color-secondary-red: #b91c3c;
+        --color-dark-red: #991b1b;
+        --color-light-red: #fecaca;
+        --color-ultra-light-red: #fef2f2;
+        --color-white: #ffffff;
+        --color-off-white: #fafafa;
+        --color-light-gray: #f8f9fa;
+        --color-black: #000000;
+        --color-dark-gray: #1f2937;
+        --color-medium-gray: #6b7280;
+        --color-light-border: #e5e7eb;
+    }
+
+    /* Main Header */
+    .main-header {
+        background: linear-gradient(135deg, var(--color-primary-red) 0%, var(--color-secondary-red) 100%);
+        color: var(--color-white);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(220, 20, 60, 0.25);
+    }
+
+    .main-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .header-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .header-info h2 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--color-white);
+    }
+
+    .header-info p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        margin: 0;
+        color: var(--color-white);
+    }
+
+    .header-actions .btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: var(--color-white);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .header-actions .btn:hover {
+        background: var(--color-white);
+        border-color: var(--color-white);
+        color: var(--color-primary-red);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+    }
+
+    /* Filters Section */
+    .filters-section {
+        background: var(--color-white);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--color-light-border);
+    }
+
+    .filters-section .form-label {
+        font-weight: 600;
+        color: var(--color-dark-gray);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filters-section .form-control {
+        border: 2px solid var(--color-light-border);
+        border-radius: var(--border-radius);
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--color-off-white);
+        color: var(--color-dark-gray);
+    }
+
+    .filters-section .form-control:focus {
+        border-color: var(--color-primary-red);
+        box-shadow: 0 0 0 0.2rem rgba(220, 20, 60, 0.15);
+        background: var(--color-white);
+        outline: none;
+    }
+
+    .btn-filter {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+        border: none;
+        color: var(--color-white);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
+        margin-right: 0.5rem;
+    }
+
+    .btn-filter:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.35);
+        color: var(--color-white);
+        text-decoration: none;
+        background: linear-gradient(135deg, var(--color-secondary-red), var(--color-dark-red));
+    }
+
+    .btn-clear {
+        background: var(--color-white);
+        border: 2px solid var(--color-medium-gray);
+        color: var(--color-medium-gray);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-clear:hover {
+        background: var(--color-dark-gray);
+        border-color: var(--color-dark-gray);
+        color: var(--color-white);
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: var(--color-white);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+        border: 1px solid var(--color-light-border);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-card.total {
+        border-left-color: var(--color-primary-red);
+    }
+
+    .stat-card.expired {
+        border-left-color: var(--color-secondary-red);
+    }
+
+    .stat-card.this-week {
+        border-left-color: var(--color-dark-red);
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        transform: translate(25px, -25px);
+        opacity: 0.08;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card.total::before {
+        background: var(--color-primary-red);
+    }
+
+    .stat-card.expired::before {
+        background: var(--color-secondary-red);
+    }
+
+    .stat-card.this-week::before {
+        background: var(--color-dark-red);
+    }
+
+    .stat-card:hover::before {
+        transform: translate(15px, -15px) scale(1.2);
+        opacity: 0.12;
+    }
+
+    .stat-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-info h3 {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-medium-gray);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-info .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--color-dark-gray);
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--color-white);
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-card.total .stat-icon {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+    }
+
+    .stat-card.expired .stat-icon {
+        background: linear-gradient(135deg, var(--color-secondary-red), var(--color-dark-red));
+    }
+
+    .stat-card.this-week .stat-icon {
+        background: linear-gradient(135deg, var(--color-dark-red), var(--color-black));
+    }
+
+    /* Main Table Section */
+    .table-section {
+        background: var(--color-white);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        border: 1px solid var(--color-light-border);
+    }
+
+    .table-header {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, var(--color-off-white) 0%, var(--color-light-gray) 100%);
+        border-bottom: 1px solid var(--color-light-border);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .table-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: var(--color-dark-gray);
+        font-size: 1.2rem;
+    }
+
+    .table-header i {
+        font-size: 1.5rem;
+        color: var(--color-primary-red);
+    }
+
+    .table-responsive {
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .table {
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    .table thead th {
+        background: linear-gradient(135deg, var(--color-primary-red) 0%, var(--color-secondary-red) 100%);
+        color: var(--color-white);
+        font-weight: 600;
+        border: none;
+        padding: 1rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+        border-bottom: 1px solid var(--color-light-border);
+        background: var(--color-white);
+    }
+
+    .table tbody tr:hover {
+        background: var(--color-ultra-light-red);
+        transform: scale(1.005);
+    }
+
+    .table tbody td {
+        padding: 1rem;
+        vertical-align: middle;
+        border: none;
+        color: var(--color-dark-gray);
+    }
+
+    /* Status styling */
+    .table-danger {
+        background: linear-gradient(135deg, var(--color-light-red) 0%, var(--color-ultra-light-red) 100%);
+        border-left: 4px solid var(--color-primary-red);
+    }
+
+    .table-warning {
+        background: linear-gradient(135deg, rgba(220, 20, 60, 0.08) 0%, rgba(220, 20, 60, 0.04) 100%);
+        border-left: 4px solid var(--color-secondary-red);
+    }
+
+    .badge {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border-radius: var(--border-radius-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-info {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+        color: var(--color-white);
+    }
+
+    .badge-success {
+        background: linear-gradient(135deg, var(--color-dark-red), var(--color-black));
+        color: var(--color-white);
+    }
+
+    .badge-warning {
+        background: var(--color-light-red);
+        color: var(--color-dark-red);
+        border: 1px solid var(--color-primary-red);
+    }
+
+    /* Action buttons */
+    .btn-group .btn {
+        padding: 0.5rem;
+        border-radius: var(--border-radius-sm);
+        transition: all 0.3s ease;
+        margin: 0 0.1rem;
+        border: none;
+        font-size: 0.9rem;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--color-dark-red), var(--color-black));
+        color: var(--color-white);
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(153, 27, 27, 0.4);
+        color: var(--color-white);
+    }
+
+    .btn-info {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+        color: var(--color-white);
+    }
+
+    .btn-info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
+        color: var(--color-white);
+    }
+
+    .btn-warning {
+        background: var(--color-white);
+        color: var(--color-primary-red);
+        border: 2px solid var(--color-primary-red);
+    }
+
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
+        background: var(--color-primary-red);
+        color: var(--color-white);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, var(--color-secondary-red), var(--color-dark-red));
+        color: var(--color-white);
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(185, 28, 60, 0.4);
+        color: var(--color-white);
+    }
+
+    /* Empty state */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--color-medium-gray);
+        background: var(--color-white);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        color: var(--color-primary-red);
+        opacity: 0.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-state h4 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--color-dark-gray);
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        opacity: 0.8;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+        border: none;
+        color: var(--color-white);
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(220, 20, 60, 0.25);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.35);
+        color: var(--color-white);
+        text-decoration: none;
+    }
+
+    /* Legend section */
+    .legend-section {
+        background: var(--color-white);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        border: 1px solid var(--color-light-border);
+    }
+
+    .legend-section h6 {
+        font-weight: 600;
+        color: var(--color-dark-gray);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: var(--border-radius-sm);
+        border: 1px solid var(--color-light-border);
+    }
+
+    .legend-color.danger {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+    }
+
+    .legend-color.warning {
+        background: linear-gradient(135deg, var(--color-secondary-red), var(--color-dark-red));
+    }
+
+    .legend-color.light {
+        background: linear-gradient(135deg, var(--color-off-white), var(--color-light-gray));
+    }
+
+    .legend-text {
+        font-size: 0.9rem;
+        color: var(--color-dark-gray);
+        font-weight: 500;
+    }
+
+    /* Text enhancements */
+    .text-danger {
+        color: var(--color-primary-red) !important;
+        font-weight: 600;
+    }
+
+    .text-warning {
+        color: var(--color-secondary-red) !important;
+        font-weight: 600;
+    }
+
+    .text-muted {
+        color: var(--color-medium-gray) !important;
+    }
+
+    /* Link styling */
+    a.text-decoration-none {
+        color: var(--color-primary-red);
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    a.text-decoration-none:hover {
+        color: var(--color-secondary-red);
+        text-decoration: none !important;
+    }
+
+    /* Custom scrollbar */
+    .table-responsive::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: var(--color-light-gray);
+        border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--color-primary-red), var(--color-secondary-red));
+        border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, var(--color-secondary-red), var(--color-dark-red));
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .header-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .header-info h2 {
+            font-size: 1.8rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .filters-section .row {
+            flex-direction: column;
+        }
+
+        .filters-section .col-md-4 {
+            margin-bottom: 1rem;
+        }
+
+        .table-responsive {
+            max-height: 60vh;
+        }
+
+        .btn-group {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .btn-group .btn {
+            margin: 0;
+        }
+    }
+
+    /* Animation classes */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-out;
+    }
+
+    .animate-on-scroll.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Hover effects */
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-4px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <!-- Main Header -->
+    <div class="main-header animate-on-scroll">
+        <div class="header-content">
+            <div class="header-info">
+                <h2>
+                    <i class="fas fa-syringe"></i>
+                    Desparasitantes Agendados
+                </h2>
+                <p>Desparasitantes programados para aplicar (pendientes)</p>
+            </div>
+            <div class="header-actions">
+                <a href="{% url 'inventario:dashboard_inventario' %}" class="btn">
+                    <i class="fas fa-chart-line"></i>
+                    Ir al Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section animate-on-scroll hover-lift">
+        <form method="get" class="row align-items-end">
+            <div class="col-md-4">
+                <label for="mascota" class="form-label">
+                    <i class="fas fa-paw me-1"></i>
+                    Filtrar por Mascota
+                </label>
+                <select name="mascota" id="mascota" class="form-control">
+                    <option value="">Todas las mascotas</option>
+                    {% for mascota in mascotas %}
+                        <option value="{{ mascota.id }}" 
+                                {% if request.GET.mascota == mascota.id|stringformat:"s" %}selected{% endif %}>
+                            {{ mascota.nombre }} ({{ mascota.cliente.nombre_completo }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="col-md-4">
+                <button type="submit" class="btn-filter">
+                    <i class="fas fa-filter"></i>
+                    Filtrar
+                </button>
+                <a href="{% url 'inventario:productos_agendados' %}" class="btn-clear">
+                    <i class="fas fa-times"></i>
+                    Limpiar
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid animate-on-scroll">
+        <div class="stat-card total hover-lift">
+            <div class="stat-content">
+                <div class="stat-info">
+                    <h3>Total Agendados</h3>
+                    <div class="stat-number">{{ productos_agendados|length }}</div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-syringe"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card this-week hover-lift">
+            <div class="stat-content">
+                <div class="stat-info">
+                    <h3>Esta Semana</h3>
+                    <div class="stat-number">
+                        {% for producto in productos_agendados %}
+                            {% if producto.dias_restantes > 0 and producto.dias_restantes <= 7 %}{{ forloop.counter0|add:1 }}{% endif %}
+                        {% empty %}0{% endfor %}
+                    </div>
+                </div>
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-week"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Table -->
+    <div class="table-section animate-on-scroll hover-lift">
+        <div class="table-header">
+            <i class="fas fa-list"></i>
+            <h5>Lista de Desparasitantes Agendados</h5>
+        </div>
+        <div class="table-body">
+            {% if productos_agendados %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Mascota</th>
+                                <th>Propietario</th>
+                                <th>Desparasitante</th>
+                                <th>Tipo</th>
+                                <th>Fecha Agendada</th>
+                                <th>Estado</th>
+                                <th>Observaciones</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for producto in productos_agendados %}
+                            <tr class="{% if producto.dias_restantes <= 0 %}table-danger{% elif producto.dias_restantes <= 7 %}table-warning{% endif %}">
+                                <td>
+                                    <div>
+                                        <strong>{{ producto.mascota.nombre }}</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fas fa-tag me-1"></i>
+                                            {{ producto.mascota.get_especie_display }}
+                                            {% if producto.mascota.raza %} - {{ producto.mascota.raza }}{% endif %}
+                                        </small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <a href="{% url 'clientes:detalle_cliente' producto.mascota.cliente.id %}" 
+                                           class="text-decoration-none">
+                                            {{ producto.mascota.cliente.nombre }}
+                                        </a>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="fas fa-phone me-1"></i>
+                                            {{ producto.mascota.cliente.telefono|default:"N/A" }}
+                                        </small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong>{{ producto.producto.nombre }}</strong>
+                                        {% if producto.producto.descripcion %}
+                                            <br>
+                                            <small class="text-muted">{{ producto.producto.descripcion|truncatewords:5 }}</small>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-{{ producto.producto.tipo|yesno:'info,success' }}">
+                                        {{ producto.producto.get_tipo_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong>{{ producto.fecha_proxima|date:"d/m/Y" }}</strong>
+                                        <br>
+                                        <small class="{% if producto.dias_restantes <= 0 %}text-danger{% elif producto.dias_restantes <= 7 %}text-warning{% else %}text-muted{% endif %}">
+                                            {% if producto.dias_restantes <= 0 %}
+                                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                                Vencido ({{ producto.dias_restantes|add:"-1"|stringformat:"d"|cut:"-" }} días)
+                                            {% elif producto.dias_restantes == 0 %}
+                                                <i class="fas fa-clock me-1"></i>
+                                                Hoy
+                                            {% elif producto.dias_restantes == 1 %}
+                                                <i class="fas fa-clock me-1"></i>
+                                                Mañana
+                                            {% else %}
+                                                <i class="fas fa-calendar me-1"></i>
+                                                En {{ producto.dias_restantes }} días
+                                            {% endif %}
+                                        </small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge badge-warning">
+                                        <i class="fas fa-clock me-1"></i>
+                                        Agendado
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if producto.observaciones %}
+                                        <span title="{{ producto.observaciones }}">
+                                            {{ producto.observaciones|truncatewords:8 }}
+                                        </span>
+                                    {% else %}
+                                        <span class="text-muted">Sin observaciones</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'inventario:aplicar_producto_agendado' producto.id %}" 
+                                           class="btn btn-success btn-sm" 
+                                           title="Aplicar vacuna">
+                                            <i class="fas fa-syringe"></i>
+                                        </a>
+                                        
+                                        <a href="{% url 'clientes:detalle_mascota' producto.mascota.id %}" 
+                                           class="btn btn-info btn-sm" 
+                                           title="Ver mascota">
+                                            <i class="fas fa-paw"></i>
+                                        </a>
+                                        
+                                        <a href="{% url 'inventario:editar_producto_aplicado' producto.id %}" 
+                                           class="btn btn-warning btn-sm" 
+                                           title="Editar agenda">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        
+                                        <a href="{% url 'inventario:eliminar_producto_aplicado' producto.id %}" 
+                                           class="btn btn-danger btn-sm" 
+                                           title="Eliminar agenda"
+                                           onclick="return confirm('¿Está seguro de eliminar esta agenda de vacuna?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <h4>No hay Desparasitantes agendados</h4>
+                    <p>
+                        {% if request.GET.mascota %}
+                            No se encontraron Desparasitantes agendados para la mascota seleccionada.
+                        {% else %}
+                            Actualmente no hay Desparasitantes programados para aplicar.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'inventario:dashboard_inventario' %}" class="btn-primary">
+                        <i class="fas fa-arrow-left"></i>
+                        Volver al Dashboard
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Legend Section -->
+    {% if productos_agendados %}
+    <div class="legend-section animate-on-scroll hover-lift">
+        <h6>
+            <i class="fas fa-info-circle"></i>
+            Leyenda de Estados
+        </h6>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="legend-item">
+                    <div class="legend-color danger"></div>
+                    <span class="legend-text">Desparasitantes vencidos (aplicar urgente)</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="legend-item">
+                    <div class="legend-color warning"></div>
+                    <span class="legend-text">Desparasitantes para esta semana</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="legend-item">
+                    <div class="legend-color light"></div>
+                    <span class="legend-text">Desparasitantes futuras</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate on scroll functionality
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all elements with animate-on-scroll class
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Auto-submit form functionality (optional)
+    const filterForm = document.querySelector('form[method="get"]');
+    if (filterForm) {
+        const selects = filterForm.querySelectorAll('select');
+        
+        selects.forEach(select => {
+            select.addEventListener('change', function() {
+                // Uncomment next line if you want auto-submit on filter change
+                // filterForm.submit();
+            });
+        });
+    }
+
+    // Enhanced hover effects for cards
+    const cards = document.querySelectorAll('.hover-lift');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Confirmation dialogs with enhanced styling
+    const deleteButtons = document.querySelectorAll('a[onclick*="confirm"]');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const isConfirmed = confirm('⚠️ ¿ESTÁ SEGURO?\n\nEsta acción eliminará permanentemente la agenda de vacuna seleccionada.\n\n✅ Presione OK para continuar\n❌ Presione Cancelar para abortar');
+            
+            if (isConfirmed) {
+                window.location.href = this.href;
+            }
+        });
+    });
+
+    // Add loading states to action buttons
+    const actionButtons = document.querySelectorAll('.btn-group .btn');
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Add loading spinner to clicked button
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            // Restore original content after a short delay (in case of slow navigation)
+            setTimeout(() => {
+                this.innerHTML = originalContent;
+            }, 3000);
+        });
+    });
+
+    // Enhanced table row interactions
+    const tableRows = document.querySelectorAll('.table tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('click', function(e) {
+            // Don't trigger if clicking on buttons
+            if (!e.target.closest('.btn-group')) {
+                // Add subtle selection effect
+                row.style.backgroundColor = 'rgba(220, 53, 69, 0.1)';
+                setTimeout(() => {
+                    row.style.backgroundColor = '';
+                }, 200);
+            }
+        });
+    });
+
+    // Add tooltips to truncated text
+    const truncatedTexts = document.querySelectorAll('[title]');
+    truncatedTexts.forEach(element => {
+        if (element.scrollWidth > element.clientWidth) {
+            element.setAttribute('title', element.textContent);
+        }
+    });
+
+    // Statistics counter animation
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+        const target = parseInt(stat.textContent);
+        let current = 0;
+        const increment = target / 20;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                stat.textContent = target;
+                clearInterval(timer);
+            } else {
+                stat.textContent = Math.floor(current);
+            }
+        }, 50);
+    });
+
+    // Add keyboard navigation support
+    document.addEventListener('keydown', function(e) {
+        // Press 'F' to focus on filter
+        if (e.key === 'f' || e.key === 'F') {
+            if (!e.target.matches('input, textarea, select')) {
+                e.preventDefault();
+                const filterSelect = document.querySelector('#mascota');
+                if (filterSelect) {
+                    filterSelect.focus();
+                }
+            }
+        }
+        
+        // Press 'D' to go to dashboard
+        if (e.key === 'd' || e.key === 'D') {
+            if (!e.target.matches('input, textarea, select')) {
+                e.preventDefault();
+                const dashboardLink = document.querySelector('a[href*="dashboard"]');
+                if (dashboardLink) {
+                    window.location.href = dashboardLink.href;
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

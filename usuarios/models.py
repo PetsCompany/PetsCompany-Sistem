@@ -4,11 +4,25 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class PerfilUsuario(models.Model):
+    # Nuevos roles
+    ROLE_CHOICES = [
+        ('admin', 'Administrador'),
+        ('veterinario', 'Veterinario'),
+    ]
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
     telefono = models.CharField(max_length=15, blank=True, null=True, verbose_name="Teléfono")
     cargo = models.CharField(max_length=100, blank=True, null=True, verbose_name="Cargo")
     avatar = models.ImageField(upload_to='perfiles/', blank=True, null=True, verbose_name="Avatar")
     fecha_actualizacion = models.DateTimeField(auto_now=True, verbose_name="Última actualización")
+    
+    # Nuevo campo para el rol
+    rol = models.CharField(
+        max_length=20, 
+        choices=ROLE_CHOICES, 
+        default='veterinario',
+        verbose_name="Rol"
+    )
     
     def __str__(self):
         nombre_completo = f"{self.user.first_name} {self.user.last_name}".strip()
@@ -36,6 +50,25 @@ class PerfilUsuario(models.Model):
         else:
             return self.user.username[0].upper()
     
+    # Nuevos métodos para verificar roles
+    @property
+    def es_admin(self):
+        return self.rol == 'admin' or self.user.is_superuser
+    
+    @property
+    def es_veterinario(self):
+        return self.rol == 'veterinario'
+    
+    @property
+    def puede_eliminar(self):
+        """Solo los admins pueden eliminar"""
+        return self.es_admin
+    
+    @property
+    def puede_crear_usuarios(self):
+        """Solo los admins pueden crear usuarios"""
+        return self.es_admin
+    
     class Meta:
         verbose_name = "Perfil de Usuario"
         verbose_name_plural = "Perfiles de Usuarios"
@@ -45,11 +78,17 @@ class PerfilUsuario(models.Model):
 @receiver(post_save, sender=User)
 def crear_perfil_usuario(sender, instance, created, **kwargs):
     if created:
-        PerfilUsuario.objects.create(user=instance)
+        # El primer usuario creado será admin automáticamente
+        es_primer_usuario = User.objects.count() == 1
+        rol = 'admin' if es_primer_usuario else 'veterinario'
+        PerfilUsuario.objects.create(user=instance, rol=rol)
 
 @receiver(post_save, sender=User)
 def guardar_perfil_usuario(sender, instance, **kwargs):
     try:
         instance.perfil.save()
     except PerfilUsuario.DoesNotExist:
-        PerfilUsuario.objects.create(user=instance)
+        # Si no existe perfil, crearlo
+        es_primer_usuario = User.objects.count() == 1
+        rol = 'admin' if es_primer_usuario else 'veterinario'
+        PerfilUsuario.objects.create(user=instance, rol=rol)

@@ -1,0 +1,1102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Empleado - {{ empleado.get_full_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --primary-color: #dc3545;
+        --primary-dark: #c82333;
+        --border-radius: 12px;
+        --border-radius-sm: 8px;
+        --transition: all 0.3s ease;
+        --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 8px 25px rgba(220, 53, 69, 0.15);
+    }
+
+    .edit-employee-header {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1) 0%, rgba(248, 249, 250, 0.9) 100%);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid rgba(220, 53, 69, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .edit-employee-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(220, 53, 69, 0.05) 0%, transparent 50%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .edit-employee-header-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .user-info-header {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        margin-bottom: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-lg);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .user-info-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="25" cy="75" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+
+    .user-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.5rem;
+        position: relative;
+        z-index: 2;
+        border: 4px solid rgba(255,255,255,0.3);
+        transition: var(--transition);
+    }
+
+    .user-avatar:hover {
+        transform: scale(1.05);
+        border-color: rgba(255,255,255,0.5);
+    }
+
+    .user-info-header h2 {
+        position: relative;
+        z-index: 2;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .user-info-header p {
+        position: relative;
+        z-index: 2;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .rol-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        position: relative;
+        z-index: 2;
+        border: 2px solid rgba(255,255,255,0.3);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .form-section {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+    }
+
+    .form-section:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+    }
+    
+    .section-title {
+        color: #212529;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 3px solid #dc3545;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: relative;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #dc3545, #c82333);
+        border-radius: 2px;
+    }
+
+    .section-title i {
+        font-size: 1.2rem;
+        color: var(--primary-color);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+    
+    .form-control {
+        border-radius: var(--border-radius-sm);
+        border: 2px solid #e1e8ed;
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: #fff;
+        width: 100%;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+        outline: none;
+        background: #fff;
+    }
+
+    .form-control.is-valid {
+        border-color: #28a745;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.77-.77.77-.77.77-.77.77-.77.77-.77.77-.77.77-.77.77-.77'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    .form-control.is-invalid {
+        border-color: #dc3545;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 2.4 2.4M8.2 4.6 5.8 7'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border: none;
+        padding: 1rem 2.5rem;
+        font-weight: 600;
+        border-radius: var(--border-radius-sm);
+        transition: var(--transition);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #c82333 0%, #dc3545 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        border: none;
+        padding: 1rem 2.5rem;
+        font-weight: 600;
+        border-radius: var(--border-radius-sm);
+        transition: var(--transition);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    }
+    
+    .btn-secondary:hover {
+        background: linear-gradient(135deg, #5a6268 0%, #6c757d 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .alert {
+        border-radius: var(--border-radius-sm);
+        border: none;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .alert-warning {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.15));
+        color: #856404;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.15));
+        color: #155724;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .alert-danger {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.15));
+        color: #721c24;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .alert i {
+        font-size: 1.1rem;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .form-col-6 {
+        flex: 1;
+        min-width: 300px;
+    }
+    
+    .error-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.5rem 0 0 0;
+    }
+    
+    .error-list li {
+        color: #dc3545;
+        font-size: 0.875rem;
+        padding: 0.25rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .error-list li::before {
+        content: '⚠';
+        font-size: 0.8rem;
+    }
+
+    .system-info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .system-info-label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 0.95rem;
+    }
+
+    .system-info-value {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: rgba(220, 53, 69, 0.05);
+        border-radius: var(--border-radius-sm);
+        border: 1px solid rgba(220, 53, 69, 0.1);
+    }
+
+    .system-info-value i {
+        color: var(--primary-color);
+        font-size: 0.9rem;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .status-badge.active {
+        background: linear-gradient(45deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.15));
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .status-badge.inactive {
+        background: linear-gradient(45deg, rgba(108, 117, 125, 0.1), rgba(108, 117, 125, 0.15));
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+
+    .status-badge i {
+        font-size: 0.7rem;
+    }
+
+    .role-selector {
+        background: #f8f9fa;
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem;
+        border: 2px solid rgba(220, 53, 69, 0.1);
+    }
+
+    .current-role-display {
+        margin-bottom: 1rem;
+    }
+
+    .role-change-info {
+        background: rgba(255, 193, 7, 0.1);
+        border: 1px solid rgba(255, 193, 7, 0.2);
+        border-radius: var(--border-radius-sm);
+        padding: 1rem;
+        margin-top: 1rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        color: #856404;
+    }
+
+    .action-buttons-container {
+        background: #f8f9fa;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-top: 2rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .fade-in {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .slide-up {
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .form-col-6 {
+            min-width: 100%;
+        }
+
+        .user-info-header {
+            padding: 1.5rem;
+        }
+
+        .user-info-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+        }
+
+        .form-section {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+        }
+
+        .action-buttons-container {
+            padding: 1.5rem;
+        }
+
+        .action-buttons-container .d-flex {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch !important;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            justify-content: center;
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 fade-in">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header del Usuario -->
+            <div class="user-info-header">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h2>{{ empleado.get_full_name|default:empleado.username }}</h2>
+                <p>{{ empleado.email }}</p>
+                {% if empleado.perfil %}
+                    <span class="rol-badge">
+                        {% if empleado.perfil.rol == 'admin' %}
+                            <i class="fas fa-crown"></i>
+                            {{ empleado.perfil.get_rol_display }}
+                        {% else %}
+                            <i class="fas fa-user-md"></i>
+                            {{ empleado.perfil.get_rol_display }}
+                        {% endif %}
+                    </span>
+                {% endif %}
+            </div>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show slide-up" role="alert">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% elif message.tags == 'warning' %}exclamation-triangle{% elif message.tags == 'danger' %}times-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Advertencia si es el usuario actual -->
+            {% if empleado == request.user %}
+                <div class="alert alert-warning slide-up">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Atención:</strong> Estás editando tu propio perfil. Ten cuidado al modificar información crítica.
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                
+                <!-- Información Personal -->
+                <div class="form-section slide-up">
+                    <h3 class="section-title">
+                        <i class="fas fa-user"></i>
+                        Información Personal
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-col-6">
+                            <div class="form-group">
+                                <label for="{{ user_form.username.id_for_label }}" class="form-label">
+                                    {{ user_form.username.label }}
+                                </label>
+                                {{ user_form.username }}
+                                {% if user_form.username.errors %}
+                                    <ul class="error-list">
+                                        {% for error in user_form.username.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ user_form.first_name.id_for_label }}" class="form-label">
+                                    {{ user_form.first_name.label }}
+                                </label>
+                                {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}
+                                    <ul class="error-list">
+                                        {% for error in user_form.first_name.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-col-6">
+                            <div class="form-group">
+                                <label for="{{ user_form.last_name.id_for_label }}" class="form-label">
+                                    {{ user_form.last_name.label }}
+                                </label>
+                                {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}
+                                    <ul class="error-list">
+                                        {% for error in user_form.last_name.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ user_form.email.id_for_label }}" class="form-label">
+                                    {{ user_form.email.label }}
+                                </label>
+                                {{ user_form.email }}
+                                {% if user_form.email.errors %}
+                                    <ul class="error-list">
+                                        {% for error in user_form.email.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Información Profesional -->
+                <div class="form-section slide-up">
+                    <h3 class="section-title">
+                        <i class="fas fa-briefcase"></i>
+                        Información Profesional
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-col-6">
+                            <div class="form-group">
+                                <label for="{{ perfil_form.telefono.id_for_label }}" class="form-label">
+                                    {{ perfil_form.telefono.label }}
+                                </label>
+                                {{ perfil_form.telefono }}
+                                {% if perfil_form.telefono.errors %}
+                                    <ul class="error-list">
+                                        {% for error in perfil_form.telefono.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-col-6">
+                            <div class="form-group">
+                                <label for="{{ perfil_form.cargo.id_for_label }}" class="form-label">
+                                    {{ perfil_form.cargo.label }}
+                                </label>
+                                {{ perfil_form.cargo }}
+                                {% if perfil_form.cargo.errors %}
+                                    <ul class="error-list">
+                                        {% for error in perfil_form.cargo.errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuración de Rol (solo si puede cambiar rol) -->
+                {% if puede_cambiar_rol %}
+                <div class="form-section slide-up">
+                    <h3 class="section-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Configuración de Rol
+                    </h3>
+                    
+                    <div class="role-selector">
+                        <div class="current-role-display">
+                            <label class="system-info-label">Rol Actual</label>
+                            <div class="system-info-value">
+                                {% if rol_actual == 'admin' %}
+                                    <i class="fas fa-crown"></i>
+                                    <span>Administrador</span>
+                                {% else %}
+                                    <i class="fas fa-user-md"></i>
+                                    <span>Veterinario</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="rol" class="form-label">Cambiar Rol</label>
+                            <select name="rol" id="rol" class="form-control">
+                                <option value="veterinario" {% if rol_actual == 'veterinario' %}selected{% endif %}>
+                                    Veterinario
+                                </option>
+                                <option value="admin" {% if rol_actual == 'admin' %}selected{% endif %}>
+                                    Administrador
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="role-change-info">
+                            <i class="fas fa-info-circle"></i>
+                            <div>
+                                <strong>Información importante:</strong><br>
+                                Los administradores tienen acceso completo al sistema, incluyendo la gestión de empleados y configuraciones avanzadas.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Información del Sistema -->
+                <div class="form-section slide-up">
+                    <h3 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Información del Sistema
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-col-6">
+                            <div class="system-info-item">
+                                <label class="system-info-label">Estado de la Cuenta</label>
+                                <div class="system-info-value">
+                                    {% if empleado.is_active %}
+                                        <span class="status-badge active">
+                                            <i class="fas fa-circle"></i>Activo
+                                        </span>
+                                    {% else %}
+                                        <span class="status-badge inactive">
+                                            <i class="fas fa-circle"></i>Inactivo
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="system-info-item">
+                                <label class="system-info-label">Fecha de Registro</label>
+                                <div class="system-info-value">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>{{ empleado.date_joined|date:"d/m/Y H:i" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-col-6">
+                            <div class="system-info-item">
+                                <label class="system-info-label">Último Acceso</label>
+                                <div class="system-info-value">
+                                    <i class="fas fa-clock"></i>
+                                    {% if empleado.last_login %}
+                                        <span>{{ empleado.last_login|date:"d/m/Y H:i" }}</span>
+                                    {% else %}
+                                        <span class="text-muted">Nunca ha ingresado</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="action-buttons-container slide-up">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'usuarios:lista_empleados' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            Volver a la Lista
+                        </a>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Validación en tiempo real mejorada
+    const form = document.querySelector('form');
+    const inputs = form.querySelectorAll('.form-control');
+    
+    // Agregar animaciones de entrada
+    const sections = document.querySelectorAll('.form-section');
+    sections.forEach((section, index) => {
+        section.style.animationDelay = `${index * 0.1}s`;
+    });
+    
+    inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateField(this);
+        });
+        
+        input.addEventListener('input', function() {
+            if (this.classList.contains('is-invalid')) {
+                validateField(this);
+            }
+        });
+
+        // Efectos visuales mejorados
+        input.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'translateY(-2px)';
+            this.parentElement.style.transition = 'all 0.3s ease';
+        });
+
+        input.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'translateY(0)';
+        });
+    });
+    
+    function validateField(field) {
+        const value = field.value.trim();
+        
+        // Validación básica de campos requeridos
+        if (field.hasAttribute('required') && !value) {
+            setFieldInvalid(field, 'Este campo es obligatorio');
+            return false;
+        }
+        
+        // Validación específica por tipo de campo
+        switch(field.type) {
+            case 'email':
+                if (value && !isValidEmail(value)) {
+                    setFieldInvalid(field, 'Ingrese un email válido');
+                    return false;
+                }
+                break;
+                
+            case 'tel':
+                if (value && !isValidPhone(value)) {
+                    setFieldInvalid(field, 'Ingrese un teléfono válido');
+                    return false;
+                }
+                break;
+                
+            case 'text':
+                // Validación para username
+                if (field.name === 'username' && value) {
+                    if (value.length <s 3) {
+                        setFieldInvalid(field, 'El username debe tener al menos 3 caracteres');
+                        return false;
+                    }
+                    if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+                        setFieldInvalid(field, 'Solo letras, números y guiones bajos');
+                        return false;
+                    }
+                }
+                
+                // Validación para nombres
+                if ((field.name === 'first_name' || field.name === 'last_name') && value) {
+                    if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(value)) {
+                        setFieldInvalid(field, 'Solo se permiten letras');
+                        return false;
+                    }
+                }
+                break;
+        }
+        
+        // Si llegamos aquí, el campo es válido
+        if (value) {
+            setFieldValid(field);
+        } else {
+            clearFieldValidation(field);
+        }
+        
+        return true;
+    }
+    
+    function setFieldValid(field) {
+        field.classList.add('is-valid');
+        field.classList.remove('is-invalid');
+        removeErrorMessage(field);
+    }
+    
+    function setFieldInvalid(field, message) {
+        field.classList.add('is-invalid');
+        field.classList.remove('is-valid');
+        showErrorMessage(field, message);
+    }
+    
+    function clearFieldValidation(field) {
+        field.classList.remove('is-valid', 'is-invalid');
+        removeErrorMessage(field);
+    }
+    
+    function showErrorMessage(field, message) {
+        removeErrorMessage(field); // Remover mensaje anterior
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error-message';
+        errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+        errorDiv.style.cssText = `
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: slideDown 0.3s ease;
+        `;
+        
+        field.parentElement.appendChild(errorDiv);
+    }
+    
+    function removeErrorMessage(field) {
+        const existingError = field.parentElement.querySelector('.field-error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+    }
+    
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function isValidPhone(phone) {
+        // Acepta números con espacios, guiones, paréntesis y el signo +
+        const phoneRegex = /^[\+]?[\d\s\-\(\)]{7,15}$/;
+        return phoneRegex.test(phone);
+    }
+    
+    // Validación del formulario completo antes del envío
+    form.addEventListener('submit', function(e) {
+        let isFormValid = true;
+        
+        // Validar todos los campos
+        inputs.forEach(input => {
+            if (!validateField(input)) {
+                isFormValid = false;
+            }
+        });
+        
+        // Verificar cambio de rol si existe
+        const rolSelect = document.getElementById('rol');
+        const originalRol = rolSelect ? rolSelect.dataset.originalValue || rolSelect.value : null;
+        
+        if (rolSelect && rolSelect.value !== originalRol) {
+            const newRole = rolSelect.options[rolSelect.selectedIndex].text;
+            const confirmMessage = `¿Estás seguro de cambiar el rol de este empleado a "${newRole}"?\n\nEsto modificará sus permisos en el sistema.`;
+            
+            if (!confirm(confirmMessage)) {
+                e.preventDefault();
+                return false;
+            }
+        }
+        
+        // Si hay errores, prevenir envío y mostrar mensaje
+        if (!isFormValid) {
+            e.preventDefault();
+            showFormError('Por favor corrige los errores antes de continuar');
+            
+            // Scroll al primer campo con error
+            const firstInvalidField = form.querySelector('.is-invalid');
+            if (firstInvalidField) {
+                firstInvalidField.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                firstInvalidField.focus();
+            }
+            
+            return false;
+        }
+        
+        // Mostrar loading en el botón de envío
+        showSubmitLoading();
+    });
+    
+    function showFormError(message) {
+        // Remover alertas existentes
+        const existingAlert = document.querySelector('.form-validation-alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+        
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-danger form-validation-alert';
+        alert.innerHTML = `
+            <i class="fas fa-exclamation-circle"></i>
+            <strong>Error de validación:</strong> ${message}
+            <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+        `;
+        alert.style.animation = 'slideUp 0.5s ease';
+        
+        form.insertBefore(alert, form.firstChild);
+        
+        // Auto-remover después de 5 segundos
+        setTimeout(() => {
+            if (alert.parentElement) {
+                alert.style.animation = 'fadeOut 0.5s ease';
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 5000);
+    }
+    
+    function showSubmitLoading() {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+            submitBtn.disabled = true;
+            
+            // Restaurar si hay error de servidor
+            setTimeout(() => {
+                if (submitBtn.disabled) {
+                    submitBtn.innerHTML = originalContent;
+                    submitBtn.disabled = false;
+                }
+            }, 10000);
+        }
+    }
+    
+    // Guardar valor original del rol para comparación
+    const rolSelect = document.getElementById('rol');
+    if (rolSelect) {
+        rolSelect.dataset.originalValue = rolSelect.value;
+        
+        // Agregar indicador visual cuando cambie el rol
+        rolSelect.addEventListener('change', function() {
+            const roleInfo = document.querySelector('.role-change-info');
+            if (this.value !== this.dataset.originalValue) {
+                if (roleInfo) {
+                    roleInfo.style.display = 'flex';
+                    roleInfo.style.animation = 'slideUp 0.3s ease';
+                }
+            } else {
+                if (roleInfo) {
+                    roleInfo.style.display = 'none';
+                }
+            }
+        });
+    }
+    
+    // Mejorar UX con tooltips informativos
+    const infoElements = document.querySelectorAll('[data-info]');
+    infoElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            showTooltip(this, this.dataset.info);
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            hideTooltip();
+        });
+    });
+    
+    function showTooltip(element, text) {
+        const tooltip = document.createElement('div');
+        tooltip.className = 'custom-tooltip';
+        tooltip.textContent = text;
+        tooltip.style.cssText = `
+            position: absolute;
+            background: #2c3e50;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            max-width: 250px;
+            word-wrap: break-word;
+        `;
+        
+        document.body.appendChild(tooltip);
+        
+        const rect = element.getBoundingClientRect();
+        tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+        tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+        
+        setTimeout(() => tooltip.style.opacity = '1', 100);
+    }
+    
+    function hideTooltip() {
+        const tooltip = document.querySelector('.custom-tooltip');
+        if (tooltip) {
+            tooltip.style.opacity = '0';
+            setTimeout(() => tooltip.remove(), 300);
+        }
+    }
+    
+    // Agregar estilos de animación dinámicamente
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+        
+        .form-validation-alert {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .form-validation-alert .btn-close {
+            margin-left: auto;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    console.log('🎉 Sistema de validación inicializado correctamente');
+});
+</script>
+{% endblock %}

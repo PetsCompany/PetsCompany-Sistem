@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Vacunas | Sistema Veterinario{% endblock %}
@@ -548,11 +550,14 @@
                                    title="Editar vacuna">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{% url 'inventario:eliminar_vacuna' vacuna.id %}" 
-                                   class="btn-action delete" 
-                                   title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+
+                                {% if request.user|puede_eliminar %}
+                                    <a href="{% url 'inventario:eliminar_vacuna' vacuna.id %}" 
+                                        class="btn-action delete" 
+                                        title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

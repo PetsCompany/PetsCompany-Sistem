@@ -13,6 +13,7 @@ from clientes.models import Mascota
 from .models import Cita, Consulta, ImagenDiagnostica
 from .forms import CitaForm, ConsultaForm, ImagenDiagnosticaForm
 from inventario.models import VacunaAplicada, ProductoAplicado
+from veterinaria.utils.mixins import CanDeleteMixin
 
 
 # Vistas para Citas
@@ -99,7 +100,7 @@ class CitaUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class CitaDeleteView(LoginRequiredMixin, DeleteView):
+class CitaDeleteView(CanDeleteMixin, DeleteView):
     model = Cita
     template_name = 'consultas/confirmar_eliminar_cita.html'
     success_url = reverse_lazy('consultas:lista_citas')
@@ -179,7 +180,7 @@ class ConsultaUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('consultas:detalle_consulta', kwargs={'pk': self.object.pk})
 
 
-class ConsultaDeleteView(LoginRequiredMixin, DeleteView):
+class ConsultaDeleteView(CanDeleteMixin, DeleteView):
     model = Consulta
     template_name = 'consultas/confirmar_eliminar_consulta.html'
     
@@ -458,7 +459,7 @@ class ImagenDiagnosticaUpdateView(LoginRequiredMixin, UpdateView):
                           kwargs={'mascota_id': self.object.mascota.pk})
 
 
-class ImagenDiagnosticaDeleteView(LoginRequiredMixin, DeleteView):
+class ImagenDiagnosticaDeleteView(CanDeleteMixin, DeleteView):
     model = ImagenDiagnostica
     template_name = 'consultas/confirmar_eliminar_imagen.html'
     context_object_name = 'imagen'

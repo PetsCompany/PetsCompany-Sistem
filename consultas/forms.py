@@ -72,11 +72,15 @@ class ConsultaForm(forms.ModelForm):
 class ImagenDiagnosticaForm(forms.ModelForm):
     class Meta:
         model = ImagenDiagnostica
-        fields = ['mascota', 'archivo', 'descripcion']
+        fields = ['mascota', 'archivo', 'descripcion', 'fecha']  # AGREGAMOS 'fecha'
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la imagen diagnóstica...'}),
             'archivo': forms.FileInput(attrs={
                 'accept': 'image/*,.pdf,.doc,.docx',
+                'class': 'form-control'
+            }),
+            'fecha': forms.DateTimeInput(attrs={  # NUEVO WIDGET
+                'type': 'datetime-local',
                 'class': 'form-control'
             }),
         }
@@ -95,12 +99,14 @@ class ImagenDiagnosticaForm(forms.ModelForm):
         # Mejorar etiquetas y placeholder
         self.fields['archivo'].label = 'Archivo diagnóstico'
         self.fields['descripcion'].label = 'Descripción'
+        self.fields['fecha'].label = 'Fecha del estudio'  # NUEVA ETIQUETA
         self.fields['archivo'].help_text = 'Formatos permitidos: imágenes (JPG, PNG, GIF), PDF, documentos de Word. Máximo 10MB'
         
         self.helper.layout = Layout(
             'mascota',
             'archivo',
             'descripcion',
+            'fecha',  # AGREGAMOS AL LAYOUT
             Submit('submit', 'Guardar Imagen', css_class='btn btn-primary')
         )
         

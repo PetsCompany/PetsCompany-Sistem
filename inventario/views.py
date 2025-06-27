@@ -7,10 +7,11 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Count
-
 from clientes.models import Mascota
 from .models import Vacuna, VacunaAplicada, Producto, ProductoAplicado
-from .forms import VacunaForm, VacunaAplicadaForm, ProductoForm, ProductoAplicadoForm
+from .forms import VacunaForm, VacunaAplicadaForm, ProductoForm, ProductoAplicadoForm,VacunaAgendadaForm, AplicarVacunaAgendadaForm, ProductoAgendadoForm, AplicarProductoAgendadoForm
+from veterinaria.utils.mixins import CanDeleteMixin
+
 
 # Vistas para Vacunas
 class VacunaListView(LoginRequiredMixin, ListView):
@@ -56,7 +57,7 @@ class VacunaUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class VacunaDeleteView(LoginRequiredMixin, DeleteView):
+class VacunaDeleteView(CanDeleteMixin, DeleteView):
     model = Vacuna
     template_name = 'inventario/confirmar_eliminar_vacuna.html'
     success_url = reverse_lazy('inventario:lista_vacunas')
@@ -138,7 +139,7 @@ class VacunaAplicadaUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.object.mascota.id})
 
 
-class VacunaAplicadaDeleteView(LoginRequiredMixin, DeleteView):
+class VacunaAplicadaDeleteView(CanDeleteMixin, DeleteView):
     model = VacunaAplicada
     template_name = 'inventario/confirmar_eliminar_vacuna_aplicada.html'
     context_object_name = 'vacuna_aplicada'  # Agregar esto para asegurar el contexto
@@ -231,7 +232,7 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class ProductoDeleteView(LoginRequiredMixin, DeleteView):
+class ProductoDeleteView(CanDeleteMixin, DeleteView):
     model = Producto
     template_name = 'inventario/confirmar_eliminar_producto.html'
     success_url = reverse_lazy('inventario:lista_productos')
@@ -313,7 +314,7 @@ class ProductoAplicadoUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.object.mascota.id})
 
 
-class ProductoAplicadoDeleteView(LoginRequiredMixin, DeleteView):
+class ProductoAplicadoDeleteView(CanDeleteMixin, DeleteView):
     model = ProductoAplicado
     template_name = 'inventario/confirmar_eliminar_producto_aplicado.html'
     
@@ -325,11 +326,280 @@ class ProductoAplicadoDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(self.request, "Registro de producto eliminado exitosamente.")
         return super().delete(request, *args, **kwargs)
     
+# ============================================================================
+# NUEVAS VISTAS PARA SISTEMA DE AGENDAMIENTO
+# Agregar estas vistas al final de tu archivo views.py
+# ============================================================================
+
+from .forms import (
+    VacunaAgendadaForm, AplicarVacunaAgendadaForm,
+    ProductoAgendadoForm, AplicarProductoAgendadoForm
+)
+
+# === VISTAS PARA AGENDAR VACUNAS ===
+
+class VacunaAgendadaCreateView(LoginRequiredMixin, CreateView):
+    """Vista para AGENDAR una vacuna (sin aplicar)"""
+    model = VacunaAplicada
+    form_class = VacunaAgendadaForm
+    template_name = 'inventario/agendar_vacuna.html'
     
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        mascota_id = self.kwargs.get('mascota_id')
+        mascota = get_object_or_404(Mascota, pk=mascota_id)
+        kwargs['initial'] = {'mascota': mascota}
+        return kwargs
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mascota_id = self.kwargs.get('mascota_id')
+        context['mascota'] = get_object_or_404(Mascota, pk=mascota_id)
+        context['from_consulta'] = self.request.GET.get('from_consulta', False)
+        return context
+    
+    def form_valid(self, form):
+        mascota_id = self.kwargs.get('mascota_id')
+        mascota = get_object_or_404(Mascota, pk=mascota_id)
+        form.instance.mascota = mascota
+        
+        try:
+            messages.success(self.request, f"Vacuna agendada exitosamente para {mascota.nombre}.")
+            return super().form_valid(form)
+        except ValueError as e:
+            messages.error(self.request, str(e))
+            return self.form_invalid(form)
+    
+    def get_success_url(self):
+        if self.request.GET.get('from_consulta'):
+            messages.info(self.request, "Puedes continuar con la consulta desde el perfil de la mascota.")
+            return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.kwargs.get('mascota_id')})
+        return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.kwargs.get('mascota_id')})
+
+
+class AplicarVacunaAgendadaView(LoginRequiredMixin, UpdateView):
+    """Vista para APLICAR una vacuna que estaba agendada"""
+    model = VacunaAplicada
+    form_class = AplicarVacunaAgendadaForm
+    template_name = 'inventario/aplicar_vacuna_agendada.html'
+    
+    def get_queryset(self):
+        # Solo vacunas agendadas (sin fecha_aplicacion)
+        return VacunaAplicada.objects.filter(fecha_aplicacion__isnull=True)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vacuna_agendada'] = self.object
+        return context
+    
+    def form_valid(self, form):
+        messages.success(self.request, f"Vacuna aplicada exitosamente a {self.object.mascota.nombre}.")
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.object.mascota.id})
+
+
+class VacunasAgendadasListView(LoginRequiredMixin, ListView):
+    """Lista de todas las vacunas agendadas (pendientes de aplicar)"""
+    model = VacunaAplicada
+    template_name = 'inventario/vacunas_agendadas.html'
+    context_object_name = 'vacunas_agendadas'
+    
+    def get_queryset(self):
+        queryset = VacunaAplicada.objects.filter(
+            fecha_aplicacion__isnull=True
+        ).select_related('mascota', 'vacuna').order_by('fecha_proxima')
+        
+        # Filtrar por mascota si se proporciona
+        mascota_id = self.request.GET.get('mascota')
+        if mascota_id:
+            queryset = queryset.filter(mascota_id=mascota_id)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Agregar información de días restantes
+        hoy = timezone.now().date()
+        for vacuna in context['vacunas_agendadas']:
+            if vacuna.fecha_proxima:
+                delta = vacuna.fecha_proxima - hoy
+                vacuna.dias_restantes = delta.days
+            else:
+                vacuna.dias_restantes = None
+        
+        # Agregar filtros disponibles
+        context['mascotas'] = Mascota.objects.filter(
+            activa=True,
+            vacunas_aplicadas__fecha_aplicacion__isnull=True
+        ).distinct().order_by('nombre')
+        
+        return context
+
+
+# === VISTAS PARA AGENDAR PRODUCTOS ===
+
+class ProductoAgendadoCreateView(LoginRequiredMixin, CreateView):
+    """Vista para AGENDAR un producto (sin aplicar)"""
+    model = ProductoAplicado
+    form_class = ProductoAgendadoForm
+    template_name = 'inventario/agendar_producto.html'
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        mascota_id = self.kwargs.get('mascota_id')
+        mascota = get_object_or_404(Mascota, pk=mascota_id)
+        kwargs['initial'] = {'mascota': mascota}
+        return kwargs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mascota_id = self.kwargs.get('mascota_id')
+        context['mascota'] = get_object_or_404(Mascota, pk=mascota_id)
+        context['from_consulta'] = self.request.GET.get('from_consulta', False)
+        return context
+    
+    def form_valid(self, form):
+        mascota_id = self.kwargs.get('mascota_id')
+        mascota = get_object_or_404(Mascota, pk=mascota_id)
+        form.instance.mascota = mascota
+        
+        try:
+            messages.success(self.request, f"Producto agendado exitosamente para {mascota.nombre}.")
+            return super().form_valid(form)
+        except ValueError as e:
+            messages.error(self.request, str(e))
+            return self.form_invalid(form)
+    
+    def get_success_url(self):
+        if self.request.GET.get('from_consulta'):
+            messages.info(self.request, "Puedes continuar con la consulta desde el perfil de la mascota.")
+            return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.kwargs.get('mascota_id')})
+        return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.kwargs.get('mascota_id')})
+
+
+class AplicarProductoAgendadoView(LoginRequiredMixin, UpdateView):
+    """Vista para APLICAR un producto que estaba agendado"""
+    model = ProductoAplicado
+    form_class = AplicarProductoAgendadoForm
+    template_name = 'inventario/aplicar_producto_agendado.html'
+    
+    def get_queryset(self):
+        # Solo productos agendados (sin fecha_aplicacion)
+        return ProductoAplicado.objects.filter(fecha_aplicacion__isnull=True)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['producto_agendado'] = self.object
+        return context
+    
+    def form_valid(self, form):
+        messages.success(self.request, f"Producto aplicado exitosamente a {self.object.mascota.nombre}.")
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy('clientes:detalle_mascota', kwargs={'pk': self.object.mascota.id})
+
+
+class ProductosAgendadosListView(LoginRequiredMixin, ListView):
+    """Lista de todos los productos agendados (pendientes de aplicar)"""
+    model = ProductoAplicado
+    template_name = 'inventario/productos_agendados.html'
+    context_object_name = 'productos_agendados'
+    
+    def get_queryset(self):
+        queryset = ProductoAplicado.objects.filter(
+            fecha_aplicacion__isnull=True
+        ).select_related('mascota', 'producto').order_by('fecha_proxima')
+        
+        # Filtrar por mascota si se proporciona
+        mascota_id = self.request.GET.get('mascota')
+        if mascota_id:
+            queryset = queryset.filter(mascota_id=mascota_id)
+        
+        # Filtrar por tipo de producto si se proporciona
+        tipo = self.request.GET.get('tipo')
+        if tipo:
+            queryset = queryset.filter(producto__tipo=tipo)
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Agregar información de días restantes
+        hoy = timezone.now().date()
+        for producto in context['productos_agendados']:
+            if producto.fecha_proxima:
+                delta = producto.fecha_proxima - hoy
+                producto.dias_restantes = delta.days
+            else:
+                producto.dias_restantes = None
+        
+        # Agregar filtros disponibles
+        context['mascotas'] = Mascota.objects.filter(
+            activa=True,
+            productos_aplicados__fecha_aplicacion__isnull=True
+        ).distinct().order_by('nombre')
+        
+        context['tipos_producto'] = Producto.TIPO_CHOICES
+        
+        return context
+
+
+# === VISTA COMBINADA PARA AGENDA GENERAL ===
+
+class AgendaGeneralView(LoginRequiredMixin, View):
+    """Vista que muestra tanto vacunas como productos agendados"""
+    template_name = 'inventario/agenda_general.html'
+    
+    def get(self, request, *args, **kwargs):
+        hoy = timezone.now().date()
+        fecha_limite = hoy + timedelta(days=30)
+        
+        # Vacunas agendadas próximas
+        vacunas_agendadas = VacunaAplicada.objects.filter(
+            fecha_aplicacion__isnull=True,
+            fecha_proxima__lte=fecha_limite
+        ).select_related('mascota', 'vacuna').order_by('fecha_proxima')
+        
+        # Productos agendados próximos
+        productos_agendados = ProductoAplicado.objects.filter(
+            fecha_aplicacion__isnull=True,
+            fecha_proxima__lte=fecha_limite
+        ).select_related('mascota', 'producto').order_by('fecha_proxima')
+        
+        # Agregar días restantes
+        for item in vacunas_agendadas:
+            if item.fecha_proxima:
+                delta = item.fecha_proxima - hoy
+                item.dias_restantes = delta.days
+        
+        for item in productos_agendados:
+            if item.fecha_proxima:
+                delta = item.fecha_proxima - hoy
+                item.dias_restantes = delta.days
+        
+        context = {
+            'vacunas_agendadas': vacunas_agendadas,
+            'productos_agendados': productos_agendados,
+            'hoy': hoy,
+            'total_agendados': vacunas_agendadas.count() + productos_agendados.count()
+        }
+        
+        return render(request, self.template_name, context)
+
+
+# ============================================================================
+# MODIFICACIÓN AL DASHBOARD EXISTENTE
+# Reemplaza tu función dashboard_inventario con esta versión actualizada
+# ============================================================================
+
 @login_required
 def dashboard_inventario(request):
-    """Vista para el dashboard de inventario que muestra resúmenes y estadísticas."""
+    """Vista actualizada para el dashboard de inventario con soporte para agendamiento."""
     
     # Fecha actual para comparaciones
     hoy = timezone.now().date()
@@ -341,34 +611,57 @@ def dashboard_inventario(request):
     total_vacunas = Vacuna.objects.count()
     total_productos = Producto.objects.count()
     
-    # Próximas vacunaciones (con fecha_proxima en los próximos 30 días o vencidas)
-    proximas_vacunas = VacunaAplicada.objects.filter(
+    # === SEPARAR AGENDADAS DE APLICADAS ===
+    
+    # Vacunas agendadas (sin aplicar) próximas
+    vacunas_agendadas = VacunaAplicada.objects.filter(
+        fecha_aplicacion__isnull=True,
         fecha_proxima__lte=fecha_limite
     ).select_related('mascota', 'vacuna').order_by('fecha_proxima')
     
-    # Agregar días restantes a cada vacuna
-    for vacuna in proximas_vacunas:
-        if vacuna.fecha_proxima:
-            delta = vacuna.fecha_proxima - hoy
-            vacuna.dias_restantes = delta.days
-        else:
-            vacuna.dias_restantes = None
+    # Próximas vacunaciones de vacunas YA APLICADAS
+    proximas_vacunas_aplicadas = VacunaAplicada.objects.filter(
+        fecha_aplicacion__isnull=False,  # Solo las ya aplicadas
+        fecha_proxima__lte=fecha_limite
+    ).select_related('mascota', 'vacuna').order_by('fecha_proxima')
     
-    # Próximas aplicaciones de productos
-    proximos_productos = ProductoAplicado.objects.filter(
+    # Productos agendados (sin aplicar) próximos
+    productos_agendados = ProductoAplicado.objects.filter(
+        fecha_aplicacion__isnull=True,
         fecha_proxima__lte=fecha_limite
     ).select_related('mascota', 'producto').order_by('fecha_proxima')
     
-    # Agregar días restantes a cada producto
-    for producto in proximos_productos:
+    # Próximas aplicaciones de productos YA APLICADOS
+    proximos_productos_aplicados = ProductoAplicado.objects.filter(
+        fecha_aplicacion__isnull=False,  # Solo los ya aplicados
+        fecha_proxima__lte=fecha_limite
+    ).select_related('mascota', 'producto').order_by('fecha_proxima')
+    
+    # Agregar días restantes a todos los elementos
+    for vacuna in vacunas_agendadas:
+        if vacuna.fecha_proxima:
+            delta = vacuna.fecha_proxima - hoy
+            vacuna.dias_restantes = delta.days
+    
+    for vacuna in proximas_vacunas_aplicadas:
+        if vacuna.fecha_proxima:
+            delta = vacuna.fecha_proxima - hoy
+            vacuna.dias_restantes = delta.days
+    
+    for producto in productos_agendados:
         if producto.fecha_proxima:
             delta = producto.fecha_proxima - hoy
             producto.dias_restantes = delta.days
-        else:
-            producto.dias_restantes = None
     
-    # Estadísticas: Vacunas más aplicadas
-    vacunas_aplicadas = VacunaAplicada.objects.values(
+    for producto in proximos_productos_aplicados:
+        if producto.fecha_proxima:
+            delta = producto.fecha_proxima - hoy
+            producto.dias_restantes = delta.days
+    
+    # Estadísticas: Vacunas más aplicadas (solo las realmente aplicadas)
+    vacunas_aplicadas = VacunaAplicada.objects.filter(
+        fecha_aplicacion__isnull=False
+    ).values(
         'vacuna__nombre', 'vacuna_id'
     ).annotate(count=Count('id')).order_by('-count')[:5]
     
@@ -385,8 +678,10 @@ def dashboard_inventario(request):
                 'porcentaje': porcentaje
             })
     
-    # Estadísticas: Productos más aplicados
-    productos_aplicados = ProductoAplicado.objects.values(
+    # Estadísticas: Productos más aplicados (solo los realmente aplicados)
+    productos_aplicados = ProductoAplicado.objects.filter(
+        fecha_aplicacion__isnull=False
+    ).values(
         'producto__nombre', 'producto__tipo', 'producto_id'
     ).annotate(count=Count('id')).order_by('-count')[:5]
     
@@ -408,12 +703,23 @@ def dashboard_inventario(request):
     context = {
         'total_vacunas': total_vacunas,
         'total_productos': total_productos,
-        'proximas_vacunaciones': proximas_vacunas.count(),
-        'proximas_aplicaciones': proximos_productos.count(),
-        'proximas_vacunas': proximas_vacunas,
-        'proximos_productos': proximos_productos,
+        
+        # Contadores separados
+        'vacunas_agendadas_count': vacunas_agendadas.count(),
+        'productos_agendados_count': productos_agendados.count(),
+        'proximas_vacunaciones_count': proximas_vacunas_aplicadas.count(),
+        'proximas_aplicaciones_count': proximos_productos_aplicados.count(),
+        
+        # Listas detalladas
+        'vacunas_agendadas': vacunas_agendadas,
+        'productos_agendados': productos_agendados,
+        'proximas_vacunas': proximas_vacunas_aplicadas,
+        'proximos_productos': proximos_productos_aplicados,
+        
+        # Estadísticas
         'vacunas_populares': vacunas_populares,
         'productos_populares': productos_populares,
+        
         'hoy': hoy.strftime('%Y-%m-%d')
     }
     

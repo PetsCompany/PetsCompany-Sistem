@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Imagen Diagnóstica - {{ imagen.mascota.nombre }}{% endblock %}
@@ -636,9 +638,11 @@
                 <a href="{% url 'consultas:editar_imagen_diagnostica' imagen.pk %}" class="btn-modern btn-outline-primary">
                     <span><i class="fas fa-edit me-1"></i>Editar</span>
                 </a>
-                <a href="{% url 'consultas:eliminar_imagen_diagnostica' imagen.pk %}" class="btn-modern btn-outline-danger">
-                    <span><i class="fas fa-trash me-1"></i>Eliminar</span>
-                </a>
+                {% if request.user|puede_eliminar %}
+                    <a href="{% url 'consultas:eliminar_imagen_diagnostica' imagen.pk %}" class="btn-modern btn-outline-danger">
+                        <span><i class="fas fa-trash me-1"></i>Eliminar</span>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

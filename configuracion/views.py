@@ -5,9 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import ProtectedError
 from django.http import HttpResponseRedirect
-
 from .models import Especie, Raza
 from .forms import EspecieForm, RazaForm
+from veterinaria.utils.mixins import CanDeleteMixin
 
 
 # Vistas para Especies
@@ -40,7 +40,7 @@ class EspecieUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class EspecieDeleteView(LoginRequiredMixin, DeleteView):
+class EspecieDeleteView(CanDeleteMixin, DeleteView):
     model = Especie
     template_name = 'configuracion/confirmar_eliminar_especie.html'
     success_url = reverse_lazy('configuracion:lista_especies')
@@ -101,7 +101,7 @@ class RazaUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
-class RazaDeleteView(LoginRequiredMixin, DeleteView):
+class RazaDeleteView(CanDeleteMixin, DeleteView):
     model = Raza
     template_name = 'configuracion/confirmar_eliminar_raza.html'
     success_url = reverse_lazy('configuracion:lista_razas')

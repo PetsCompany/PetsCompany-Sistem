@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Cliente: {{ cliente.nombre }}{% endblock %}
@@ -597,10 +599,12 @@
                         </a>
                         {% endif %}
                         
-                        <a href="{% url 'clientes:eliminar_cliente' cliente.id %}" class="btn-modern btn-delete">
-                            <i class="fas fa-trash"></i>
-                            Eliminar
-                        </a>
+                        {% if request.user|puede_eliminar %}
+                            <a href="{% url 'clientes:eliminar_cliente' cliente.id %}" class="btn-modern btn-delete">
+                                <i class="fas fa-trash"></i>
+                                Eliminar
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="card-body-modern">

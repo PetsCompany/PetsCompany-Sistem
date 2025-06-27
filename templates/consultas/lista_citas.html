@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load crispy_forms_tags %}
 {% load static %}
 
@@ -472,6 +474,88 @@
         margin-bottom: 0.5rem;
     }
 
+    .search-filter-section {
+        background: #ffffff;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--box-shadow);
+        margin-bottom: 2rem;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .search-box {
+        position: relative;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 0.875rem 1rem 0.875rem 3rem;
+        border: 2px solid #e9ecef;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition);
+        background: #f8f9fa;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #dc3545;
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+        background: white;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        font-size: 1.1rem;
+    }
+
+    .filter-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    .filter-tag {
+        background: linear-gradient(135deg, #dc3545, #b02a37);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .filter-tag .remove-tag {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        margin-left: 0.25rem;
+    }
+
+    .filter-tag .remove-tag:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 2rem;
+        color: #6c757d;
+        background: rgba(0, 0, 0, 0.02);
+    }
+
     @media (max-width: 768px) {
         .citas-title {
             font-size: 1.75rem;
@@ -576,6 +660,21 @@
         </form>
     </div>
 
+    <!-- Search Section -->
+    <div class="search-filter-section slide-up">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Buscar citas por mascota, cliente, motivo, especie o raza..." id="searchInput">
+                </div>
+            </div>
+        </div>
+        <div class="filter-tags" id="filterTags">
+            <!-- Los tags de filtro aparecerán aquí dinámicamente -->
+        </div>
+    </div>
+
     <!-- Table Section -->
     <div class="citas-table-container slide-up">
         <div class="table-header">
@@ -583,7 +682,7 @@
                 <i class="fas fa-list"></i>
                 Lista de Citas
             </h3>
-            <span class="text-white-50">Total: <strong>{{ citas.count }}</strong> citas</span>
+            <span class="text-white-50">Total: <strong id="resultCount">{{ citas.count }}</strong> citas</span>
         </div>
         
         {% if citas %}
@@ -602,7 +701,14 @@
                 </thead>
                 <tbody>
                     {% for cita in citas %}
-                    <tr class="{% if not cita.atendida %}pending-row{% endif %}">
+                    <tr class="{% if not cita.atendida %}pending-row{% endif %} cita-row" 
+                        data-mascota-name="{{ cita.mascota.nombre|lower }}"
+                        data-cliente-name="{{ cita.mascota.cliente.nombre|lower }}"
+                        data-especie="{{ cita.mascota.especie.nombre|lower }}"
+                        data-raza="{{ cita.mascota.raza.nombre|lower }}"
+                        data-motivo="{{ cita.motivo|lower }}"
+                        data-estado="{% if cita.atendida %}atendida{% else %}pendiente{% endif %}"
+                        data-tipo="{% if cita.programada %}programada{% else %}urgencia{% endif %}">
                         <td>
                             <div class="mascota-info">
                                 <div class="mascota-name">{{ cita.mascota.nombre }}</div>
@@ -687,12 +793,14 @@
                                    title="Editar">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                
-                                <a href="{% url 'consultas:eliminar_cita' cita.id %}" 
-                                   class="btn-action delete" 
-                                   title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+
+                                {% if request.user|puede_eliminar %}
+                                    <a href="{% url 'consultas:eliminar_cita' cita.id %}" 
+                                        class="btn-action delete" 
+                                        title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
@@ -720,7 +828,210 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add smooth animations to table rows
+    // Variables globales
+    const searchInput = document.getElementById('searchInput');
+    const citaRows = document.querySelectorAll('.cita-row');
+    const filterTagsContainer = document.getElementById('filterTags');
+    const tableCountElement = document.getElementById('resultCount');
+    
+    let currentFilters = {
+        search: '',
+        estado: '',
+        tipo: ''
+    };
+
+    // Función principal de búsqueda
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            currentFilters.search = this.value.toLowerCase();
+            applyAllFilters();
+        }, 300);
+    });
+    
+    // Función para aplicar todos los filtros
+    function applyAllFilters() {
+        let visibleCount = 0;
+        
+        citaRows.forEach(row => {
+            const mascotaName = row.dataset.mascotaName || '';
+            const clienteName = row.dataset.clienteName || '';
+            const especie = row.dataset.especie || '';
+            const raza = row.dataset.raza || '';
+            const motivo = row.dataset.motivo || '';
+            const estado = row.dataset.estado || '';
+            const tipo = row.dataset.tipo || '';
+            
+            // Verificar filtro de búsqueda
+            const matchesSearch = !currentFilters.search || 
+                mascotaName.includes(currentFilters.search) || 
+                clienteName.includes(currentFilters.search) || 
+                especie.includes(currentFilters.search) || 
+                raza.includes(currentFilters.search) || 
+                motivo.includes(currentFilters.search);
+            
+            // Verificar filtro de estado
+            const matchesEstado = !currentFilters.estado || 
+                estado === currentFilters.estado;
+            
+            // Verificar filtro de tipo
+            const matchesTipo = !currentFilters.tipo || 
+                tipo === currentFilters.tipo;
+            
+            // Mostrar/ocultar fila
+            const isVisible = matchesSearch && matchesEstado && matchesTipo;
+            
+            if (isVisible) {
+                row.style.display = '';
+                row.style.animation = 'fadeIn 0.3s ease-in';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        updateResultsCount(visibleCount);
+        updateFilterTags();
+        showNoResultsMessage(visibleCount);
+    }
+    
+    // Actualizar contador de resultados
+    function updateResultsCount(count) {
+        if (tableCountElement) {
+            tableCountElement.textContent = count;
+        }
+    }
+    
+    // Mostrar mensaje de sin resultados
+    function showNoResultsMessage(count) {
+        const tableBody = document.querySelector('.citas-table tbody');
+        let noResultsRow = document.getElementById('noResultsRow');
+        
+        if (count === 0 && tableBody) {
+            if (!noResultsRow) {
+                noResultsRow = document.createElement('tr');
+                noResultsRow.id = 'noResultsRow';
+                noResultsRow.innerHTML = `
+                    <td colspan="7" class="no-results">
+                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <div>No se encontraron citas que coincidan con los criterios de búsqueda.</div>
+                        <small style="margin-top: 0.5rem; display: block;">Intenta con otros términos o limpia los filtros.</small>
+                    </td>
+                `;
+                tableBody.appendChild(noResultsRow);
+            }
+            noResultsRow.style.display = '';
+        } else if (noResultsRow) {
+            noResultsRow.style.display = 'none';
+        }
+    }
+    
+    // Actualizar tags de filtros activos
+    function updateFilterTags() {
+        if (!filterTagsContainer) return;
+        
+        filterTagsContainer.innerHTML = '';
+        
+        // Tag de búsqueda
+        if (currentFilters.search) {
+            addFilterTag(`Búsqueda: "${currentFilters.search}"`, 'search');
+        }
+        
+        // Tag de estado
+        if (currentFilters.estado) {
+            const estadoText = currentFilters.estado === 'atendida' ? 'Atendidas' : 'Pendientes';
+            addFilterTag(`Estado: ${estadoText}`, 'estado');
+        }
+        
+        // Tag de tipo
+        if (currentFilters.tipo) {
+            const tipoText = currentFilters.tipo === 'programada' ? 'Programadas' : 'Urgencias';
+            addFilterTag(`Tipo: ${tipoText}`, 'tipo');
+        }
+    }
+    
+    // Añadir tag de filtro
+    function addFilterTag(text, filterType) {
+        const tag = document.createElement('div');
+        tag.className = 'filter-tag';
+        tag.innerHTML = `
+            ${text}
+            <span class="remove-tag" onclick="removeFilter('${filterType}')">
+                <i class="fas fa-times"></i>
+            </span>
+        `;
+        filterTagsContainer.appendChild(tag);
+    }
+    
+    // Funciones globales para los filtros
+    window.removeFilter = function(filterType) {
+        switch(filterType) {
+            case 'search':
+                currentFilters.search = '';
+                searchInput.value = '';
+                break;
+            case 'estado':
+                currentFilters.estado = '';
+                break;
+            case 'tipo':
+                currentFilters.tipo = '';
+                break;
+        }
+        applyAllFilters();
+    };
+    
+    window.filterByEstado = function(estado) {
+        currentFilters.estado = estado;
+        applyAllFilters();
+    };
+    
+    window.filterByTipo = function(tipo) {
+        currentFilters.tipo = tipo;
+        applyAllFilters();
+    };
+    
+    window.clearAllFilters = function() {
+        currentFilters = {
+            search: '',
+            estado: '',
+            tipo: ''
+        };
+        searchInput.value = '';
+        applyAllFilters();
+    };
+    
+    // Mejorar efectos hover para filas
+    citaRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            if (this.style.display !== 'none') {
+                this.style.transform = 'scale(1.01)';
+                this.style.boxShadow = '0 4px 20px rgba(220, 53, 69, 0.1)';
+            }
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = 'none';
+        });
+    });
+    
+    // Soporte para teclas de acceso rápido
+    document.addEventListener('keydown', function(e) {
+        // Ctrl/Cmd + F para enfocar el buscador
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            searchInput.focus();
+            searchInput.select();
+        }
+        
+        // Escape para limpiar filtros
+        if (e.key === 'Escape') {
+            clearAllFilters();
+        }
+    });
+    
+    // Animaciones para las filas existentes
     document.querySelectorAll('.citas-table tbody tr').forEach((row, index) => {
         row.style.animationDelay = `${index * 0.05}s`;
         row.classList.add('slide-up');
@@ -737,11 +1048,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Highlight pending appointments
-    const pendingRows = document.querySelectorAll('.pending-row');
-    pendingRows.forEach(row => {
-        row.style.position = 'relative';
-    });
+    // Inicializar la tabla
+    updateResultsCount(citaRows.length);
+    
+    console.log('🔍 Sistema de filtros y búsqueda de citas inicializado correctamente');
 });
 </script>
 {% endblock %}

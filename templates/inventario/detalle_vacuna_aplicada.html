@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Detalle de Vacuna Aplicada | Sistema Veterinario{% endblock %}
@@ -570,9 +572,12 @@
                     <a href="{% url 'inventario:editar_vacuna_aplicada' vacuna_aplicada.id %}" class="btn-modern btn-edit">
                         <i class="fas fa-edit"></i>Editar
                     </a>
-                    <a href="{% url 'inventario:eliminar_vacuna_aplicada' vacuna_aplicada.id %}" class="btn-modern btn-delete">
-                        <i class="fas fa-trash"></i>Eliminar
-                    </a>
+
+                    {% if request.user|puede_eliminar %}
+                        <a href="{% url 'inventario:eliminar_vacuna_aplicada' vacuna_aplicada.id %}" class="btn-modern btn-delete">
+                            <i class="fas fa-trash"></i>Eliminar
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -1,0 +1,1276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aplicar Producto Agendado - {{ producto_agendado.mascota.nombre }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Variables de colores actualizadas para la paleta empresarial */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        --secondary-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        --info-gradient: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+        --success-gradient: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        --warning-gradient: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        --bg-white: #ffffff;
+        --border-radius: 12px;
+        --border-radius-sm: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --box-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Layout principal */
+    .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+        min-height: 100vh;
+        background: #ffffff;
+    }
+
+    /* Header Section */
+    .page-header {
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+
+    .page-header-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .page-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .btn-back {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius-sm);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-back:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+    }
+
+    /* Info Card - Para mostrar información del producto agendado */
+    .info-card {
+        background: var(--bg-white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        margin-bottom: 2rem;
+        transition: var(--transition);
+        border: 1px solid #f3f4f6;
+    }
+
+    .info-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow-lg);
+    }
+
+    .info-header {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translate(25px, -25px);
+    }
+
+    .info-header h4 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.3rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .info-body {
+        padding: 2rem;
+        background: #ffffff;
+    }
+
+    .info-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .info-col {
+        padding-left: 15px;
+        padding-right: 15px;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .pet-section {
+        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #dc2626;
+        transition: var(--transition);
+    }
+
+    .pet-section:hover {
+        transform: translateX(5px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .product-section {
+        background: linear-gradient(135deg, #fffbf7 0%, #ffffff 100%);
+        border-radius: var(--border-radius-sm);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #dc2626;
+        transition: var(--transition);
+    }
+
+    .product-section:hover {
+        transform: translateX(5px);
+        box-shadow: var(--box-shadow);
+    }
+
+    .section-title {
+        color: #111827;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.1rem;
+    }
+
+    .info-item {
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #374151;
+        min-width: 100px;
+    }
+
+    .info-value {
+        color: #6b7280;
+    }
+
+    .badge-modern {
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .badge-info {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        color: white;
+    }
+
+    .badge-success {
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .text-primary-custom {
+        color: #dc2626 !important;
+        font-weight: 600;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: var(--bg-white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        transition: var(--transition);
+        border: 1px solid #f3f4f6;
+    }
+
+    .form-card:hover {
+        box-shadow: var(--box-shadow-lg);
+    }
+
+    .form-header {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translate(25px, -25px);
+    }
+
+    .form-header h5 {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.2rem;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .form-body {
+        padding: 2rem;
+        background: #ffffff;
+    }
+
+    /* Form Sections */
+    .form-section {
+        background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+        transition: var(--transition);
+    }
+
+    .form-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary-gradient);
+    }
+
+    .form-section:hover {
+        border-color: rgba(220, 38, 38, 0.2);
+        box-shadow: var(--box-shadow);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Form Controls */
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid #e5e7eb;
+        border-radius: var(--border-radius-sm);
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: #ffffff;
+        width: 100%;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #dc2626;
+        box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+        outline: none;
+    }
+
+    .form-control:hover, .form-select:hover {
+        border-color: #dc2626;
+    }
+
+    .form-text {
+        color: #6b7280;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-text::before {
+        content: '💡';
+        font-size: 0.8rem;
+    }
+
+    /* Invalid feedback */
+    .text-danger {
+        color: #dc2626 !important;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background: rgba(220, 38, 38, 0.1);
+        border-radius: var(--border-radius-sm);
+        border-left: 4px solid #dc2626;
+        display: block;
+    }
+
+    /* Alert */
+    .alert-danger {
+        background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+        border: 2px solid rgba(220, 38, 38, 0.3);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        color: #991b1b;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .alert-danger::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary-gradient);
+    }
+
+    /* Info Section */
+    .info-section {
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.1) 0%, rgba(17, 24, 39, 0.05) 100%);
+        border: 2px solid rgba(17, 24, 39, 0.2);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .info-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+    }
+
+    .info-section .text-muted {
+        color: #374151 !important;
+        line-height: 1.6;
+        margin: 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    /* Buttons */
+    .btn-modern {
+        background: var(--primary-gradient);
+        border: none;
+        color: white;
+        padding: 0.875rem 2rem;
+        border-radius: var(--border-radius-sm);
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: var(--transition);
+    }
+
+    .btn-modern:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-modern:hover::before {
+        left: 100%;
+    }
+
+    .btn-modern:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-outline-modern {
+        background: transparent;
+        border: 2px solid #374151;
+        color: #374151;
+        padding: 0.875rem 2rem;
+        border-radius: var(--border-radius-sm);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: var(--transition);
+        cursor: pointer;
+        font-size: 1rem;
+    }
+
+    .btn-outline-modern:hover {
+        background: #374151;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(55, 65, 81, 0.3);
+    }
+
+    /* Form Actions */
+    .form-actions {
+        padding: 2rem;
+        background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Animation classes */
+    .fade-in {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-out;
+    }
+
+    .animate-on-scroll.animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Loading state */
+    .btn-loading {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    .btn-loading i {
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .main-container {
+            padding: 1rem;
+        }
+
+        .page-header-content {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .info-col {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .form-section {
+            padding: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            gap: 1rem;
+        }
+
+        .btn-modern, .btn-outline-modern {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Utilidades adicionales */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+
+    .col-md-6 {
+        padding-left: 15px;
+        padding-right: 15px;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .col-12 {
+        padding-left: 15px;
+        padding-right: 15px;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+    }
+
+    .mb-4 {
+        margin-bottom: 1.5rem !important;
+    }
+
+    .mt-4 {
+        margin-top: 1.5rem !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    .justify-content-between {
+        justify-content: space-between !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="main-container fade-in">
+    <!-- Page Header -->
+    <div class="page-header animate-on-scroll">
+        <div class="page-header-content">
+            <div>
+                <h1 class="page-title">
+                    <i class="fas fa-syringe"></i>
+                    Aplicar Producto Agendado
+                </h1>
+                <p class="page-subtitle">Registrar la aplicación del producto programado</p>
+            </div>
+            <div>
+                <a href="{% url 'clientes:detalle_mascota' producto_agendado.mascota.id %}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver a {{ producto_agendado.mascota.nombre }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header con información del producto agendado -->
+    <div class="info-card animate-on-scroll">
+        <div class="info-header">
+            <h4>
+                <i class="fas fa-clipboard-check"></i>
+                Información del Producto Agendado
+            </h4>
+        </div>
+        <div class="info-body">
+            <div class="info-row">
+                <div class="info-col">
+                    <div class="pet-section">
+                        <h5 class="section-title">
+                            <i class="fas fa-paw"></i>
+                            {{ producto_agendado.mascota.nombre }}
+                        </h5>
+                        <div class="info-item">
+                            <span class="info-label">Propietario:</span>
+                            <span class="info-value">{{ producto_agendado.mascota.cliente.nombre }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Especie:</span>
+                            <span class="info-value">{{ producto_agendado.mascota.especie}}</span>
+                        </div>
+                        {% if producto_agendado.mascota.raza %}
+                        <div class="info-item">
+                            <span class="info-label">Raza:</span>
+                            <span class="info-value">{{ producto_agendado.mascota.raza }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="info-col">
+                    <div class="product-section">
+                        <h5 class="section-title">
+                            <i class="fas fa-capsules"></i>
+                            {{ producto_agendado.producto.nombre }}
+                        </h5>
+                        <div class="info-item">
+                            <span class="info-label">Tipo:</span>
+                            <span class="badge-modern badge-{{ producto_agendado.producto.tipo|yesno:'info,success' }}">
+                                {{ producto_agendado.producto.get_tipo_display }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha agendada:</span>
+                            <span class="text-primary-custom">{{ producto_agendado.fecha_proxima|date:"d/m/Y" }}</span>
+                        </div>
+                        {% if producto_agendado.observaciones %}
+                        <div class="info-item">
+                            <span class="info-label">Observaciones previas:</span>
+                            <span class="info-value">{{ producto_agendado.observaciones }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario para aplicar el producto -->
+    <div class="form-card animate-on-scroll">
+        <div class="form-header">
+            <h5>
+                <i class="fas fa-check-circle"></i>
+                Registrar Aplicación del Producto
+            </h5>
+        </div>
+        <div class="form-body">
+            <form method="post" novalidate id="aplicarProductoForm">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.fecha_aplicacion.id_for_label }}" class="form-label">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <strong>{{ form.fecha_aplicacion.label }} *</strong>
+                                </label>
+                                {{ form.fecha_aplicacion }}
+                                {% if form.fecha_aplicacion.errors %}
+                                    <div class="text-danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.fecha_aplicacion.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    Fecha en que se aplica realmente el producto
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.fecha_proxima.id_for_label }}" class="form-label">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    <strong>{{ form.fecha_proxima.label }}</strong>
+                                </label>
+                                {{ form.fecha_proxima }}
+                                {% if form.fecha_proxima.errors %}
+                                    <div class="text-danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.fecha_proxima.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    Fecha para la próxima aplicación (opcional)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="{{ form.observaciones.id_for_label }}" class="form-label">
+                                    <i class="fas fa-sticky-note"></i>
+                                    <strong>{{ form.observaciones.label }}</strong>
+                                </label>
+                                {{ form.observaciones }}
+                                {% if form.observaciones.errors %}
+                                    <div class="text-danger">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ form.observaciones.errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">
+                                    Observaciones adicionales sobre la aplicación
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <a href="{% url 'clientes:detalle_mascota' producto_agendado.mascota.id %}" class="btn-outline-modern">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </a>
+            
+            <button type="submit" form="aplicarProductoForm" class="btn-modern" id="btnAplicar">
+                <i class="fas fa-syringe"></i>
+                Confirmar Aplicación
+            </button>
+        </div>
+    </div>
+
+    <!-- Información adicional -->
+    <div class="info-section animate-on-scroll">
+        <div class="text-muted">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Nota:</strong> Al confirmar la aplicación, este producto pasará del estado "Agendado" a "Aplicado" 
+                y se registrará la fecha real de aplicación. Esta acción no se puede deshacer.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM cargado - Iniciando scripts de aplicar producto');
+    
+    // Animate elements on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all elements with animate-on-scroll class
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Auto-rellenar fecha de aplicación con fecha actual
+    const fechaAplicacion = document.getElementById('id_fecha_aplicacion');
+    if (fechaAplicacion && !fechaAplicacion.value) {
+        const hoy = new Date();
+        fechaAplicacion.value = hoy.toISOString().split('T')[0];
+        console.log('Fecha de aplicación establecida:', fechaAplicacion.value);
+    }
+    
+    // Validación de fechas
+    const fechaProxima = document.getElementById('id_fecha_proxima');
+    
+    if (fechaAplicacion && fechaProxima) {
+        fechaAplicacion.addEventListener('change', function() {
+            fechaProxima.min = this.value;
+            console.log('Fecha mínima para próxima aplicación actualizada:', this.value);
+        });
+    }
+    
+    // Enhanced form interactions
+    const formControls = document.querySelectorAll('.form-control, .form-select');
+    formControls.forEach(control => {
+        // Add focus animations
+        control.addEventListener('focus', function() {
+            this.parentElement.classList.add('form-group-focused');
+        });
+        
+        control.addEventListener('blur', function() {
+            this.parentElement.classList.remove('form-group-focused');
+        });
+        
+        // Add typing animation for text inputs
+        if (control.type === 'text' || control.type === 'date' || control.tagName === 'TEXTAREA') {
+            let typingTimer;
+            control.addEventListener('input', function() {
+                this.classList.add('typing');
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    this.classList.remove('typing');
+                }, 1000);
+            });
+        }
+    });
+    
+    // Form validation with enhanced UX
+    const form = document.getElementById('aplicarProductoForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            console.log('=== ENVIANDO FORMULARIO DE APLICACIÓN ===');
+            console.log('Datos del formulario:');
+            const formData = new FormData(form);
+            
+            // Log de todos los datos del formulario
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
+            
+            // Validación en cliente antes de enviar
+            let isValid = true;
+            const errors = [];
+            
+            // Validar fecha de aplicación (requerida)
+            const fechaAplicacionInput = document.getElementById('id_fecha_aplicacion');
+            if (!fechaAplicacionInput.value) {
+                isValid = false;
+                errors.push('La fecha de aplicación es requerida');
+                fechaAplicacionInput.classList.add('is-invalid');
+            } else {
+                fechaAplicacionInput.classList.remove('is-invalid');
+                fechaAplicacionInput.classList.add('is-valid');
+            }
+            
+            // Validar que fecha de aplicación no sea futura
+            if (fechaAplicacionInput.value) {
+                const fechaAplicacion = new Date(fechaAplicacionInput.value);
+                const hoy = new Date();
+                hoy.setHours(23, 59, 59, 999); // Final del día de hoy
+                
+                if (fechaAplicacion > hoy) {
+                    isValid = false;
+                    errors.push('La fecha de aplicación no puede ser en el futuro');
+                    fechaAplicacionInput.classList.add('is-invalid');
+                }
+            }
+            
+            // Validar fecha próxima (si se proporciona)
+            const fechaProximaInput = document.getElementById('id_fecha_proxima');
+            if (fechaProximaInput.value && fechaAplicacionInput.value) {
+                const fechaAplicacion = new Date(fechaAplicacionInput.value);
+                const fechaProxima = new Date(fechaProximaInput.value);
+                
+                if (fechaProxima <= fechaAplicacion) {
+                    isValid = false;
+                    errors.push('La fecha de próxima aplicación debe ser posterior a la fecha de aplicación');
+                    fechaProximaInput.classList.add('is-invalid');
+                } else {
+                    fechaProximaInput.classList.remove('is-invalid');
+                    fechaProximaInput.classList.add('is-valid');
+                }
+            }
+            
+            // Si hay errores, prevenir envío y mostrar mensajes
+            if (!isValid) {
+                e.preventDefault();
+                console.log('Formulario con errores:', errors);
+                
+                // Mostrar errores en el formulario
+                showFormErrors(errors);
+                
+                // Scroll al primer error
+                const firstError = document.querySelector('.is-invalid');
+                if (firstError) {
+                    firstError.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    firstError.focus();
+                }
+                
+                return false;
+            }
+            
+            // Si todo está bien, mostrar loading en el botón
+            const btnAplicar = document.getElementById('btnAplicar');
+            if (btnAplicar) {
+                btnAplicar.classList.add('btn-loading');
+                btnAplicar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+                btnAplicar.disabled = true;
+            }
+            
+            console.log('Formulario válido, enviando...');
+        });
+    }
+    
+    // Función para mostrar errores del formulario
+    function showFormErrors(errors) {
+        // Remover alertas de error anteriores
+        const existingAlerts = document.querySelectorAll('.alert-validation-error');
+        existingAlerts.forEach(alert => alert.remove());
+        
+        // Crear nueva alerta de error
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'alert-danger alert-validation-error';
+        alertDiv.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Por favor, corrija los siguientes errores:</strong>
+            <ul class="mb-0 mt-2">
+                ${errors.map(error => `<li>${error}</li>`).join('')}
+            </ul>
+        `;
+        
+        // Insertar la alerta antes del formulario
+        const formSection = document.querySelector('.form-section');
+        if (formSection) {
+            formSection.parentNode.insertBefore(alertDiv, formSection);
+            
+            // Auto-remover la alerta después de 10 segundos
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.style.opacity = '0';
+                    alertDiv.style.transform = 'translateY(-20px)';
+                    setTimeout(() => alertDiv.remove(), 300);
+                }
+            }, 10000);
+        }
+    }
+    
+    // Confirmación antes de enviar
+    const btnAplicar = document.getElementById('btnAplicar');
+    if (btnAplicar) {
+        btnAplicar.addEventListener('click', function(e) {
+            if (!this.classList.contains('btn-loading')) {
+                const mascotaNombre = '{{ producto_agendado.mascota.nombre|escapejs }}';
+                const productoNombre = '{{ producto_agendado.producto.nombre|escapejs }}';
+                
+                const confirmacion = confirm(
+                    `¿Está seguro de que desea registrar la aplicación de "${productoNombre}" ` +
+                    `para ${mascotaNombre}?\n\nEsta acción no se puede deshacer.`
+                );
+                
+                if (!confirmacion) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+            }
+        });
+    }
+    
+    // Limpiar validaciones cuando el usuario corrige los campos
+    const inputsToValidate = ['id_fecha_aplicacion', 'id_fecha_proxima'];
+    inputsToValidate.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', function() {
+                this.classList.remove('is-invalid');
+                
+                // Remover alertas de error si existen
+                const alerts = document.querySelectorAll('.alert-validation-error');
+                alerts.forEach(alert => {
+                    alert.style.opacity = '0.5';
+                });
+            });
+        }
+    });
+    
+    // Auto-save draft (opcional - guardar en localStorage si el navegador lo soporta)
+    function saveFormDraft() {
+        if (typeof Storage !== "undefined") {
+            const formData = {
+                fecha_aplicacion: document.getElementById('id_fecha_aplicacion')?.value || '',
+                fecha_proxima: document.getElementById('id_fecha_proxima')?.value || '',
+                observaciones: document.getElementById('id_observaciones')?.value || '',
+                timestamp: new Date().getTime()
+            };
+            
+            try {
+                localStorage.setItem('aplicar_producto_draft', JSON.stringify(formData));
+                console.log('Borrador guardado automáticamente');
+            } catch (e) {
+                console.log('No se pudo guardar el borrador:', e);
+            }
+        }
+    }
+    
+    // Restaurar borrador si existe
+    function restoreFormDraft() {
+        if (typeof Storage !== "undefined") {
+            try {
+                const draftData = localStorage.getItem('aplicar_producto_draft');
+                if (draftData) {
+                    const draft = JSON.parse(draftData);
+                    const now = new Date().getTime();
+                    const maxAge = 24 * 60 * 60 * 1000; // 24 horas
+                    
+                    // Solo restaurar si el borrador no es muy antiguo
+                    if (draft.timestamp && (now - draft.timestamp) < maxAge) {
+                        const fechaAplicacionInput = document.getElementById('id_fecha_aplicacion');
+                        const fechaProximaInput = document.getElementById('id_fecha_proxima');
+                        const observacionesInput = document.getElementById('id_observaciones');
+                        
+                        if (fechaAplicacionInput && !fechaAplicacionInput.value && draft.fecha_aplicacion) {
+                            fechaAplicacionInput.value = draft.fecha_aplicacion;
+                        }
+                        if (fechaProximaInput && !fechaProximaInput.value && draft.fecha_proxima) {
+                            fechaProximaInput.value = draft.fecha_proxima;
+                        }
+                        if (observacionesInput && !observacionesInput.value && draft.observaciones) {
+                            observacionesInput.value = draft.observaciones;
+                        }
+                        
+                        console.log('Borrador restaurado');
+                    } else {
+                        // Borrador muy antiguo, eliminarlo
+                        localStorage.removeItem('aplicar_producto_draft');
+                    }
+                }
+            } catch (e) {
+                console.log('Error al restaurar borrador:', e);
+                localStorage.removeItem('aplicar_producto_draft');
+            }
+        }
+    }
+    
+    // Guardar borrador cada 30 segundos si hay cambios
+    let draftTimer;
+    const formInputs = document.querySelectorAll('#aplicarProductoForm input, #aplicarProductoForm textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            clearTimeout(draftTimer);
+            draftTimer = setTimeout(saveFormDraft, 30000); // 30 segundos
+        });
+    });
+    
+    // Restaurar borrador al cargar la página
+    restoreFormDraft();
+    
+    // Limpiar borrador cuando se envía el formulario exitosamente
+    window.addEventListener('beforeunload', function() {
+        // Solo limpiar si el formulario se está enviando
+        const btnAplicar = document.getElementById('btnAplicar');
+        if (btnAplicar && btnAplicar.classList.contains('btn-loading')) {
+            if (typeof Storage !== "undefined") {
+                localStorage.removeItem('aplicar_producto_draft');
+            }
+        }
+    });
+    
+    // Agregar tooltips y ayudas contextuales
+    function initTooltips() {
+        const tooltipElements = [
+            {
+                element: document.getElementById('id_fecha_aplicacion'),
+                text: 'Seleccione la fecha real en que se aplicó el producto'
+            },
+            {
+                element: document.getElementById('id_fecha_proxima'),
+                text: 'Opcional: Programe la próxima aplicación de este producto'
+            },
+            {
+                element: document.getElementById('id_observaciones'),
+                text: 'Agregue cualquier observación relevante sobre la aplicación'
+            }
+        ];
+        
+        tooltipElements.forEach(item => {
+            if (item.element) {
+                item.element.setAttribute('title', item.text);
+                item.element.addEventListener('focus', function() {
+                    showTooltip(this, item.text);
+                });
+                item.element.addEventListener('blur', function() {
+                    hideTooltip();
+                });
+            }
+        });
+    }
+    
+    function showTooltip(element, text) {
+        hideTooltip(); // Remover tooltip anterior
+        
+        const tooltip = document.createElement('div');
+        tooltip.className = 'custom-tooltip';
+        tooltip.innerHTML = text;
+        tooltip.style.cssText = `
+            position: absolute;
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            max-width: 250px;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        `;
+        
+        document.body.appendChild(tooltip);
+        
+        // Posicionar tooltip
+        const rect = element.getBoundingClientRect();
+        tooltip.style.left = rect.left + 'px';
+        tooltip.style.top = (rect.bottom + 5) + 'px';
+        
+        // Mostrar con animación
+        setTimeout(() => {
+            tooltip.style.opacity = '1';
+            tooltip.style.transform = 'translateY(0)';
+        }, 10);
+    }
+    
+    function hideTooltip() {
+        const existingTooltip = document.querySelector('.custom-tooltip');
+        if (existingTooltip) {
+            existingTooltip.style.opacity = '0';
+            existingTooltip.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                if (existingTooltip.parentNode) {
+                    existingTooltip.remove();
+                }
+            }, 300);
+        }
+    }
+    
+    // Inicializar tooltips
+    initTooltips();
+    
+    // Mejorar la experiencia de usuario con teclado
+    document.addEventListener('keydown', function(e) {
+        // Enviar formulario con Ctrl+Enter
+        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+            e.preventDefault();
+            const form = document.getElementById('aplicarProductoForm');
+            if (form) {
+                form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+            }
+        }
+        
+        // Escape para cancelar
+        if (e.key === 'Escape') {
+            const cancelBtn = document.querySelector('.btn-outline-modern');
+            if (cancelBtn && confirm('¿Está seguro de que desea cancelar? Los cambios no guardados se perderán.')) {
+                window.location.href = cancelBtn.href;
+            }
+        }
+    });
+    
+    // Prevenir pérdida de datos accidental
+    let formModified = false;
+    formInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            formModified = true;
+        });
+    });
+    
+    window.addEventListener('beforeunload', function(e) {
+        if (formModified && !document.getElementById('btnAplicar')?.classList.contains('btn-loading')) {
+            e.preventDefault();
+            e.returnValue = '¿Está seguro de que desea salir? Los cambios no guardados se perderán.';
+            return e.returnValue;
+        }
+    });
+    
+    console.log('=== SCRIPTS DE APLICAR PRODUCTO INICIALIZADOS CORRECTAMENTE ===');
+});
+</script>
+{% endblock %}

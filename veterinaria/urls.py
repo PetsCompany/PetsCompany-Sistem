@@ -32,6 +32,11 @@ urlpatterns = [
     path('', include('portal_cliente.urls')),
 ]
 
-# Servir archivos de media en desarrollo
-if settings.DEBUG is False:
+if settings.DEBUG:
+    # En desarrollo, servir archivos media y static
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+else:
+    # En producción también se necesita servir archivos media
+    # (Los archivos static se sirven con WhiteNoise)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

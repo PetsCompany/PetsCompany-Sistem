@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Lista de Razas | Sistema Veterinario{% endblock %}
@@ -502,11 +504,13 @@
                                    title="Editar raza">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{% url 'configuracion:eliminar_raza' raza.id %}" 
-                                   class="btn-action delete" 
-                                   title="Eliminar raza">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                {% if request.user|puede_eliminar %}
+                                    <a href="{% url 'configuracion:eliminar_raza' raza.id %}" 
+                                        class="btn-action delete" 
+                                        title="Eliminar raza">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

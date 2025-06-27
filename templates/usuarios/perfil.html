@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Mi Perfil - Sistema Veterinario{% endblock %}
@@ -642,9 +644,11 @@
                         <a href="{% url 'usuarios:configurar_cuenta' %}" class="btn-modern">
                             <i class="fas fa-cog"></i>Configurar Cuenta
                         </a>
-                        <a href="{% url 'usuarios:cambiar_password' %}" class="btn-modern btn-password">
-                            <i class="fas fa-key"></i>Cambiar Contraseña
-                        </a>
+                        {% if request.user|puede_eliminar %}
+                            <a href="{% url 'usuarios:cambiar_password' %}" class="btn-modern btn-password">
+                                <i class="fas fa-key"></i>Cambiar Contraseña
+                            </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

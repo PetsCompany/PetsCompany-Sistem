@@ -1,4 +1,6 @@
 {% load static %}
+{% load usuarios_extras %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -457,7 +459,7 @@
                 <div class="nav-item">
                     <a href="{% url 'reportes:dashboard' %}" class="nav-link {% if request.resolver_match.app_name == 'reportes' and request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                         <i class="fas fa-tachometer-alt"></i>
-                        <span class="nav-text">Dashboard</span>
+                        <span class="nav-text">Inicio</span>
                     </a>
                 </div>
 
@@ -498,13 +500,13 @@
                     </a>
                 </div>
 
-                <!-- Reportes -->
+                {% comment %} <!-- Reportes -->
                 <div class="nav-item">
                     <a href="{% url 'reportes:dashboard' %}" class="nav-link {% if request.resolver_match.app_name == 'reportes' %}active{% endif %}">
                         <i class="fas fa-chart-line"></i>
                         <span class="nav-text">Reportes</span>
                     </a>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- Configuración -->
                 <div class="nav-item dropdown">
@@ -551,6 +553,13 @@
                             <li><a class="dropdown-item" href="{% url 'usuarios:configurar_cuenta' %}">
                                 <i class="fas fa-cog me-2"></i>Configurar Cuenta
                             </a></li>
+                            <li>
+                                {% if request.user|es_admin %}
+                                    <a class="dropdown-item" href="{% url 'usuarios:lista_empleados' %}">
+                                        <i class="fas fa-user me-2"></i>Empleados
+                                    </a>
+                                {% endif %}
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="post" action="{% url 'usuarios:logout' %}">

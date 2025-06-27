@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load static %}
 
 {% block title %}Lista de Especies | Sistema Veterinario{% endblock %}
@@ -519,15 +521,17 @@
                         <td>
                             <div class="action-buttons">
                                 <a href="{% url 'configuracion:editar_especie' especie.id %}" 
-                                   class="btn-action edit" 
-                                   title="Editar especie">
+                                     class="btn-action edit" 
+                                    title="Editar especie">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{% url 'configuracion:eliminar_especie' especie.id %}" 
-                                   class="btn-action delete" 
-                                   title="Eliminar especie">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                {% if request.user|puede_eliminar %}
+                                    <a href="{% url 'configuracion:eliminar_especie' especie.id %}" 
+                                        class="btn-action delete" 
+                                        title="Eliminar especie">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

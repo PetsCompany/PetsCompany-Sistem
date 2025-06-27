@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load usuarios_extras %}
+
 {% load crispy_forms_tags %}
 
 {% block title %}Detalle de Cita{% endblock %}
@@ -570,10 +572,12 @@
                         <i class="fas fa-edit"></i>
                         Editar
                     </a>
-                    <a href="{% url 'consultas:eliminar_cita' cita.id %}" class="btn-modern btn-delete">
-                        <i class="fas fa-trash"></i>
-                        Eliminar
-                    </a>
+                    {% if request.user|puede_eliminar %}
+                        <a href="{% url 'consultas:eliminar_cita' cita.id %}" class="btn-modern btn-delete">
+                            <i class="fas fa-trash"></i>
+                            Eliminar
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -632,7 +632,7 @@
     <div class="welcome-section animate-on-scroll">
         <div class="welcome-content">
             <h1><i class="fas fa-boxes me-2"></i>Dashboard de Inventario</h1>
-            <p>Controla y administra tu inventario de vacunas y productos veterinarios</p>
+            <p>Controla y administra tu inventario de vacunas y Desparasitantes veterinarios</p>
         </div>
     </div>
 
@@ -671,36 +671,36 @@
                 </a>
             </div>
         </div>
-        
+
         <div class="stat-card info hover-lift">
             <div class="stat-content">
                 <div class="stat-info">
-                    <h6>Vacunaciones Próximas</h6>
-                    <h4>{{ proximas_vacunaciones }}</h4>
+                    <h6>Vacunas Agendadas</h6>
+                    <h4>{{ vacunas_agendadas_count }}</h4>
                 </div>
                 <div class="card-icon">
-                    <i class="fas fa-calendar-check"></i>
+                    <i class="fas fa-calendar-alt"></i>
                 </div>
             </div>
             <div class="stat-footer">
-                <a href="#proximas-vacunaciones">
+                <a href="{% url 'inventario:vacunas_agendadas' %}">
                     Ver detalles <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
-        
-        <div class="stat-card warning hover-lift">
+
+        <div class="stat-card info hover-lift">
             <div class="stat-content">
                 <div class="stat-info">
-                    <h6>Aplicaciones Próximas</h6>
-                    <h4>{{ proximas_aplicaciones }}</h4>
+                    <h6>Desparasitantes Agendados</h6>
+                    <h4>{{ productos_agendados_count }}</h4>
                 </div>
                 <div class="card-icon">
                     <i class="fas fa-bug"></i>
                 </div>
             </div>
             <div class="stat-footer">
-                <a href="#proximas-aplicaciones">
+                <a href="{% url 'inventario:productos_agendados' %}">
                     Ver detalles <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
@@ -725,7 +725,7 @@
             <a href="{% url 'inventario:crear_producto' %}" class="action-card success">
                 <div class="action-content">
                     <i class="fas fa-plus-circle"></i>
-                    <span>Nuevo Producto</span>
+                    <span>Nuevo Desparasitante</span>
                 </div>
                 <i class="fas fa-chevron-right action-arrow"></i>
             </a>
@@ -741,7 +741,7 @@
             <a href="{% url 'inventario:lista_productos' %}" class="action-card warning">
                 <div class="action-content">
                     <i class="fas fa-list"></i>
-                    <span>Ver Productos</span>
+                    <span>Ver Desparasitantes</span>
                 </div>
                 <i class="fas fa-chevron-right action-arrow"></i>
             </a>
@@ -817,7 +817,7 @@
         <div class="data-header">
             <h5>
                 <i class="fas fa-pills text-warning"></i>
-                Próximas Aplicaciones de Productos
+                Próximas Aplicaciones de Desparasitantes
             </h5>
             <span class="data-badge" style="background: linear-gradient(135deg, var(--warning-color), #e67e22);">{{ proximas_aplicaciones }}</span>
         </div>
@@ -828,7 +828,7 @@
                     <thead>
                         <tr>
                             <th>Mascota</th>
-                            <th>Producto</th>
+                            <th>Desparasitante</th>
                             <th>Tipo</th>
                             <th>Última Aplicación</th>
                             <th>Próxima Aplicación</th>
@@ -871,7 +871,7 @@
             {% else %}
             <div class="empty-state">
                 <i class="fas fa-check-circle"></i>
-                <h5>No hay aplicaciones de productos próximas pendientes</h5>
+                <h5>No hay aplicaciones de Desparasitantes próximas pendientes</h5>
                 <p>Todas las mascotas están al día con sus tratamientos</p>
             </div>
             {% endif %}
@@ -914,7 +914,7 @@
             <div class="data-header">
                 <h5>
                     <i class="fas fa-chart-pie me-2"></i>
-                    Productos más Aplicados
+                    Desparasitantes más Aplicados
                 </h5>
             </div>
             <div class="data-body">
@@ -934,7 +934,7 @@
                 <div class="empty-state">
                     <i class="fas fa-chart-pie"></i>
                     <h5>No hay datos suficientes</h5>
-                    <p>Aplica algunos productos para ver estadísticas</p>
+                    <p>Aplica algunos Desparasitantes para ver estadísticas</p>
                 </div>
                 {% endif %}
             </div>

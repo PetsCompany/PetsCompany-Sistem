@@ -2,6 +2,7 @@ from django.db import models
 from clientes.models import Mascota
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone 
 
 class Cita(models.Model):
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='citas')
@@ -58,7 +59,7 @@ class ImagenDiagnostica(models.Model):
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='imagenes')
     archivo = models.FileField(upload_to='imagenes_diagnosticas/%Y/%m/%d/')  # Cambiado de ImageField a FileField
     descripcion = models.TextField()
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
         return f"Imagen de {self.mascota.nombre} - {self.fecha.strftime('%d/%m/%Y')}"

@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% load usuarios_extras %}
+
 {% load static %}
 
-{% block title %}Gestión de Productos{% endblock %}
+{% block title %}Gestión de Desparasitantes{% endblock %}
 
-{% block page_title %}Gestión de Productos{% endblock %}
+{% block page_title %}Gestión de Desparasitantes{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -451,15 +453,15 @@
                 <div>
                     <h1 class="products-title">
                         <i class="fas fa-box icon"></i>
-                        Gestión de Productos
+                        Gestión de Desparasitantes
                     </h1>
                     <p class="products-subtitle">
-                        Administra el inventario de productos veterinarios
+                        Administra el inventario de Desparasitantes veterinarios
                     </p>
                 </div>
                 <a href="{% url 'inventario:crear_producto' %}" class="add-product-btn hover-lift">
                     <i class="fas fa-plus"></i>
-                    Nuevo Producto
+                    Nuevo Desparasitantes
                 </a>
             </div>
         </div>
@@ -497,10 +499,10 @@
         <div class="table-header">
             <h3 class="table-title">
                 <i class="fas fa-list"></i>
-                Lista de Productos
+                Lista de Desparasitantes
             </h3>
             <div class="d-flex align-items-center gap-3">
-                <span class="table-count">Total: <strong>{{ productos.count }}</strong> productos</span>
+                <span class="table-count">Total: <strong>{{ productos.count }}</strong> Desparasitante</span>
             </div>
         </div>
         
@@ -509,7 +511,7 @@
             <table class="table products-table">
                 <thead>
                     <tr>
-                        <th>Producto</th>
+                        <th>Desparasitante</th>
                         <th>Tipo</th>
                         <th>Descripción</th>
                         <th>Acciones</th>
@@ -555,11 +557,13 @@
                                    title="Editar producto">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{% url 'inventario:eliminar_producto' producto.id %}" 
-                                   class="btn-action delete" 
-                                   title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                {% if request.user|puede_eliminar %}
+                                    <a href="{% url 'inventario:eliminar_producto' producto.id %}" 
+                                        class="btn-action delete" 
+                                        title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
@@ -572,7 +576,7 @@
             <div class="empty-state-icon">
                 <i class="fas fa-box"></i>
             </div>
-            <h3>No hay productos registrados</h3>
+            <h3>No hay Desparasitantes registrados</h3>
             <p>
                 {% if request.GET.tipo %}
                     {% if request.GET.tipo == 'V' %}
@@ -581,12 +585,12 @@
                         No se encontraron antiparasitarios en el sistema.
                     {% endif %}
                 {% else %}
-                    No se han registrado productos en el sistema.
+                    No se han registrado Desparasitantes en el sistema.
                 {% endif %}
             </p>
             <a href="{% url 'inventario:crear_producto' %}" class="add-product-btn">
                 <i class="fas fa-plus"></i>
-                Crear Primer Producto
+                Crear Primer Desparasitante
             </a>
         </div>
         {% endif %}

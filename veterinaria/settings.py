@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+from decouple import config
 
 load_dotenv()
 
@@ -10,7 +11,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Configuración segura para producción
 SECRET_KEY = os.getenv("SECRET_KEY", "clave-insegura-en-desarrollo")
 DEBUG = os.getenv("DEBUG", "False") == "True"
-ALLOWED_HOSTS = ["*"]  # Puedes restringirlo a tu dominio más adelante
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'petscompany.up.railway.app',  # Tu dominio exacto
+    '*.railway.app',  # Para subdominios de Railway
+]
 
 # Aplicaciones instaladas
 INSTALLED_APPS = [
@@ -124,3 +130,36 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Orígenes confiables para CSRF
+CSRF_TRUSTED_ORIGINS = [
+    'https://petscompany.up.railway.app',  #dominio exacto con https
+    'https://*.railway.app',  # Para cualquier subdominio de Railway
+]
+
+# Configuración de cookies para producción
+CSRF_COOKIE_SECURE = True  # Solo HTTPS en producción
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_AGE = 3600  # 1 hora
+
+# Configuración de sesión
+SESSION_COOKIE_SECURE = True  # Solo HTTPS en producción
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_AGE = 1209600  # 2 semanas
+
+# Headers de proxy para Railway
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Si estás en desarrollo local, mantén configuración menos restrictiva
+if DEBUG:
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
+    ALLOWED_HOSTS.extend(['127.0.0.1:8000', 'localhost:8000'])
+    CSRF_TRUSTED_ORIGINS.extend([
+        'http://localhost:8000',
+        'http://127.0.0.1:8000',
+    ])

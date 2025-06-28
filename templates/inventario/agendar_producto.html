@@ -1028,35 +1028,37 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Form validation with enhanced UX
+    // Form validation MEJORADA - SIN preventDefault innecesario
     const form = document.getElementById('agendarProductoForm');
     if (form) {
         form.addEventListener('submit', function(e) {
             console.log('=== ENVIANDO FORMULARIO ===');
-            // Verificar CSRF token
+            
+            // 1. VERIFICAR CSRF TOKEN PRIMERO
             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
             if (!csrfToken || !csrfToken.value) {
-                console.error('CSRF token no encontrado');
+                console.error('❌ CSRF token no encontrado');
                 alert('Error de seguridad. Por favor recarga la página.');
                 e.preventDefault();
                 return false;
             }
-            console.log('CSRF token encontrado:', csrfToken.value.substring(0, 10) + '...');
+            console.log('✅ CSRF token encontrado:', csrfToken.value.substring(0, 10) + '...');
             
-            console.log('Datos del formulario:');
+            // 2. LOG DE DATOS DEL FORMULARIO
+            console.log('📋 Datos del formulario:');
             const formData = new FormData(form);
             for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
+                console.log(`  ${key}: ${value}`);
             }
             
-            // Verificar campos obligatorios con mejor UX
-            const producto = document.querySelector('select[name="producto"]').value;
-            const fecha = document.querySelector('input[name="fecha_proxima"]').value;
+            // 3. VALIDACIÓN DE CAMPOS (SIN BLOQUEAR EL ENVÍO SI ES VÁLIDO)
+            const producto = document.querySelector('select[name="producto"]')?.value || '';
+            const fecha = document.querySelector('input[name="fecha_proxima"]')?.value || '';
             
             let hasErrors = false;
             
             // Validar producto
-            if (!producto) {
+            if (!producto.trim()) {
                 showFieldError('producto', 'Por favor selecciona un producto');
                 hasErrors = true;
             } else {
@@ -1064,7 +1066,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Validar fecha
-            if (!fecha) {
+            if (!fecha.trim()) {
                 showFieldError('fecha_proxima', 'Por favor selecciona una fecha');
                 hasErrors = true;
             } else {
@@ -1081,8 +1083,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
+            // 4. SI HAY ERRORES, BLOQUEAR ENVÍO
             if (hasErrors) {
+                console.log('❌ Errores de validación encontrados, bloqueando envío');
                 e.preventDefault();
+                
                 // Scroll to first error
                 const firstError = document.querySelector('.field-error');
                 if (firstError) {
@@ -1091,10 +1096,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
             
-            console.log('Formulario válido, enviando...');
+            // 5. SI TODO ESTÁ BIEN, PERMITIR ENVÍO
+            console.log('✅ Formulario válido, permitiendo envío...');
+            console.log('📤 Form method:', form.method);
+            console.log('📤 Form action:', form.action);
             
-            // Show loading state
+            // Show loading state PERO NO BLOQUEAR EL ENVÍO
             showLoadingState();
+            
+            // IMPORTANTE: NO hacer e.preventDefault() aquí
+            // Dejar que el formulario se envíe normalmente
+            return true;
         });
     }
     
@@ -1104,6 +1116,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
             const submitBtn = document.getElementById('btnAgendar');
             if (submitBtn && !submitBtn.disabled) {
+                e.preventDefault();
                 submitBtn.click();
             }
         }
@@ -1112,45 +1125,65 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape') {
             const cancelBtn = document.querySelector('.btn-outline-modern');
             if (cancelBtn) {
-                cancelBtn.click();
+                if (confirm('¿Estás seguro de que quieres cancelar?')) {
+                    window.location.href = cancelBtn.href;
+                }
             }
         }
     });
     
-    // Auto-save draft (opcional - guarda en localStorage temporalmente)
+    // Auto-save draft (SIMPLIFICADO)
     const autoSaveFields = ['producto', 'fecha_proxima', 'observaciones'];
+    const draftKey = 'agendar_producto_draft';
+    
+    // Load saved values
+    try {
+        const savedData = JSON.parse(localStorage.getItem(draftKey) || '{}');
+        autoSaveFields.forEach(fieldName => {
+            const field = document.querySelector(`[name="${fieldName}"]`);
+            if (field && savedData[fieldName] && !field.value) {
+                field.value = savedData[fieldName];
+            }
+        });
+    } catch (e) {
+        console.warn('Error loading draft:', e);
+    }
+    
+    // Save draft on changes
+    function saveDraft() {
+        try {
+            const draftData = {};
+            autoSaveFields.forEach(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field && field.value) {
+                    draftData[fieldName] = field.value;
+                }
+            });
+            localStorage.setItem(draftKey, JSON.stringify(draftData));
+        } catch (e) {
+            console.warn('Error saving draft:', e);
+        }
+    }
+    
+    // Attach save draft listeners
     autoSaveFields.forEach(fieldName => {
         const field = document.querySelector(`[name="${fieldName}"]`);
         if (field) {
-            // Load saved value
-            const savedValue = localStorage.getItem(`agendar_draft_${fieldName}`);
-            if (savedValue && !field.value) {
-                field.value = savedValue;
-            }
-            
-            // Save on change
-            field.addEventListener('input', function() {
-                localStorage.setItem(`agendar_draft_${fieldName}`, this.value);
-            });
+            field.addEventListener('change', saveDraft);
+            field.addEventListener('input', debounce(saveDraft, 1000));
         }
     });
     
-    // Clear draft when form is submitted successfully
-    form?.addEventListener('submit', function() {
-        setTimeout(() => {
-            autoSaveFields.forEach(fieldName => {
-                localStorage.removeItem(`agendar_draft_${fieldName}`);
-            });
-        }, 1000);
-    });
-    
-    console.log('Scripts del formulario inicializados correctamente');
+    console.log('✅ Scripts del formulario inicializados correctamente');
 });
 
 // Helper functions
 function showFieldError(fieldName, message) {
     const field = document.querySelector(`[name="${fieldName}"]`);
-    if (!field) return;
+    if (!field) {
+        console.warn(`Campo ${fieldName} no encontrado para mostrar error`);
+        return;
+    }
     
     // Remove existing error
     clearFieldError(fieldName);
@@ -1189,16 +1222,90 @@ function showLoadingState() {
     if (btnAgendar) {
         btnAgendar.disabled = true;
         btnAgendar.classList.add('btn-loading');
+        const originalText = btnAgendar.innerHTML;
         btnAgendar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agendando Producto...';
         
-        // Disable form
-        const form = document.getElementById('agendarProductoForm');
-        const formElements = form.querySelectorAll('input, select, textarea, button');
-        formElements.forEach(element => {
-            element.disabled = true;
-        });
+        // Restaurar estado original si no se redirige en 10 segundos
+        setTimeout(() => {
+            if (btnAgendar.disabled) {
+                btnAgendar.disabled = false;
+                btnAgendar.classList.remove('btn-loading');
+                btnAgendar.innerHTML = originalText;
+                console.log('⚠️ Loading state restaurado por timeout');
+            }
+        }, 10000);
     }
 }
+
+// Utility function
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Clear draft when leaving page (successful submission)
+window.addEventListener('beforeunload', function() {
+    // Only clear if form was successfully submitted
+    const form = document.getElementById('agendarProductoForm');
+    if (form && form.classList.contains('submitted')) {
+        localStorage.removeItem('agendar_producto_draft');
+    }
+});
 </script>
+
+<!-- CSS adicional para las animaciones -->
+<style>
+.shake {
+    animation: shake 0.6s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.form-group-focused {
+    transform: scale(1.02);
+    transition: transform 0.2s ease;
+}
+
+.typing {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+.product-selected {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.btn-loading {
+    opacity: 0.7;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.btn-loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+</style>
 {% endblock %}
 

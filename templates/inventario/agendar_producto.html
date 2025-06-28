@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% csrf_token %}
 
 {% block title %}Agendar Producto - {{ mascota.nombre|default:"Mascota" }}{% endblock %}
 
@@ -821,12 +822,10 @@
 
                     <form method="post" novalidate id="agendarProductoForm">
                         {% csrf_token %}
-                        
-                        <!-- Campo oculto para mascota -->
                         {% if mascota %}
                             <input type="hidden" name="mascota" value="{{ mascota.id }}">
                         {% endif %}
-                        
+
                         <!-- Información básica -->
                         <div class="form-section">
                             <h6 class="section-title">
@@ -1034,6 +1033,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         form.addEventListener('submit', function(e) {
             console.log('=== ENVIANDO FORMULARIO ===');
+            // Verificar CSRF token
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (!csrfToken || !csrfToken.value) {
+                console.error('CSRF token no encontrado');
+                alert('Error de seguridad. Por favor recarga la página.');
+                e.preventDefault();
+                return false;
+            }
+            console.log('CSRF token encontrado:', csrfToken.value.substring(0, 10) + '...');
+            
             console.log('Datos del formulario:');
             const formData = new FormData(form);
             for (let [key, value] of formData.entries()) {

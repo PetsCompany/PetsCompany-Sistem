@@ -125,7 +125,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuración específica para Railway
 CSRF_TRUSTED_ORIGINS = [
-    "https://web-production-77526.up.railway.app"
+    "https://petscompany.up.railway.app"
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

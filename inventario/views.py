@@ -594,7 +594,6 @@ class AgendaGeneralView(LoginRequiredMixin, View):
 
 # ============================================================================
 # MODIFICACIÓN AL DASHBOARD EXISTENTE
-# Reemplaza tu función dashboard_inventario con esta versión actualizada
 # ============================================================================
 
 @login_required

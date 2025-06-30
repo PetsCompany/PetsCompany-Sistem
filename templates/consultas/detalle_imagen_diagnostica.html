@@ -544,13 +544,13 @@
         <!-- Imagen Principal -->
         <div class="col-lg-8">
             <div class="image-container zoom-effect">
-                <img src="{{ imagen.archivo.url }}" class="diagnostic-image" alt="Imagen diagnóstica">
+                <img src="{{ imagen.get_file_url }}" class="diagnostic-image" alt="Imagen diagnóstica">
                 
                 <div class="image-actions">
-                    <a href="{{ imagen.archivo.url }}" class="btn-modern btn-outline-primary" target="_blank">
+                    <a href="{{ imagen.get_file_url }}" class="btn-modern btn-outline-primary" target="_blank">
                         <span><i class="fas fa-external-link-alt me-1"></i>Abrir en nueva ventana</span>
                     </a>
-                    <a href="{{ imagen.archivo.url }}" class="btn-modern btn-outline-success" download>
+                    <a href="{{ imagen.get_file_url }}" class="btn-modern btn-outline-success" download>
                         <span><i class="fas fa-download me-1"></i>Descargar</span>
                     </a>
                 </div>

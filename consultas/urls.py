@@ -29,4 +29,7 @@ urlpatterns = [
     path('imagen/<int:pk>/', views.ImagenDiagnosticaDetailView.as_view(), name='detalle_imagen_diagnostica'),
     path('imagen/<int:pk>/editar/', views.ImagenDiagnosticaUpdateView.as_view(), name='editar_imagen_diagnostica'),
     path('imagen/<int:pk>/eliminar/', views.ImagenDiagnosticaDeleteView.as_view(), name='eliminar_imagen_diagnostica'),
+    
+    # URL para servir media de forma segura
+    path('media/<path:path>/', views.SecureMediaView.as_view(), name='secure_media'),
 ]

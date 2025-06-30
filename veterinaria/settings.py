@@ -102,12 +102,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Solo usar WhiteNoise storage en producción
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Archivos de usuario (subidas)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+if not DEBUG:  # Solo en producción
+    # Usar un servidor web como nginx para servir archivos estáticos
+    # pero si necesitas que Django los sirva temporalmente:
+    SECURE_MEDIA_URL = '/media/'
 
 # Configuración de formularios
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

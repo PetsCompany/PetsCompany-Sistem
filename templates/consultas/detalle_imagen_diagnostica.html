@@ -422,6 +422,83 @@
         align-items: center;
     }
 
+    /* Nuevos estilos para manejo de errores */
+    .error-message {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--border-radius);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        box-shadow: var(--box-shadow);
+    }
+    
+    .error-message i {
+        font-size: 1.2rem;
+    }
+    
+    .file-not-found {
+        background: rgba(220, 53, 69, 0.1);
+        border: 2px dashed #dc3545;
+        border-radius: var(--border-radius);
+        padding: 3rem 2rem;
+        text-align: center;
+        color: #dc3545;
+    }
+    
+    .file-not-found i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.7;
+    }
+    
+    .file-info {
+        background: rgba(23, 162, 184, 0.1);
+        border-left: 4px solid #17a2b8;
+        padding: 1rem;
+        border-radius: var(--border-radius-sm);
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #0c5460;
+    }
+    
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--border-radius);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    
+    .loading-overlay.show {
+        opacity: 1;
+        pointer-events: all;
+    }
+    
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #dc3545;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
     @media (max-width: 768px) {
         .diagnostic-image-header {
             padding: 1.5rem;
@@ -506,6 +583,17 @@
 
 {% block content %}
 <div class="fade-in">
+    <!-- Mensaje de error si el archivo no existe -->
+    {% if not file_exists %}
+    <div class="error-message">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div>
+            <strong>Archivo no encontrado:</strong> El archivo asociado a esta imagen diagnóstica no se puede acceder. 
+            Por favor, contacta al administrador del sistema.
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Breadcrumb -->
     <nav class="breadcrumb-modern slide-up">
         <ol class="breadcrumb">
@@ -544,16 +632,58 @@
         <!-- Imagen Principal -->
         <div class="col-lg-8">
             <div class="image-container zoom-effect">
-                <img src="{{ imagen.archivo.url }}" class="diagnostic-image" alt="Imagen diagnóstica">
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="spinner"></div>
+                </div>
+                
+                {% if file_exists %}
+                    {% if is_image %}
+                        <img src="{{ imagen.get_file_url }}" 
+                             class="diagnostic-image" 
+                             alt="Imagen diagnóstica"
+                             onerror="handleImageError(this)"
+                             onload="hideLoading()">
+                    {% else %}
+                        <div class="file-not-found">
+                            <i class="fas fa-file-alt"></i>
+                            <h5>Archivo no es una imagen</h5>
+                            <p>Este archivo no puede mostrarse como imagen. Utiliza el botón de descarga para acceder al archivo.</p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="file-not-found">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h5>Archivo no encontrado</h5>
+                        <p>El archivo asociado a esta imagen diagnóstica no está disponible.</p>
+                    </div>
+                {% endif %}
                 
                 <div class="image-actions">
-                    <a href="{{ imagen.archivo.url }}" class="btn-modern btn-outline-primary" target="_blank">
-                        <span><i class="fas fa-external-link-alt me-1"></i>Abrir en nueva ventana</span>
-                    </a>
-                    <a href="{{ imagen.archivo.url }}" class="btn-modern btn-outline-success" download>
-                        <span><i class="fas fa-download me-1"></i>Descargar</span>
-                    </a>
+                    {% if file_exists %}
+                        <button onclick="openInNewWindow()" class="btn-modern btn-outline-primary">
+                            <span><i class="fas fa-external-link-alt me-1"></i>Abrir en nueva ventana</span>
+                        </button>
+                        <button onclick="downloadFile()" class="btn-modern btn-outline-success">
+                            <span><i class="fas fa-download me-1"></i>Descargar</span>
+                        </button>
+                    {% else %}
+                        <button class="btn-modern btn-outline-secondary" disabled>
+                            <span><i class="fas fa-times me-1"></i>Archivo no disponible</span>
+                        </button>
+                    {% endif %}
                 </div>
+                
+                {% if file_exists %}
+                <div class="file-info">
+                    <i class="fas fa-info-circle me-1"></i>
+                    <strong>Información del archivo:</strong> {{ file_size }}
+                    {% if is_image %}
+                        | Imagen
+                    {% else %}
+                        | Documento
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
         </div>
 
@@ -618,6 +748,21 @@
                         </div>
                     </div>
                     {% endif %}
+                    
+                    <!-- Estado del archivo -->
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-{{ file_exists|yesno:'check,times' }}"></i>
+                            Estado del archivo
+                        </div>
+                        <div class="info-value">
+                            {% if file_exists %}
+                                <span class="text-success">Disponible</span>
+                            {% else %}
+                                <span class="text-danger">No disponible</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -647,4 +792,134 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mostrar loading al cargar imágenes
+    const images = document.querySelectorAll('.diagnostic-image');
+    images.forEach(img => {
+        img.addEventListener('loadstart', showLoading);
+        img.addEventListener('load', hideLoading);
+        img.addEventListener('error', hideLoading);
+    });
+});
+
+function showLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.add('show');
+    }
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.remove('show');
+    }
+}
+
+function handleImageError(img) {
+    hideLoading();
+    // Reemplazar imagen rota con mensaje de error
+    const container = img.parentElement;
+    container.innerHTML = `
+        <div class="file-not-found">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h5>Error al cargar la imagen</h5>
+            <p>No se pudo cargar la imagen. El archivo puede estar dañado o no estar disponible.</p>
+        </div>
+    `;
+}
+
+function openInNewWindow() {
+    showLoading();
+    {% if file_exists %}
+        const url = '{{ imagen.get_file_url|escapejs }}';
+        const newWindow = window.open(url, '_blank');
+        
+        // Verificar si se abrió correctamente
+        setTimeout(() => {
+            hideLoading();
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                showNotification('Error: No se pudo abrir el archivo. Verifica que no haya bloqueadores de ventanas emergentes.', 'error');
+            }
+        }, 1000);
+    {% else %}
+        hideLoading();
+        showNotification('El archivo no está disponible.', 'error');
+    {% endif %}
+}
+
+function downloadFile() {
+    showLoading();
+    {% if file_exists %}
+        try {
+            const url = '{{ imagen.get_download_url|escapejs }}';
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = '{{ imagen.archivo.name|basename }}';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            setTimeout(() => {
+                hideLoading();
+                showNotification('Descarga iniciada correctamente.', 'success');
+            }, 1000);
+        } catch (error) {
+            hideLoading();
+            console.error('Error en descarga:', error);
+            showNotification('Error al descargar el archivo.', 'error');
+        }
+    {% else %}
+        hideLoading();
+        showNotification('El archivo no está disponible para descargar.', 'error');
+    {% endif %}
+}
+
+function showNotification(message, type = 'info') {
+    // Crear notificación toast
+    const toast = document.createElement('div');
+    toast.className = `alert alert-${type === 'error' ? 'danger' : type} position-fixed`;
+    toast.style.cssText = `
+        top: 20px; 
+        right: 20px; 
+        z-index: 9999; 
+        min-width: 300px;
+        animation: slideIn 0.3s ease-out;
+    `;
+    toast.innerHTML = `
+        <div class="d-flex align-items-center">
+            <i class="fas fa-${type === 'error' ? 'times-circle' : type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
+            <span>${message}</span>
+            <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Auto-remove después de 5 segundos
+    setTimeout(() => {
+        if (toast.parentElement) {
+            toast.remove();
+        }
+    }, 5000);
+}
+
+// CSS para la animación
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
 {% endblock %}

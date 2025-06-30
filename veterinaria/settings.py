@@ -10,6 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Configuración segura para producción
 SECRET_KEY = os.getenv("SECRET_KEY", "clave-insegura-en-desarrollo")
 DEBUG = os.getenv("DEBUG", "False") == "True"
+if not DEBUG:
+    USE_SECURE_MEDIA = True
+    
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',

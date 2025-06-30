@@ -503,6 +503,12 @@ class ImagenDiagnosticaDeleteView(CanDeleteMixin, DeleteView):
 class SecureMediaView(View):
     """Vista para servir archivos media de forma segura"""
     
+    def has_permission(self, request, path):
+        """Verificar permisos del usuario para acceder al archivo"""
+        # Por ahora permitir acceso a usuarios autenticados
+        # Aquí puedes agregar lógica más específica si necesitas
+        return request.user.is_authenticated
+    
     def get(self, request, path):
         try:
             # Construir la ruta completa del archivo
@@ -512,12 +518,14 @@ class SecureMediaView(View):
             if not os.path.exists(full_path):
                 raise Http404("Archivo no encontrado")
             
-            # Verificar que el usuario tiene permisos (opcional)
+            # Verificar que el usuario tiene permisos
             if not self.has_permission(request, path):
                 raise Http404("Sin permisos para acceder al archivo")
             
             # Obtener el tipo MIME
             content_type, _ = mimetypes.guess_type(full_path)
+            if content_type is None:
+                content_type = 'application/octet-stream'
             
             # Servir el archivo
             response = FileResponse(

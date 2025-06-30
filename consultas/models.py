@@ -67,7 +67,7 @@ class ImagenDiagnostica(models.Model):
         return f'imagenes_diagnosticas/{instance.fecha.year}/{instance.fecha.month:02d}/{instance.mascota.id}/{filename}'
         
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='imagenes')
-    archivo = models.FileField(upload_to='imagenes_diagnosticas/%Y/%m/%d/')  # Cambiado de ImageField a FileField
+    archivo = models.FileField(upload_to=upload_to)  # Cambiado de ImageField a FileField
     descripcion = models.TextField()
     fecha = models.DateTimeField(default=timezone.now)
     

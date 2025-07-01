@@ -25,3 +25,12 @@ class ProductoAplicadoAdmin(admin.ModelAdmin):
     list_filter = ('producto', 'fecha_aplicacion')
     search_fields = ('mascota__nombre', 'producto__nombre')
     date_hierarchy = 'fecha_aplicacion'
+    
+@admin.register(VacunaAplicada)
+class VacunaAplicadaAdmin(admin.ModelAdmin):
+    list_display = ('mascota', 'vacuna', 'fecha_aplicacion', 'fecha_proxima', 'estado_display')
+    list_filter = ('vacuna', 'fecha_aplicacion', 'fecha_proxima')
+    # Agregar filtros por estado
+    def estado_display(self, obj):
+        return obj.estado_display
+    estado_display.short_description = 'Estado'

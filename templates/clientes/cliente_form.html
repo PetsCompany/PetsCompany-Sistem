@@ -25,7 +25,7 @@
             --primary-color: #dc2626;
             --secondary-color: #ef4444;
             --primary-dark: #991b1b;
-            --success-color: #dc2626;
+            --success-color: #10b981;
             --danger-color: #dc2626;
             --warning-color: #dc2626;
             --info-color: #ef4444;
@@ -34,8 +34,8 @@
             --bg-white: #ffffff;
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
-            --input-bg: #f9fafb;
-            --input-border: #e5e7eb;
+            --input-bg: #ffffff;
+            --input-border: #d1d5db;
         }
         
         .form-container {
@@ -170,20 +170,17 @@
 
         /* NUEVO DISEÑO DE INPUT - LIMPIO Y MODERNO */
         .form-control {
-            /* Resetear todos los estilos problemáticos */
-            border: 2px solid var(--input-border);
+            border: 2px solid #d1d5db !important;
             border-radius: 12px;
             padding: 1rem 1.25rem;
             font-size: 1rem;
             font-weight: 500;
             color: var(--text-primary);
-            background-color: var(--input-bg);
+            background-color: #ffffff !important;
             width: 100%;
             outline: none;
             transition: all 0.3s ease;
-            
-            /* Eliminar cualquier decoración no deseada */
-            box-shadow: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
             text-decoration: none;
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -199,22 +196,22 @@
 
         /* Estados del input mejorados */
         .form-control:hover {
-            border-color: rgba(220, 38, 38, 0.4);
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+            border-color: rgba(220, 38, 38, 0.6) !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.15) !important;
         }
 
         .form-control:focus {
-            border-color: var(--primary-color);
-            background-color: #ffffff;
+            border-color: var(--primary-color) !important;
+            background-color: #ffffff !important;
             box-shadow: 
                 0 0 0 3px rgba(220, 38, 38, 0.1),
-                0 4px 12px rgba(220, 38, 38, 0.15);
+                0 4px 12px rgba(220, 38, 38, 0.15) !important;
             transform: translateY(-1px);
         }
 
         .form-control::placeholder {
-            color: #9ca3af;
+            color: #9ca3af !important;
             font-weight: 400;
             font-style: italic;
         }
@@ -224,19 +221,21 @@
             min-height: 120px;
             resize: vertical;
             font-family: inherit;
+            border: 2px solid #d1d5db !important;
+            background-color: #ffffff !important;
         }
 
         /* Estados de validación limpios */
         .form-control.is-valid {
-            border-color: var(--success-color);
-            background-color: rgba(220, 38, 38, 0.02);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            border-color: #10b981 !important; /* Verde para válido */
+            background-color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
         }
 
         .form-control.is-invalid {
-            border-color: var(--danger-color);
-            background-color: rgba(220, 38, 38, 0.02);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            border-color: var(--danger-color) !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
             animation: shake 0.5s ease-in-out;
         }
 
@@ -554,11 +553,6 @@
         }
 
         /* ESTILOS ADICIONALES PARA ELIMINAR CUALQUIER LÍNEA NEGRA */
-        input, textarea, select {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-        }
 
         input.form-control, 
         textarea.form-control, 

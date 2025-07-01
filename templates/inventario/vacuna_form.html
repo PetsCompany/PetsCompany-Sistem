@@ -30,8 +30,8 @@
             --bg-white: #ffffff;
             --glass-bg: rgba(255, 255, 255, 0.25);
             --glass-border: rgba(255, 255, 255, 0.18);
-            --input-bg: #f9fafb;
-            --input-border: #e5e7eb;
+            --input-bg: #f8fafc;
+            --input-border: #cbd5e1;
             --vaccine-primary: #dc2626;
             --vaccine-secondary: #ef4444;
         }
@@ -168,8 +168,8 @@
 
         /* NUEVO DISEÑO DE INPUT - LIMPIO Y MODERNO */
         .form-control {
-            /* Resetear todos los estilos problemáticos */
-            border: 2px solid var(--input-border);
+            /* Bordes siempre visibles */
+            border: 2px solid var(--input-border) !important;
             border-radius: 12px;
             padding: 1rem 1.25rem;
             font-size: 1rem;
@@ -180,9 +180,8 @@
             outline: none;
             transition: all 0.3s ease;
             
-            /* Eliminar cualquier decoración no deseada */
-            box-shadow: none;
-            text-decoration: none;
+            /* Eliminar sombras por defecto pero mantener bordes */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -197,24 +196,26 @@
 
         /* Estados del input mejorados */
         .form-control:hover {
-            border-color: rgba(220, 38, 38, 0.4);
+            border-color: rgba(220, 38, 38, 0.4) !important;
             background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08) !important;
         }
 
         .form-control:focus {
-            border-color: var(--vaccine-primary);
+            border-color: var(--vaccine-primary) !important;
             background-color: #ffffff;
             box-shadow: 
                 0 0 0 3px rgba(220, 38, 38, 0.1),
-                0 4px 12px rgba(220, 38, 38, 0.15);
+                0 4px 12px rgba(220, 38, 38, 0.15) !important;
             transform: translateY(-1px);
         }
 
+        /* Asegurar que los placeholders sean visibles */
         .form-control::placeholder {
             color: #94a3b8;
             font-weight: 400;
             font-style: italic;
+            opacity: 1; /* Asegurar visibilidad en todos los navegadores */
         }
 
         /* TEXTAREAS específicamente */
@@ -222,19 +223,20 @@
             min-height: 120px;
             resize: vertical;
             font-family: inherit;
+            border: 2px solid var(--input-border) !important;
         }
 
         /* Estados de validación limpios */
         .form-control.is-valid {
-            border-color: var(--success-color);
+            border-color: var(--success-color) !important;
             background-color: rgba(22, 163, 74, 0.02);
-            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1) !important;
         }
 
         .form-control.is-invalid {
-            border-color: var(--danger-color);
+            border-color: var(--danger-color) !important;
             background-color: rgba(220, 38, 38, 0.02);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
             animation: shake 0.5s ease-in-out;
         }
 
@@ -549,13 +551,6 @@
         .breadcrumb-item.active {
             color: var(--text-primary);
             font-weight: 600;
-        }
-
-        /* ESTILOS ADICIONALES PARA ELIMINAR CUALQUIER LÍNEA NEGRA */
-        input, textarea, select {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
 
         input.form-control, 

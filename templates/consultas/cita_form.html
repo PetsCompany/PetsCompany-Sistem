@@ -32,6 +32,7 @@
             --glass-border: rgba(255, 255, 255, 0.18);
             --input-bg: #fafafa;
             --input-border: #e5e7eb;
+            --input-border-focus: #dc2626;
         }
         
         .form-container {
@@ -180,7 +181,7 @@
             box-shadow: 0 4px 8px rgba(220, 38, 38, 0.3);
         }
 
-        /* INPUTS COMPLETAMENTE REDISEÑADOS - SIN RECUADROS NEGROS */
+        /* INPUTS COMPLETAMENTE REDISEÑADOS - CON BORDES SIEMPRE VISIBLES */
         .form-group {
             margin-bottom: 2rem;
             position: relative;
@@ -204,84 +205,92 @@
             font-size: 1.1rem;
         }
 
-        /* NUEVO DISEÑO DE INPUT - LIMPIO Y MODERNO */
-        .form-control, select.form-control {
-            /* Resetear todos los estilos problemáticos */
-            border: 2px solid var(--input-border);
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            background-color: var(--input-bg);
-            width: 100%;
-            outline: none;
-            transition: all 0.3s ease;
+        /* CORRECCIÓN PRINCIPAL: INPUTS CON BORDES SIEMPRE VISIBLES */
+        .form-control, 
+        select.form-control,
+        textarea.form-control,
+        input[type="text"].form-control,
+        input[type="email"].form-control,
+        input[type="datetime-local"].form-control,
+        input[type="date"].form-control,
+        input[type="time"].form-control {
+            /* BORDE SIEMPRE VISIBLE */
+            border: 2px solid var(--input-border) !important;
+            border-radius: 12px !important;
+            padding: 1rem 1.25rem !important;
+            font-size: 1rem !important;
+            font-weight: 500 !important;
+            color: var(--text-primary) !important;
+            background-color: var(--input-bg) !important;
+            width: 100% !important;
+            outline: none !important;
+            transition: all 0.3s ease !important;
             
             /* Eliminar cualquier decoración no deseada */
-            box-shadow: none;
-            text-decoration: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        /* ELIMINAR PSEUDO-ELEMENTOS PROBLEMÁTICOS */
-        .form-control::before,
-        .form-control::after {
-            display: none !important;
-            content: none !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+            text-decoration: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
         }
 
         /* Estados del input mejorados */
-        .form-control:hover, select.form-control:hover {
-            border-color: rgba(220, 38, 38, 0.4);
-            background-color: #ffffff;
-            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08);
+        .form-control:hover, 
+        select.form-control:hover,
+        textarea.form-control:hover {
+            border-color: rgba(220, 38, 38, 0.4) !important;
+            background-color: #ffffff !important;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08) !important;
         }
 
-        .form-control:focus, select.form-control:focus {
-            border-color: var(--primary-color);
-            background-color: #ffffff;
+        .form-control:focus, 
+        select.form-control:focus,
+        textarea.form-control:focus {
+            border-color: var(--input-border-focus) !important;
+            background-color: #ffffff !important;
             box-shadow: 
-                0 0 0 3px rgba(220, 38, 38, 0.1),
-                0 4px 12px rgba(220, 38, 38, 0.15);
-            transform: translateY(-1px);
+                0 0 0 3px rgba(220, 38, 38, 0.1) !important,
+                0 4px 12px rgba(220, 38, 38, 0.15) !important;
+            transform: translateY(-1px) !important;
         }
 
         .form-control::placeholder {
-            color: #94a3b8;
-            font-weight: 400;
-            font-style: italic;
+            color: #94a3b8 !important;
+            font-weight: 400 !important;
+            font-style: italic !important;
         }
 
         /* TEXTAREAS específicamente */
         textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-            font-family: inherit;
+            min-height: 120px !important;
+            resize: vertical !important;
+            font-family: inherit !important;
         }
 
         /* SELECT específicamente */
         select.form-control {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 0.75rem center;
-            background-repeat: no-repeat;
-            background-size: 1.5em 1.5em;
-            padding-right: 3rem;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") !important;
+            background-position: right 0.75rem center !important;
+            background-repeat: no-repeat !important;
+            background-size: 1.5em 1.5em !important;
+            padding-right: 3rem !important;
         }
 
         /* Estados de validación limpios */
-        .form-control.is-valid, select.form-control.is-valid {
-            border-color: var(--success-color);
-            background-color: rgba(220, 38, 38, 0.02);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        .form-control.is-valid, 
+        select.form-control.is-valid,
+        textarea.form-control.is-valid {
+            border-color: var(--success-color) !important;
+            background-color: rgba(220, 38, 38, 0.02) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
 
-        .form-control.is-invalid, select.form-control.is-invalid {
-            border-color: var(--danger-color);
-            background-color: rgba(220, 38, 38, 0.02);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        .form-control.is-invalid, 
+        select.form-control.is-invalid,
+        textarea.form-control.is-invalid {
+            border-color: var(--danger-color) !important;
+            background-color: rgba(220, 38, 38, 0.02) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
             animation: shake 0.5s ease-in-out;
         }
 
@@ -602,26 +611,6 @@
             font-weight: 600;
         }
 
-        /* ESTILOS ADICIONALES PARA ELIMINAR CUALQUIER LÍNEA NEGRA */
-        input, textarea, select {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-        }
-
-        input.form-control, 
-        textarea.form-control, 
-        select.form-control {
-            border: 2px solid var(--input-border) !important;
-            box-shadow: none !important;
-        }
-
-        /* Sobrescribir cualquier estilo de Bootstrap que cause problemas */
-        .form-control:focus, select.form-control:focus {
-            border-color: var(--primary-color) !important;
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
-        }
-
         /* Campos de fecha específicos */
         input[type="datetime-local"].form-control {
             position: relative;
@@ -637,21 +626,21 @@
             width: 1.5rem;
             height: 1.5rem;
             margin-right: 0.75rem;
-            border: 2px solid var(--input-border);
+            border: 2px solid var(--input-border) !important;
             border-radius: 6px;
             background-color: var(--input-bg);
             transition: all 0.3s ease;
         }
 
         .form-check-input:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
         }
 
         .form-check-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
         }
 
         .form-check-label {
@@ -680,9 +669,10 @@
             letter-spacing: 0.5px;
         }
 
-        /* Asegurar que los inputs de Crispy Forms tengan el estilo correcto */
+        /* Asegurar que todos los campos de Crispy Forms mantengan el borde visible */
         .mb-3 .form-control,
-        .form-group .form-control {
+        .form-group .form-control,
+        .crispy-field .form-control {
             border: 2px solid var(--input-border) !important;
             border-radius: 12px !important;
             padding: 1rem 1.25rem !important;
@@ -691,24 +681,32 @@
             color: var(--text-primary) !important;
             background-color: var(--input-bg) !important;
             transition: all 0.3s ease !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
         }
 
         /* Hover y focus para campos de Crispy Forms */
         .mb-3 .form-control:hover,
-        .form-group .form-control:hover {
+        .form-group .form-control:hover,
+        .crispy-field .form-control:hover {
             border-color: rgba(220, 38, 38, 0.4) !important;
             background-color: #ffffff !important;
             box-shadow: 0 2px 8px rgba(220, 38, 38, 0.08) !important;
         }
 
         .mb-3 .form-control:focus,
-        .form-group .form-control:focus {
-            border-color: var(--primary-color) !important;
+        .form-group .form-control:focus,
+        .crispy-field .form-control:focus {
+            border-color: var(--input-border-focus) !important;
             background-color: #ffffff !important;
             box-shadow: 
-                0 0 0 3px rgba(220, 38, 38, 0.1),
+                0 0 0 3px rgba(220, 38, 38, 0.1) !important,
                 0 4px 12px rgba(220, 38, 38, 0.15) !important;
             transform: translateY(-1px) !important;
+        }
+
+        /* OVERRIDE FINAL PARA ELIMINAR CUALQUIER BORDER NONE */
+        input, textarea, select {
+            border: 2px solid var(--input-border) !important;
         }
 </style>
 {% endblock %}

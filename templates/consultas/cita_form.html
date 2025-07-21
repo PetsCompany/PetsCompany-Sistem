@@ -3,14 +3,14 @@
 {% load widget_tweaks %}
 
 {% block title %}
-{% if form.instance.id %}Editar Cita{% else %}Nueva Cita{% endif %}
+{% if form.instance.id %}Editar Consulta{% else %}Nueva Consulta{% endif %}
 {% endblock %}
 
 {% block page_title %}
 {% if form.instance.id %}
-    Editar Cita
+    Editar Consulta
 {% else %}
-    Nueva Cita
+    Nueva Consulta
 {% endif %}
 {% endblock %}
 
@@ -719,14 +719,14 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{% url 'consultas:lista_citas' %}">
-                        <i class="fas fa-calendar-alt me-1"></i>Citas
+                        <i class="fas fa-calendar-alt me-1"></i>Consultas Programadas
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                     {% if form.instance.id %}
-                        <i class="fas fa-edit me-1"></i>Editar Cita
+                        <i class="fas fa-edit me-1"></i>Editar Consulta Programada
                     {% else %}
-                        <i class="fas fa-plus me-1"></i>Nueva Cita
+                        <i class="fas fa-plus me-1"></i>Nueva Consulta Programada
                     {% endif %}
                 </li>
             </ol>
@@ -747,16 +747,16 @@
                         {% endif %}
                     </div>
                     {% if form.instance.id %}
-                        Editar Cita Médica
+                        Editar Consulta Programada
                     {% else %}
-                        Programar Nueva Cita
+                        Programar Nueva Consulta
                     {% endif %}
                 </h2>
                 <p>
                     {% if form.instance.id %}
-                        Modifica los detalles de la cita médica programada
+                        Modifica los detalles de la Consulta Programada
                     {% else %}
-                        Complete el formulario para programar una nueva cita médica veterinaria
+                        Complete el formulario para programar una nueva Consultas Programadas
                     {% endif %}
                 </p>
             </div>
@@ -818,7 +818,7 @@
                         <div class="form-group">
                             <label for="{{ form.fecha.id_for_label }}" class="form-label required-field">
                                 <i class="fas fa-calendar-alt"></i>
-                                {{ form.fecha.label }}
+                                Fecha
                             </label>
                             {{ form.fecha }}
                             {% if form.fecha.errors %}
@@ -830,33 +830,6 @@
                             {% endif %}
                             {% if form.fecha.help_text %}
                                 <small class="form-text text-muted">{{ form.fecha.help_text }}</small>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                    <!-- Campo Programada -->
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-clock"></i>
-                                Estado de la Cita
-                            </label>
-                            <div class="form-check" style="margin-top: 1rem;">
-                                {{ form.programada }}
-                                <label class="form-check-label" for="{{ form.programada.id_for_label }}">
-                                    <i class="fas fa-check-circle"></i>
-                                    {{ form.programada.label }}
-                                </label>
-                            </div>
-                            {% if form.programada.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {% for error in form.programada.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            {% if form.programada.help_text %}
-                                <small class="form-text text-muted">{{ form.programada.help_text }}</small>
                             {% endif %}
                         </div>
                     </div>
@@ -890,9 +863,9 @@
                     <button type="submit" class="btn btn-primary" id="submitBtn">
                         <i class="fas fa-save"></i>
                         {% if form.instance.id %}
-                            Actualizar Cita
+                            Actualizar Consulta
                         {% else %}
-                            Guardar Cita
+                            Guardar Consulta
                         {% endif %}
                     </button>
                 </div>
@@ -927,7 +900,7 @@
 <div id="loadingOverlay" class="loading-overlay" style="display: none;">
     <div class="loading-content">
         <div class="loading-spinner"></div>
-        <p>Guardando cita...</p>
+        <p>Guardando consulta...</p>
     </div>
 </div>
 {% endblock %}
@@ -957,21 +930,21 @@
         const fechaInput = form.querySelector('input[name="fecha"]');
         if (fechaInput) {
             // Asegurar que el tipo sea datetime-local
-            fechaInput.type = 'datetime-local';
+            fechaInput.type = 'date';
             
-            // Establecer fecha mínima (ahora)
+            // Establecer fecha mínima (hoy)
             const now = new Date();
-            const minDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-                .toISOString().slice(0, 16);
-            fechaInput.min = minDateTime;
+            const minDate = now.toISOString().split('T')[0]; // Solo la fecha, sin hora
+            fechaInput.min = minDate;
             
             // Validación de fecha en tiempo real
             fechaInput.addEventListener('change', function() {
                 const selectedDate = new Date(this.value);
                 const currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0); // Resetear horas para comparar solo fechas
                 
                 if (selectedDate < currentDate) {
-                    this.setCustomValidity('La fecha debe ser posterior al momento actual');
+                    this.setCustomValidity('La fecha debe ser posterior o igual al día actual');
                     this.classList.add('is-invalid');
                     this.classList.remove('is-valid');
                 } else {

@@ -681,8 +681,17 @@
                             <p><strong>Propietario:</strong> {{ cita.mascota.cliente.nombre }}</p>
                         </div>
                         <div class="cita-info-item">
-                            <p><strong>Fecha de la Cita:</strong> {{ cita.fecha|date:"d/m/Y H:i" }}</p>
+                            <p><strong>Fecha de la Cita:</strong> {{ cita.fecha|date:"d/m/Y" }}</p>
                             <p><strong>Motivo:</strong> {{ cita.motivo }}</p>
+                        </div>
+                        <div class="cita-info-item">
+                            <p><strong>Estado:</strong> 
+                                {% if cita.atendida %}
+                                    <span class="badge bg-success">Atendida</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Pendiente</span>
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -712,6 +721,14 @@
                     <form method="post" id="consultaForm" novalidate>
                         {% csrf_token %}
                         {{ form|crispy }}
+                        
+                        <!-- Advertencia para eutanasia -->
+                        <div id="eutanasiaWarning" class="alert alert-danger mt-3" style="display: none;">
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            <strong>Atención:</strong> Al marcar este procedimiento como eutanasia, 
+                            la mascota será marcada como inactiva automáticamente.
+                        </div>
+                        
                         <div class="btn-submit-container">
                             {% if form.instance.id %}
                             <a href="{% url 'consultas:detalle_consulta' form.instance.id %}" class="btn btn-outline-secondary">
@@ -733,7 +750,7 @@
             </div>
 
             <!-- Acciones rápidas: Aplicar vacunas/productos -->
-            {% if cita or form.instance.id %}
+            {% if cita or form.instance.cita %}
             <div class="info-card">
                 <div class="success-header">
                     <div class="success-header-content">
@@ -788,29 +805,29 @@
                             No se pueden aplicar vacunas o productos.
                         </div>
                         {% endif %}
-                    {% elif form.instance.id and form.instance.mascota %}
-                        {% if form.instance.mascota.activa %}
+                    {% elif form.instance.cita %}
+                        {% if form.instance.cita.mascota.activa %}
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="d-grid">
-                                    <a href="{% url 'inventario:aplicar_vacuna' form.instance.mascota.id %}?from_consulta=1" 
+                                    <a href="{% url 'inventario:aplicar_vacuna' form.instance.cita.mascota.id %}?from_consulta=1" 
                                     class="btn btn-outline-primary btn-lg">
                                         <i class="fas fa-syringe me-2"></i>
                                         <div>
                                             <strong>Aplicar Vacuna</strong>
-                                            <br><small>A {{ form.instance.mascota.nombre }}</small>
+                                            <br><small>A {{ form.instance.cita.mascota.nombre }}</small>
                                         </div>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="d-grid">
-                                    <a href="{% url 'inventario:aplicar_producto' form.instance.mascota.id %}?from_consulta=1" 
+                                    <a href="{% url 'inventario:aplicar_producto' form.instance.cita.mascota.id %}?from_consulta=1" 
                                     class="btn btn-outline-info btn-lg">
                                         <i class="fas fa-pills me-2"></i>
                                         <div>
                                             <strong>Aplicar Producto</strong>
-                                            <br><small>A {{ form.instance.mascota.nombre }}</small>
+                                            <br><small>A {{ form.instance.cita.mascota.nombre }}</small>
                                         </div>
                                     </a>
                                 </div>
@@ -836,6 +853,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Formulario de consulta
     const form = document.getElementById('consultaForm');
     const submitBtn = document.getElementById('submitBtn');
+    const eutanasiaCheckbox = document.querySelector('input[name="es_eutanasia"]');
+    const eutanasiaWarning = document.getElementById('eutanasiaWarning');
+    
+    // Mostrar/ocultar advertencia de eutanasia
+    if (eutanasiaCheckbox) {
+        eutanasiaCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                eutanasiaWarning.style.display = 'block';
+                eutanasiaWarning.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                eutanasiaWarning.style.display = 'none';
+            }
+        });
+        
+        // Verificar estado inicial
+        if (eutanasiaCheckbox.checked) {
+            eutanasiaWarning.style.display = 'block';
+        }
+    }
     
     // Animación de carga en el botón
     if (form && submitBtn) {
@@ -862,23 +898,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     function validateField(field) {
+        // Validar campos requeridos
         if (field.hasAttribute('required') && !field.value.trim()) {
             field.classList.add('is-invalid');
             showFieldError(field, 'Este campo es obligatorio');
             return false;
         }
         
-        // Validación específica para campos de texto
-        if (field.type === 'text' && field.value.trim() && field.value.trim().length < 2) {
+        // Validación específica para textarea de diagnóstico y tratamiento
+        if ((field.name === 'diagnostico' || field.name === 'tratamiento') && 
+            field.value.trim() && field.value.trim().length < 10) {
             field.classList.add('is-invalid');
-            showFieldError(field, 'Debe tener al menos 2 caracteres');
+            showFieldError(field, 'Debe tener al menos 10 caracteres');
             return false;
         }
         
-        // Validación para textarea
-        if (field.tagName.toLowerCase() === 'textarea' && field.value.trim() && field.value.trim().length < 10) {
+        // Validación para notas (opcional pero mínimo si se llena)
+        if (field.name === 'notas' && field.value.trim() && field.value.trim().length < 5) {
             field.classList.add('is-invalid');
-            showFieldError(field, 'Debe tener al menos 10 caracteres');
+            showFieldError(field, 'Debe tener al menos 5 caracteres');
             return false;
         }
         
@@ -917,6 +955,10 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
         });
+        
+        // Aplicar auto-resize inicial
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
     });
     
     // Smooth scroll para alertas
@@ -958,6 +1000,23 @@ document.addEventListener('DOMContentLoaded', function() {
     elements.forEach((el, index) => {
         el.style.animationDelay = `${index * 0.1}s`;
     });
+    
+    // Confirmar eutanasia antes del envío
+    if (form && eutanasiaCheckbox) {
+        form.addEventListener('submit', function(e) {
+            if (eutanasiaCheckbox.checked && !form.eutanasiaConfirmed) {
+                e.preventDefault();
+                if (confirm('¿Está seguro de que desea marcar este procedimiento como eutanasia? La mascota será marcada como inactiva.')) {
+                    form.eutanasiaConfirmed = true;
+                    form.submit();
+                } else {
+                    // Restaurar botón
+                    submitBtn.innerHTML = '<i class="fas fa-save"></i>Guardar Consulta';
+                    submitBtn.disabled = false;
+                }
+            }
+        });
+    }
 });
 </script>
 {% endblock %}

@@ -10,14 +10,12 @@ import os
 
 class Cita(models.Model):
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='citas')
-    fecha = models.DateTimeField()
+    fecha = models.DateField()
     motivo = models.TextField()
-    programada = models.BooleanField(default=True, help_text="Indica si es una cita programada o atención de urgencia")
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
     atendida = models.BooleanField(default=False)
     
     def __str__(self):
-        return f"{self.mascota.nombre} - {self.fecha.strftime('%d/%m/%Y %H:%M')}"
+        return f"{self.mascota.nombre} - {self.fecha.strftime('%d/%m/%Y')}"
     
     def save(self, *args, **kwargs):
         # Verificar que la mascota esté activa para permitir citas
@@ -31,7 +29,7 @@ class Cita(models.Model):
         ordering = ['-fecha']
 
 class Consulta(models.Model):
-    cita = models.OneToOneField(Cita, on_delete=models.CASCADE, related_name='consulta')
+    cita = models.ForeignKey(Cita, on_delete=models.CASCADE, related_name='consultas')
     diagnostico = models.TextField()
     tratamiento = models.TextField()
     notas = models.TextField(blank=True, null=True)
@@ -39,9 +37,10 @@ class Consulta(models.Model):
     fecha_registro = models.DateTimeField(auto_now_add=True)
     
     def save(self, *args, **kwargs):
-        # Marcar la cita como atendida
-        self.cita.atendida = True
-        self.cita.save()
+        # Marcar la cita como atendida solo en la primera consulta
+        if not self.cita.atendida:
+            self.cita.atendida = True
+            self.cita.save()
         
         # Si es eutanasia, marcar la mascota como inactiva
         if self.es_eutanasia:

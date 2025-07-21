@@ -3,8 +3,8 @@ from .models import Cita, Consulta, ImagenDiagnostica
 
 @admin.register(Cita)
 class CitaAdmin(admin.ModelAdmin):
-    list_display = ('mascota', 'fecha', 'motivo', 'programada')
-    list_filter = ('programada', 'fecha')
+    list_display = ('mascota', 'fecha', 'motivo')
+    #list_filter = ('programada', 'fecha')
     search_fields = ('mascota__nombre', 'motivo')
     date_hierarchy = 'fecha'
 

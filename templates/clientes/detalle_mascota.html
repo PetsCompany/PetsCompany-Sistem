@@ -775,6 +775,20 @@
                             <i class="fas fa-images"></i>
                             Imágenes Diagnósticas
                         </a>
+                        
+                        <!-- Botón para actualizar historia clínica -->
+                        {% if ultima_cita %}
+                            <a href="{% url 'consultas:detalle_cita' ultima_cita.id %}" class="action-btn btn-outline-primary-custom">
+                                <i class="fas fa-plus-circle"></i>
+                                Actualizar Historia
+                            </a>
+                        {% else %}
+                            <a href="{% url 'consultas:crear_cita_mascota' mascota.id %}" class="action-btn btn-outline-primary-custom">
+                                <i class="fas fa-plus-circle"></i>
+                                Crear Primera Cita
+                            </a>
+                        {% endif %}
+                        
                         <a href="{% url 'consultas:crear_cita_mascota' mascota.id %}" class="action-btn btn-outline-success-custom">
                             <i class="fas fa-calendar-plus"></i>
                             Agendar Nueva Cita

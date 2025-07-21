@@ -7,6 +7,8 @@
 {% block page_title %}Gestión de Empleados{% endblock %}
 
 {% block extra_css %}
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
     :root {
         --primary-color: #dc3545;
@@ -469,6 +471,7 @@
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="fade-in">
     <!-- Header Section -->
     <div class="employees-header">
@@ -667,6 +670,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- SweetAlert2 JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 // Función para cambiar estado del empleado
 function cambiarEstado(userId, userName) {
@@ -711,7 +716,12 @@ function cambiarEstado(userId, userName) {
                     'Content-Type': 'application/json',
                 },
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     Swal.fire({

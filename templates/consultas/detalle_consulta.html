@@ -658,6 +658,16 @@
                             <th>Propietario:</th>
                             <td>{{ consulta.cita.mascota.cliente.nombre }}</td>
                         </tr>
+                        <tr>
+                            <th>Estado:</th>
+                            <td>
+                                {% if consulta.cita.mascota.activa %}
+                                    <span class="badge bg-success">Activa</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Inactiva</span>
+                                {% endif %}
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -674,19 +684,19 @@
                     <table class="info-table-modern">
                         <tr>
                             <th>Fecha de Cita:</th>
-                            <td>{{ consulta.cita.fecha|date:"d/m/Y H:i" }}</td>
+                            <td>{{ consulta.cita.fecha|date:"d/m/Y" }}</td>
                         </tr>
                         <tr>
                             <th>Motivo:</th>
                             <td>{{ consulta.cita.motivo }}</td>
                         </tr>
                         <tr>
-                            <th>Tipo:</th>
+                            <th>Estado:</th>
                             <td>
-                                {% if consulta.cita.programada %}
-                                    <span class="badge bg-success">Programada</span>
+                                {% if consulta.cita.atendida %}
+                                    <span class="badge bg-success">Atendida</span>
                                 {% else %}
-                                    <span class="badge bg-warning">Urgencia</span>
+                                    <span class="badge bg-warning">Pendiente</span>
                                 {% endif %}
                             </td>
                         </tr>

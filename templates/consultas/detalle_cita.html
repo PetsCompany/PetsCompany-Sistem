@@ -3,9 +3,9 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Detalle de Cita{% endblock %}
+{% block title %}Detalle de Consulta Programada{% endblock %}
 
-{% block page_title %}Detalle de la Cita{% endblock %}
+{% block page_title %}Detalle de la Consulta Programada{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -544,10 +544,10 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{% url 'consultas:lista_citas' %}">
-                    <i class="fas fa-calendar-alt me-1"></i>Citas
+                    <i class="fas fa-calendar-alt me-1"></i>Consultas
                 </a>
             </li>
-            <li class="breadcrumb-item active">Detalle de Cita</li>
+            <li class="breadcrumb-item active">Detalle de Consulta Programada</li>
         </ol>
     </nav>
 
@@ -561,10 +561,10 @@
                 <div class="flex-grow-1">
                     <h1 class="appointment-title">
                         <i class="fas fa-calendar-day icon"></i>
-                        Detalle de Cita
+                        Detalle de Consulta
                     </h1>
                     <p class="appointment-subtitle">
-                        Cita para {{ cita.mascota.nombre }} - {{ cita.fecha|date:"d/m/Y H:i" }}
+                        Consulta Programada para {{ cita.mascota.nombre }} - {{ cita.fecha|date:"d/m/Y" }}
                     </p>
                 </div>
                 <div class="card-actions">
@@ -590,7 +590,7 @@
                 <div class="card-header-modern">
                     <h3 class="card-title-modern">
                         <i class="fas fa-info-circle"></i>
-                        Información de la Cita
+                        Información de la Consulta Programada
                     </h3>
                 </div>
                 <div class="card-body-modern">
@@ -606,24 +606,7 @@
                     
                     <div class="info-item">
                         <strong>Fecha:</strong>
-                        <p>{{ cita.fecha|date:"d/m/Y H:i" }}</p>
-                    </div>
-                    
-                    <div class="info-item">
-                        <strong>Tipo:</strong>
-                        <p>
-                            {% if cita.programada %}
-                            <span class="badge-modern badge-primary">
-                                <i class="fas fa-calendar-check"></i>
-                                Programada
-                            </span>
-                            {% else %}
-                            <span class="badge-modern badge-warning">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Urgencia
-                            </span>
-                            {% endif %}
-                        </p>
+                        <p>{{ cita.fecha|date:"d/m/Y" }}</p>
                     </div>
                     
                     <div class="info-item">
@@ -642,11 +625,6 @@
                             {% endif %}
                         </p>
                     </div>
-                    
-                    <div class="info-item">
-                        <strong>Fecha de Creación:</strong>
-                        <p>{{ cita.fecha_creacion|date:"d/m/Y H:i" }}</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -657,7 +635,7 @@
                 <div class="card-header-modern">
                     <h3 class="card-title-modern">
                         <i class="fas fa-clipboard-list"></i>
-                        Motivo de la Cita
+                        Motivo de la Consulta
                     </h3>
                 </div>
                 <div class="card-body-modern">
@@ -669,73 +647,81 @@
         </div>
     </div>
 
-    <!-- Consulta Asociada -->
-    {% if consulta %}
+    <!-- Consultas Asociadas -->
+    {% if consultas %}
     <div class="detail-card slide-up">
         <div class="card-header-modern bg-success-modern">
             <h3 class="card-title-modern">
                 <i class="fas fa-stethoscope"></i>
-                Consulta Realizada
+                Consultas Realizadas
+                <span class="badge badge-light ms-2">{{ consultas.count }}</span>
             </h3>
         </div>
         <div class="card-body-modern">
-            <div class="consultation-content">
-                <div class="consultation-section">
-                    <h5>
-                        <i class="fas fa-diagnoses"></i>
-                        Diagnóstico
+            {% for consulta in consultas %}
+            <div class="consultation-content {% if not forloop.last %}border-bottom pb-4 mb-4{% endif %}">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h5 class="consultation-title">
+                        <i class="fas fa-calendar-alt"></i>
+                        Consulta {{ forloop.counter }} - {{ consulta.fecha_registro|date:"d/m/Y H:i" }}
                     </h5>
-                    <p>{{ consulta.diagnostico|linebreaks }}</p>
+                    {% if consulta.es_eutanasia %}
+                    <span class="badge-modern badge-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Eutanasia
+                    </span>
+                    {% endif %}
                 </div>
                 
                 <div class="consultation-section">
-                    <h5>
+                    <h6>
+                        <i class="fas fa-diagnoses"></i>
+                        Diagnóstico
+                    </h6>
+                    <p>{{ consulta.diagnostico|linebreaks|truncatewords:30 }}</p>
+                </div>
+                
+                <div class="consultation-section">
+                    <h6>
                         <i class="fas fa-pills"></i>
                         Tratamiento
-                    </h5>
-                    <p>{{ consulta.tratamiento|linebreaks }}</p>
+                    </h6>
+                    <p>{{ consulta.tratamiento|linebreaks|truncatewords:30 }}</p>
                 </div>
                 
                 {% if consulta.notas %}
                 <div class="consultation-section">
-                    <h5>
+                    <h6>
                         <i class="fas fa-sticky-note"></i>
                         Notas Adicionales
-                    </h5>
-                    <p>{{ consulta.notas|linebreaks }}</p>
+                    </h6>
+                    <p>{{ consulta.notas|linebreaks|truncatewords:20 }}</p>
                 </div>
                 {% endif %}
                 
-                {% if consulta.es_eutanasia %}
-                <div class="alert-modern alert-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Esta consulta registra un procedimiento de eutanasia.</span>
-                </div>
-                {% endif %}
-                
-                <div class="consultation-meta">
-                    <small class="text-muted">
-                        <i class="fas fa-clock"></i>
-                        Fecha de registro: {{ consulta.fecha_registro|date:"d/m/Y H:i" }}
-                    </small>
-                    
-                    <div class="consultation-actions">
-                        <a href="{% url 'consultas:detalle_consulta' consulta.id %}" class="btn-modern btn-primary">
-                            <i class="fas fa-eye"></i>
-                            Ver Consulta Completa
+                <div class="consultation-actions">
+                    <a href="{% url 'consultas:detalle_consulta' consulta.id %}" class="btn-modern btn-primary">
+                        <i class="fas fa-eye"></i>
+                        Ver Completa
+                    </a>
+                    <a href="{% url 'consultas:editar_consulta' consulta.id %}" class="btn-modern btn-outline-secondary">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                    </a>
+                    {% if request.user|puede_eliminar %}
+                        <a href="{% url 'consultas:eliminar_consulta' consulta.id %}" class="btn-modern btn-outline-danger">
+                            <i class="fas fa-trash"></i>
+                            Eliminar
                         </a>
-                        <a href="{% url 'consultas:editar_consulta' consulta.id %}" class="btn-modern btn-outline-secondary">
-                            <i class="fas fa-edit"></i>
-                            Editar Consulta
-                        </a>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
     
     {% else %}
-    <!-- Registrar Consulta -->
+    <!-- Registrar Primera Consulta -->
     {% if not cita.atendida %}
     <div class="detail-card slide-up">
         <div class="card-header-modern bg-light-modern">
@@ -746,7 +732,7 @@
         </div>
         <div class="card-body-modern">
             <div class="register-consultation-card">
-                <p>Esta cita aún no ha sido atendida. Puedes registrar la consulta médica ahora.</p>
+                <p>Esta Consulta Programada aún no ha sido atendida. Puedes registrar la consulta médica ahora.</p>
                 <a href="{% url 'consultas:crear_consulta' cita.id %}" class="btn-modern btn-success">
                     <i class="fas fa-plus-circle"></i>
                     Registrar Consulta
@@ -759,13 +745,34 @@
     <div class="alert-modern alert-warning">
         <i class="fas fa-exclamation-triangle"></i>
         <span>
-            Esta cita está marcada como atendida pero no tiene consulta registrada.
+            Esta Consulta Programada está marcada como atendida pero no tiene consultas registradas.
             <a href="{% url 'consultas:crear_consulta' cita.id %}" class="btn-modern btn-outline-secondary ms-2">
                 Registrar Consulta
             </a>
         </span>
     </div>
     {% endif %}
+    {% endif %}
+
+    <!-- Agregar Nueva Consulta (si ya hay consultas) -->
+    {% if consultas and cita.atendida %}
+    <div class="detail-card slide-up">
+        <div class="card-header-modern bg-info-modern">
+            <h3 class="card-title-modern">
+                <i class="fas fa-plus-circle"></i>
+                Agregar Nueva Consulta
+            </h3>
+        </div>
+        <div class="card-body-modern">
+            <div class="register-consultation-card">
+                <p>Puedes agregar una consulta adicional para esta cita (consulta de seguimiento, revisión, etc.).</p>
+                <a href="{% url 'consultas:crear_consulta' cita.id %}" class="btn-modern btn-info">
+                    <i class="fas fa-plus-circle"></i>
+                    Agregar Consulta de Seguimiento
+                </a>
+            </div>
+        </div>
+    </div>
     {% endif %}
 
     <!-- Botones de Acción -->

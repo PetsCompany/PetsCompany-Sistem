@@ -35,12 +35,7 @@ class CitaListView(LoginRequiredMixin, ListView):
         estado_filtro = self.request.GET.get('estado')
         
         if fecha_filtro:
-            queryset = queryset.filter(fecha__date=fecha_filtro)
-            
-        if estado_filtro == 'atendida':
-            queryset = queryset.filter(atendida=True)
-        elif estado_filtro == 'pendiente':
-            queryset = queryset.filter(atendida=False)
+            queryset = queryset.filter(fecha=fecha_filtro)
             
         return queryset
 
@@ -52,12 +47,9 @@ class CitaDetailView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Comprobar si hay una consulta asociada a esta cita
-        try:
-            consulta = Consulta.objects.get(cita=self.object)
-            context['consulta'] = consulta
-        except Consulta.DoesNotExist:
-            context['consulta'] = None
+        
+        consultas = self.object.consultas.all().order_by('-fecha_registro')
+        context['consultas'] = consultas
         return context
 
 
@@ -88,7 +80,7 @@ class CitaCreateView(LoginRequiredMixin, CreateView):
             mascota = get_object_or_404(Mascota, pk=mascota_id)
             form.instance.mascota = mascota
         
-        messages.success(self.request, "Cita creada exitosamente.")
+        messages.success(self.request, "Consulta programada creada exitosamente.")
         return super().form_valid(form)
 
 
@@ -101,7 +93,7 @@ class CitaUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy('consultas:detalle_cita', kwargs={'pk': self.object.pk})
     
     def form_valid(self, form):
-        messages.success(self.request, "Cita actualizada exitosamente.")
+        messages.success(self.request, "Consulta programada actualizada exitosamente.")
         return super().form_valid(form)
 
 
@@ -111,7 +103,7 @@ class CitaDeleteView(CanDeleteMixin, DeleteView):
     success_url = reverse_lazy('consultas:lista_citas')
     
     def delete(self, request, *args, **kwargs):
-        messages.success(self.request, "Cita eliminada exitosamente.")
+        messages.success(self.request, "Consulta programada eliminada exitosamente.")
         return super().delete(request, *args, **kwargs)
 
 
@@ -132,11 +124,6 @@ class ConsultaCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         cita_id = self.kwargs.get('cita_id')
         cita = get_object_or_404(Cita, pk=cita_id)
-        
-        # Verificar que no exista ya una consulta para esta cita
-        if hasattr(cita, 'consulta'):
-            messages.error(self.request, "Esta cita ya tiene una consulta registrada.")
-            return redirect('consultas:detalle_cita', pk=cita.id)
             
         form.instance.cita = cita
         
@@ -204,9 +191,10 @@ class ConsultaDeleteView(CanDeleteMixin, DeleteView):
             mascota.activa = True
             mascota.save()
         
-        # Marcar la cita como no atendida
-        cita.atendida = False
-        cita.save()
+        # Marcar la cita como no atendida solo si no hay más consultas
+        if cita.consultas.count() == 1:  # Solo esta consulta
+            cita.atendida = False
+            cita.save()
         
         messages.success(self.request, "Consulta eliminada exitosamente.")
         return super().delete(request, *args, **kwargs)
@@ -257,50 +245,57 @@ class HistoriaClinicaView(LoginRequiredMixin, View):
 
         # Agregar consultas
         for consulta in consultas:
-            # Convertir datetime a date para comparación consistente
-            fecha = consulta.cita.fecha.date() if hasattr(consulta.cita.fecha, 'date') else consulta.cita.fecha
-            eventos.append({
-                'fecha': fecha,
-                'tipo': 'consulta',
-                'objeto': consulta,
-                'titulo': f'Consulta - {consulta.cita.fecha.strftime("%d/%m/%Y")}'
-            })
+            # Verificar que la cita y la fecha existen
+            if consulta.cita and consulta.cita.fecha:
+                # Convertir datetime a date para comparación consistente
+                fecha = consulta.cita.fecha.date() if hasattr(consulta.cita.fecha, 'date') else consulta.cita.fecha
+                fecha_str = consulta.cita.fecha.strftime('%d/%m/%Y') if consulta.cita.fecha else 'Sin fecha'
+                eventos.append({
+                    'fecha': fecha,
+                    'tipo': 'consulta',
+                    'objeto': consulta,
+                    'titulo': f'Consulta - {fecha_str}'
+                })
         
         # Agregar vacunas
         for vacuna in vacunas_aplicadas:
-            # fecha_aplicacion ya debería ser date, pero verificamos por seguridad
-            fecha = vacuna.fecha_aplicacion.date() if hasattr(vacuna.fecha_aplicacion, 'date') else vacuna.fecha_aplicacion
-            eventos.append({
-                'fecha': fecha,
-                'tipo': 'vacuna',
-                'objeto': vacuna,
-                'titulo': f'Vacuna: {vacuna.vacuna.nombre}'
-            })
+            if vacuna.fecha_aplicacion:
+                # fecha_aplicacion ya debería ser date, pero verificamos por seguridad
+                fecha = vacuna.fecha_aplicacion.date() if hasattr(vacuna.fecha_aplicacion, 'date') else vacuna.fecha_aplicacion
+                eventos.append({
+                    'fecha': fecha,
+                    'tipo': 'vacuna',
+                    'objeto': vacuna,
+                    'titulo': f'Vacuna: {vacuna.vacuna.nombre}'
+                })
         
         # Agregar productos
         for producto in productos_aplicados:
-            # fecha_aplicacion ya debería ser date, pero verificamos por seguridad
-            fecha = producto.fecha_aplicacion.date() if hasattr(producto.fecha_aplicacion, 'date') else producto.fecha_aplicacion
-            eventos.append({
-                'fecha': fecha,
-                'tipo': 'producto',
-                'objeto': producto,
-                'titulo': f'Producto: {producto.producto.nombre}'
-            })
+            if producto.fecha_aplicacion:
+                # fecha_aplicacion ya debería ser date, pero verificamos por seguridad
+                fecha = producto.fecha_aplicacion.date() if hasattr(producto.fecha_aplicacion, 'date') else producto.fecha_aplicacion
+                eventos.append({
+                    'fecha': fecha,
+                    'tipo': 'producto',
+                    'objeto': producto,
+                    'titulo': f'Producto: {producto.producto.nombre}'
+                })
             
         # Agregar imágenes diagnósticas
         for imagen in imagenes_diagnosticas:
-            # Manejar tanto date como datetime
-            fecha = imagen.fecha.date() if hasattr(imagen.fecha, 'date') else imagen.fecha
-            eventos.append({
-                'fecha': fecha,
-                'tipo': 'imagen',
-                'objeto': imagen,
-                'titulo': f'Imagen diagnóstica: {imagen.descripcion[:50]}...'
-            })
+            if imagen.fecha:
+                # Manejar tanto date como datetime
+                fecha = imagen.fecha.date() if hasattr(imagen.fecha, 'date') else imagen.fecha
+                descripcion = imagen.descripcion[:50] + '...' if imagen.descripcion and len(imagen.descripcion) > 50 else (imagen.descripcion or 'Sin descripción')
+                eventos.append({
+                    'fecha': fecha,
+                    'tipo': 'imagen',
+                    'objeto': imagen,
+                    'titulo': f'Imagen diagnóstica: {descripcion}'
+                })
         
-        # Ordenar por fecha descendente
-        eventos.sort(key=lambda x: x['fecha'], reverse=True)
+        # Ordenar por fecha descendente, manejando posibles valores None
+        eventos.sort(key=lambda x: x['fecha'] if x['fecha'] else timezone.now().date(), reverse=True)
         return eventos
 
 @login_required
@@ -506,7 +501,7 @@ class SecureMediaView(View):
     def has_permission(self, request, path):
         """Verificar permisos del usuario para acceder al archivo"""
         # Por ahora permitir acceso a usuarios autenticados
-        # Aquí puedes agregar lógica más específica si necesitas
+        # Aquí puedes agregar lógica más específica si es necesario 
         return request.user.is_authenticated
     
     def get(self, request, path):

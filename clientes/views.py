@@ -89,6 +89,15 @@ class MascotaDetailView(LoginRequiredMixin, DetailView):
     model = Mascota
     template_name = 'clientes/detalle_mascota.html'
     context_object_name = 'mascota'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mascota = self.get_object()
+        
+        # Agregar información de la última cita
+        context['ultima_cita'] = mascota.get_ultima_cita()
+        
+        return context
 
 
 class MascotaCreateView(LoginRequiredMixin, CreateView):

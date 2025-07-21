@@ -4,9 +4,9 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}Lista de Citas{% endblock %}
+{% block title %}Lista de Consultas programadas{% endblock %}
 
-{% block page_title %}Gestión de Citas{% endblock %}
+{% block page_title %}Gestión de Consultas Programadas{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -612,15 +612,15 @@
                 <div>
                     <h1 class="citas-title">
                         <i class="fas fa-calendar-check icon"></i>
-                        Gestión de Citas
+                        Consultas Programadas
                     </h1>
                     <p class="citas-subtitle">
-                        Administra todas las citas médicas del sistema
+                        Lista diaria de consultas a revisar y llamar
                     </p>
                 </div>
                 <a href="{% url 'consultas:crear_cita' %}" class="add-cita-btn hover-lift">
                     <i class="fas fa-plus"></i>
-                    Nueva Cita
+                    Nueva Consulta
                 </a>
             </div>
         </div>
@@ -633,23 +633,14 @@
             <h5>Filtros de Búsqueda</h5>
         </div>
         <form method="get" class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label for="fecha" class="form-label">
                     <i class="fas fa-calendar me-1"></i>Fecha
                 </label>
                 <input type="date" class="form-control" id="fecha" name="fecha" value="{{ request.GET.fecha|default:'' }}">
             </div>
-            <div class="col-md-4">
-                <label for="estado" class="form-label">
-                    <i class="fas fa-tags me-1"></i>Estado
-                </label>
-                <select class="form-select" id="estado" name="estado">
-                    <option value="">Todos los estados</option>
-                    <option value="pendiente" {% if request.GET.estado == 'pendiente' %}selected{% endif %}>Pendientes</option>
-                    <option value="atendida" {% if request.GET.estado == 'atendida' %}selected{% endif %}>Atendidas</option>
-                </select>
-            </div>
-            <div class="col-md-4 d-flex align-items-end gap-2">
+        
+            <div class="col-md-6 d-flex align-items-end gap-2">
                 <button type="submit" class="filter-btn">
                     <i class="fas fa-search me-1"></i>Filtrar
                 </button>
@@ -666,7 +657,7 @@
             <div class="col-lg-8">
                 <div class="search-box">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="search-input" placeholder="Buscar citas por mascota, cliente, motivo, especie o raza..." id="searchInput">
+                    <input type="text" class="search-input" placeholder="Buscar consultas por mascota, cliente, motivo, especie o raza..." id="searchInput">
                 </div>
             </div>
         </div>
@@ -680,9 +671,9 @@
         <div class="table-header">
             <h3 class="table-title">
                 <i class="fas fa-list"></i>
-                Lista de Citas
+                Lista de Consultas programadas
             </h3>
-            <span class="text-white-50">Total: <strong id="resultCount">{{ citas.count }}</strong> citas</span>
+            <span class="text-white-50">Total: <strong id="resultCount">{{ citas.count }}</strong> consultas</span>
         </div>
         
         {% if citas %}
@@ -694,7 +685,6 @@
                         <th><i class="fas fa-user me-1"></i>Propietario</th>
                         <th><i class="fas fa-calendar me-1"></i>Fecha</th>
                         <th><i class="fas fa-clipboard-list me-1"></i>Motivo</th>
-                        <th><i class="fas fa-tag me-1"></i>Tipo</th>
                         <th><i class="fas fa-info-circle me-1"></i>Estado</th>
                         <th><i class="fas fa-cogs me-1"></i>Acciones</th>
                     </tr>
@@ -708,7 +698,7 @@
                         data-raza="{{ cita.mascota.raza.nombre|lower }}"
                         data-motivo="{{ cita.motivo|lower }}"
                         data-estado="{% if cita.atendida %}atendida{% else %}pendiente{% endif %}"
-                        data-tipo="{% if cita.programada %}programada{% else %}urgencia{% endif %}">
+                        >
                         <td>
                             <div class="mascota-info">
                                 <div class="mascota-name">{{ cita.mascota.nombre }}</div>
@@ -723,27 +713,12 @@
                         <td>
                             <div class="fecha-info">
                                 <div class="fecha-principal">{{ cita.fecha|date:"d/m/Y" }}</div>
-                                <div class="hora-detalle">
-                                    <i class="fas fa-clock me-1"></i>{{ cita.fecha|date:"H:i" }}
-                                </div>
                             </div>
                         </td>
                         <td>
                             <div class="motivo-text">{{ cita.motivo|truncatechars:40 }}</div>
                         </td>
-                        <td>
-                            {% if cita.programada %}
-                            <span class="tipo-badge programada">
-                                <i class="fas fa-calendar-check"></i>
-                                Programada
-                            </span>
-                            {% else %}
-                            <span class="tipo-badge urgencia">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                Urgencia
-                            </span>
-                            {% endif %}
-                        </td>
+                        
                         <td>
                             {% if cita.atendida %}
                             <span class="estado-badge atendida">
@@ -773,8 +748,9 @@
                                     Atender
                                 </a>
                                 {% else %}
-                                    {% if cita.consulta %}
-                                    <a href="{% url 'consultas:detalle_consulta' cita.consulta.id %}" 
+                                    {% with primera_consulta=cita.consultas.first %}
+                                    {% if primera_consulta %}
+                                    <a href="{% url 'consultas:detalle_consulta' primera_consulta.id %}" 
                                        class="btn-action consulta" 
                                        title="Ver consulta">
                                         <i class="fas fa-file-medical"></i>
@@ -786,6 +762,7 @@
                                         Sin Consulta
                                     </span>
                                     {% endif %}
+                                    {% endwith %}
                                 {% endif %}
                                 
                                 <a href="{% url 'consultas:editar_cita' cita.id %}" 
@@ -813,11 +790,11 @@
             <div class="empty-state-icon">
                 <i class="fas fa-calendar-times"></i>
             </div>
-            <h3>No hay citas registradas</h3>
-            <p>Comienza programando la primera cita médica</p>
+            <h3>No hay consultas registradas</h3>
+            <p>Comienza programando la primera consulta</p>
             <a href="{% url 'consultas:crear_cita' %}" class="add-cita-btn">
                 <i class="fas fa-plus"></i>
-                Programar Primera Cita
+                Programar Primera Consulta
             </a>
         </div>
         {% endif %}
@@ -836,8 +813,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let currentFilters = {
         search: '',
-        estado: '',
-        tipo: ''
+        estado: '' 
     };
 
     // Función principal de búsqueda
@@ -861,7 +837,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const raza = row.dataset.raza || '';
             const motivo = row.dataset.motivo || '';
             const estado = row.dataset.estado || '';
-            const tipo = row.dataset.tipo || '';
+            
             
             // Verificar filtro de búsqueda
             const matchesSearch = !currentFilters.search || 
@@ -875,12 +851,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const matchesEstado = !currentFilters.estado || 
                 estado === currentFilters.estado;
             
-            // Verificar filtro de tipo
-            const matchesTipo = !currentFilters.tipo || 
-                tipo === currentFilters.tipo;
-            
             // Mostrar/ocultar fila
-            const isVisible = matchesSearch && matchesEstado && matchesTipo;
+            const isVisible = matchesSearch && matchesEstado;
             
             if (isVisible) {
                 row.style.display = '';
@@ -913,9 +885,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 noResultsRow = document.createElement('tr');
                 noResultsRow.id = 'noResultsRow';
                 noResultsRow.innerHTML = `
-                    <td colspan="7" class="no-results">
+                    <td colspan="6" class="no-results">
                         <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
-                        <div>No se encontraron citas que coincidan con los criterios de búsqueda.</div>
+                        <div>No se encontraron consultas que coincidan con los criterios de búsqueda.</div>
                         <small style="margin-top: 0.5rem; display: block;">Intenta con otros términos o limpia los filtros.</small>
                     </td>
                 `;
@@ -943,12 +915,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const estadoText = currentFilters.estado === 'atendida' ? 'Atendidas' : 'Pendientes';
             addFilterTag(`Estado: ${estadoText}`, 'estado');
         }
-        
-        // Tag de tipo
-        if (currentFilters.tipo) {
-            const tipoText = currentFilters.tipo === 'programada' ? 'Programadas' : 'Urgencias';
-            addFilterTag(`Tipo: ${tipoText}`, 'tipo');
-        }
     }
     
     // Añadir tag de filtro
@@ -974,9 +940,6 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'estado':
                 currentFilters.estado = '';
                 break;
-            case 'tipo':
-                currentFilters.tipo = '';
-                break;
         }
         applyAllFilters();
     };
@@ -986,16 +949,10 @@ document.addEventListener('DOMContentLoaded', function() {
         applyAllFilters();
     };
     
-    window.filterByTipo = function(tipo) {
-        currentFilters.tipo = tipo;
-        applyAllFilters();
-    };
-    
     window.clearAllFilters = function() {
         currentFilters = {
             search: '',
-            estado: '',
-            tipo: ''
+            estado: ''
         };
         searchInput.value = '';
         applyAllFilters();

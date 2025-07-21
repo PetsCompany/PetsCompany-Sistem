@@ -633,6 +633,7 @@
                             Volver
                         </a>
                         <a href="{% url 'consultas:historia_clinica_imprimible_v2' mascota.pk %}" target="_blank" class="btn-modern btn-secondary">
+                            <i class="fas fa-print"></i>
                             Imprimir
                         </a>
                     </div>
@@ -764,8 +765,11 @@
                             <div>
                                 <strong>
                                     <i class="fas fa-stethoscope me-2"></i>
-                                    Consulta - {{ consulta.cita.fecha|date:'d/m/Y H:i' }}
+                                    Consulta - {{ consulta.cita.fecha|date:'d/m/Y' }}
                                 </strong>
+                                <small class="text-muted ms-2">
+                                    Registrado: {{ consulta.fecha_registro|date:'d/m/Y H:i' }}
+                                </small>
                                 {% if consulta.es_eutanasia %}
                                     <span class="status-badge ms-2" style="background: rgba(0,0,0,0.2); color: white;">
                                         <i class="fas fa-heart"></i>
@@ -777,8 +781,24 @@
                         <div class="timeline-card-body">
                             <div class="timeline-info-grid">
                                 <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Motivo</div>
+                                    <div class="timeline-info-label">Motivo de la Cita</div>
                                     <div class="timeline-info-value">{{ consulta.cita.motivo }}</div>
+                                </div>
+                                <div class="timeline-info-item">
+                                    <div class="timeline-info-label">Estado de Cita</div>
+                                    <div class="timeline-info-value">
+                                        {% if consulta.cita.atendida %}
+                                            <span class="status-badge status-active">
+                                                <i class="fas fa-check-circle"></i>
+                                                Atendida
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge status-pending">
+                                                <i class="fas fa-clock"></i>
+                                                Pendiente
+                                            </span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 <div class="timeline-info-item">
                                     <div class="timeline-info-label">Diagnóstico</div>
@@ -789,11 +809,21 @@
                                     <div class="timeline-info-value">{{ consulta.tratamiento }}</div>
                                 </div>
                                 {% if consulta.notas %}
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Notas</div>
+                                <div class="timeline-info-item" style="grid-column: 1 / -1;">
+                                    <div class="timeline-info-label">Notas Adicionales</div>
                                     <div class="timeline-info-value">{{ consulta.notas }}</div>
                                 </div>
                                 {% endif %}
+                            </div>
+                            <div class="timeline-actions mt-3">
+                                <a href="{% url 'consultas:detalle_consulta' consulta.pk %}" class="btn-sm-modern btn-light-modern">
+                                    <i class="fas fa-eye"></i>
+                                    Ver Detalles
+                                </a>
+                                <a href="{% url 'consultas:detalle_cita' consulta.cita.pk %}" class="btn-sm-modern btn-light-modern">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Ver Cita
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -968,7 +998,7 @@
                     <h4>Historia Clínica Sin Registros</h4>
                     <p class="text-muted mb-3">Esta mascota aún no tiene registros médicos en su historia clínica.</p>
                     <div class="btn-group-modern">
-                        <a href="{% url 'citas:crear_cita' %}" class="btn-modern btn-primary">
+                        <a href="{% url 'consultas:crear_cita' mascota.id %}" class="btn-modern btn-primary">
                             <i class="fas fa-plus"></i>
                             Programar Cita
                         </a>
@@ -1054,7 +1084,6 @@
 {% endblock %}
 
 {% block extra_js %}
-
 <script>
 // Función para calcular la edad de la mascota
 function calcularEdad() {

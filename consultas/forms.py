@@ -6,9 +6,9 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 class CitaForm(forms.ModelForm):
     class Meta:
         model = Cita
-        fields = ['mascota', 'fecha', 'motivo', 'programada']
+        fields = ['mascota', 'fecha', 'motivo']
         widgets = {
-            'fecha': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'fecha': forms.DateInput(attrs={'type': 'date'}),
             'motivo': forms.Textarea(attrs={'rows': 3}),
         }
     
@@ -25,11 +25,7 @@ class CitaForm(forms.ModelForm):
         
         self.helper.layout = Layout(
             'mascota',
-            Row(
-                Column('fecha', css_class='form-group col-md-6 mb-0'),
-                Column('programada', css_class='form-group col-md-6 mb-0'),
-                css_class='form-row'
-            ),
+            'fecha',
             'motivo',
             Submit('submit', 'Guardar')
         )

@@ -892,7 +892,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.value && fechaProximaInput && !fechaProximaInput.value) {
                 const aplicacionDate = new Date(this.value);
                 const proximaDate = new Date(aplicacionDate);
-                proximaDate.setFullYear(proximaDate.getFullYear() + 1); // Sugerir 1 año después
+                proximaDate.setDate(proximaDate.getDate() + 15); // Sugerir 15 dias después
                 fechaProximaInput.value = proximaDate.toISOString().split('T')[0];
                 
                 // Efecto visual para mostrar que se auto-completó

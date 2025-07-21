@@ -3,9 +3,9 @@
 
 {% load static %}
 
-{% block title %}Eliminar Cita{% endblock %}
+{% block title %}Eliminar Consulta{% endblock %}
 
-{% block page_title %}Eliminar Cita{% endblock %}
+{% block page_title %}Eliminar Consulta{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -472,7 +472,7 @@
                 Confirmar Eliminación
             </h1>
             <p class="confirm-delete-subtitle">
-                Confirma la eliminación de la cita médica del sistema
+                Confirma la eliminación de la Consulta Programada
             </p>
         </div>
     </div>
@@ -483,7 +483,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{% url 'consultas:lista_citas' %}">
-                        <i class="fas fa-calendar-alt me-1"></i>Citas
+                        <i class="fas fa-calendar-alt me-1"></i>Consulta
                     </a>
                 </li>
                 <li class="breadcrumb-item">
@@ -499,7 +499,7 @@
         <div class="card-header">
             <h4>
                 <i class="fas fa-trash-alt icon"></i>
-                Confirmar Eliminación de Cita
+                Confirmar Eliminación de Consulta Programada
             </h4>
         </div>
         <div class="card-body">
@@ -509,7 +509,7 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <p class="warning-message">
-                    ¿Estás seguro de que deseas eliminar esta cita médica?
+                    ¿Estás seguro de que deseas eliminar esta Consulta Programada?
                 </p>
             </div>
 
@@ -517,7 +517,7 @@
             <div class="appointment-info-box">
                 <div class="appointment-info-title">
                     <i class="fas fa-calendar-check"></i>
-                    Detalles de la Cita
+                    Detalles de la Consulta
                 </div>
                 <div class="appointment-details">
                     <div class="appointment-detail-item">
@@ -570,8 +570,8 @@
                     ¡Atención Importante!
                 </div>
                 <p class="alert-text">
-                    Esta cita ya ha sido atendida y tiene una consulta asociada. 
-                    Si eliminas la cita, también se eliminará la consulta relacionada junto con todo su historial médico.
+                    Esta Consulta Programadaya ha sido atendida y tiene una consulta asociada. 
+                    Si eliminas la Consulta Programada, también se eliminará la consulta relacionada junto con todo su historial médico.
                 </p>
             </div>
             {% endif %}
@@ -583,13 +583,13 @@
                     ¡Advertencia Importante!
                 </div>
                 <p class="warning-text">
-                    Esta acción no se puede deshacer. Al eliminar esta cita se eliminará permanentemente:
+                    Esta acción no se puede deshacer. Al eliminar esta Consulta se eliminará permanentemente:
                 </p>
                 <ul class="mt-2 ps-3">
-                    <li>La información de la cita médica</li>
+                    <li>La información de la Consulta Programada</li>
                     <li>Los datos de programación y motivo</li>
                     {% if cita.atendida %}
-                    <li>La consulta médica asociada</li>
+                    <li>La consulta asociada</li>
                     <li>Todo el historial y diagnósticos relacionados</li>
                     {% endif %}
                 </ul>

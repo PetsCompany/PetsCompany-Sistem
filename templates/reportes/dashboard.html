@@ -134,6 +134,294 @@
         background: linear-gradient(135deg, #343a40, #495057);
     }
 
+    /* Estilos para la nueva sección de próximas citas */
+    .proximas-citas-section {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .proximas-citas-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        pointer-events: none;
+    }
+
+    .proximas-citas-section .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .section-subtitle {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 0.95rem;
+    }
+
+    .view-all-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .view-all-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .citas-cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cita-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .cita-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .cita-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .cita-date {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 0.75rem;
+        min-width: 60px;
+    }
+
+    .date-day {
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .date-month {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        opacity: 0.9;
+    }
+
+    .priority-badge {
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .priority-badge.urgent {
+        background: #ff4757;
+        color: white;
+    }
+
+    .priority-badge.high {
+        background: #ffa726;
+        color: white;
+    }
+
+    .priority-badge.normal {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+    }
+
+    .cita-card-body {
+        margin-bottom: 1.5rem;
+    }
+
+    .mascota-nombre {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 0.5rem 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .propietario-nombre {
+        margin: 0 0 0.5rem 0;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+    }
+
+    .mascota-details {
+        margin: 0 0 1rem 0;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .motivo-text {
+        margin: 0;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .cita-card-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-card-action {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-width: 100px;
+    }
+
+    .btn-card-action.primary {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-card-action.primary:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-card-action.success {
+        background: #2ed573;
+        color: white;
+        border: none;
+    }
+
+    .btn-card-action.success:hover {
+        background: #26d068;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .empty-citas-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        grid-column: 1 / -1;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.7;
+    }
+
+    .empty-citas-state h4 {
+        margin: 0 0 1rem 0;
+        font-weight: 600;
+    }
+
+    .empty-citas-state p {
+        margin: 0 0 2rem 0;
+        opacity: 0.8;
+    }
+
+    .btn-add-cita {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 500;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn-add-cita:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .proximas-citas-section {
+            padding: 1.5rem;
+        }
+        
+        .proximas-citas-section .section-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: stretch;
+        }
+        
+        .view-all-btn {
+            text-align: center;
+        }
+        
+        .citas-cards-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .cita-card-actions {
+            flex-direction: column;
+        }
+        
+        .btn-card-action {
+            flex: none;
+        }
+    }
+
     .alerts-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -484,54 +772,99 @@
         </div>
     </div>
 
-    <!-- Métricas principales -->
-    <div class="stats-grid animate-on-scroll">
-        <div class="stat-card primary hover-lift">
-            <div class="stat-content">
-                <div class="stat-info">
-                    <h3>Citas Hoy</h3>
-                    <div class="stat-number">{{ citas_hoy }}</div>
-                </div>
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-day"></i>
-                </div>
+    <!-- Próximas Citas / Llamadas Section -->
+    <div class="proximas-citas-section animate-on-scroll">
+        <div class="section-header">
+            <div class="header-content">
+                <h3 class="section-title">
+                    <i class="fas fa-phone-alt me-2"></i>
+                    Próximas Llamadas
+                </h3>
+                <p class="section-subtitle">Recordatorios de consultas programadas para contactar</p>
             </div>
+            <a href="{% url 'consultas:lista_citas' %}" class="view-all-btn hover-lift">
+                <i class="fas fa-list me-1"></i>
+                Ver Todas las Citas
+            </a>
         </div>
-
-        <div class="stat-card info hover-lift">
-            <div class="stat-content">
-                <div class="stat-info">
-                    <h3>Citas Mañana</h3>
-                    <div class="stat-number">{{ citas_manana }}</div>
+        
+        <div class="citas-cards-container">
+            {% if proximas_citas %}
+                {% for cita_data in proximas_citas %}
+                <div class="cita-card hover-lift">
+                    <div class="cita-card-header">
+                        <div class="cita-date">
+                            <div class="date-day">{{ cita_data.cita.fecha|date:"d" }}</div>
+                            <div class="date-month">{{ cita_data.cita.fecha|date:"M" }}</div>
+                        </div>
+                        <div class="cita-priority">
+                            {% if cita_data.es_hoy %}
+                                <span class="priority-badge urgent">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    HOY
+                                </span>
+                            {% elif cita_data.es_manana %}
+                                <span class="priority-badge high">
+                                    <i class="fas fa-clock"></i>
+                                    MAÑANA
+                                </span>
+                            {% else %}
+                                <span class="priority-badge normal">
+                                    <i class="fas fa-calendar"></i>
+                                    {{ cita_data.dias_restantes }} días
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="cita-card-body">
+                        <div class="mascota-info">
+                            <h4 class="mascota-nombre">
+                                <i class="fas fa-paw me-1"></i>
+                                {{ cita_data.cita.mascota.nombre }}
+                            </h4>
+                            <p class="propietario-nombre">
+                                <i class="fas fa-user me-1"></i>
+                                {{ cita_data.cita.mascota.cliente.nombre }}
+                            </p>
+                            <p class="mascota-details">
+                                {{ cita_data.cita.mascota.especie }} • {{ cita_data.cita.mascota.raza }}
+                            </p>
+                        </div>
+                        
+                        <div class="motivo-info">
+                            <p class="motivo-text">
+                                <i class="fas fa-clipboard-list me-1"></i>
+                                {{ cita_data.cita.motivo|truncatechars:60 }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="cita-card-actions">
+                        <a href="{% url 'consultas:detalle_cita' cita_data.cita.id %}" class="btn-card-action primary">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalle
+                        </a>
+                        <a href="{% url 'consultas:crear_consulta' cita_data.cita.id %}" class="btn-card-action success">
+                            <i class="fas fa-stethoscope"></i>
+                            Atender
+                        </a>
+                    </div>
                 </div>
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-plus"></i>
+                {% endfor %}
+            {% else %}
+                <div class="empty-citas-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h4>No hay citas próximas</h4>
+                    <p>Todas las citas están al día o no hay citas programadas</p>
+                    <a href="{% url 'consultas:crear_cita' %}" class="btn-add-cita">
+                        <i class="fas fa-plus me-1"></i>
+                        Programar Nueva Cita
+                    </a>
                 </div>
-            </div>
-        </div>
-
-        <div class="stat-card success hover-lift">
-            <div class="stat-content">
-                <div class="stat-info">
-                    <h3>Citas Esta Semana</h3>
-                    <div class="stat-number">{{ citas_semana }}</div>
-                </div>
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-week"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="stat-card secondary hover-lift">
-            <div class="stat-content">
-                <div class="stat-info">
-                    <h3>Total Mascotas</h3>
-                    <div class="stat-number">{{ total_mascotas }}</div>
-                </div>
-                <div class="stat-icon">
-                    <i class="fas fa-paw"></i>
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -651,38 +984,6 @@
             observer.observe(el);
         });
 
-        // Add counter animation to stat numbers
-        function animateCounter(element, target) {
-            const increment = target / 50;
-            let current = 0;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                element.textContent = Math.floor(current);
-            }, 30);
-        }
-
-        // Animate stat numbers when they come into view
-        const statNumbers = document.querySelectorAll('.stat-number');
-        statNumbers.forEach(stat => {
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const target = parseInt(entry.target.textContent);
-                        entry.target.textContent = '0';
-                        animateCounter(entry.target, target);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.5 });
-            
-            observer.observe(stat);
-        });
-
         // Add pulse animation to important alerts
         const alertCards = document.querySelectorAll('.alert-warning-custom');
         alertCards.forEach(alert => {
@@ -695,8 +996,11 @@
         });
 
         // Add click ripple effect to cards
-        document.querySelectorAll('.stat-card, .alert-card, .report-card').forEach(card => {
+        document.querySelectorAll('.alert-card, .report-card, .cita-card').forEach(card => {
             card.addEventListener('click', function(e) {
+                // Skip ripple for links
+                if (e.target.tagName === 'A' || e.target.closest('a')) return;
+                
                 const ripple = document.createElement('div');
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
@@ -719,6 +1023,8 @@
                 }, 600);
             });
         });
+
+        console.log('📞 Dashboard de próximas llamadas inicializado correctamente');
     });
 
     // Add ripple keyframes

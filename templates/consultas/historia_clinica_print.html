@@ -706,7 +706,6 @@
         <button onclick="window.print()" class="btn-modern btn-secondary">Imprimir</button>
     </div>
 
-
     <!-- Información de la Clínica -->
     <div class="clinic-info avoid-break">
         <h2>Veterinaria Pets Company</h2>
@@ -725,7 +724,7 @@
             
             <div class="info-item">
                 <div class="info-label icon-user">Propietario</div>
-                <div class="info-value">{{ mascota.cliente.nombre }} {{ mascota.cliente.apellido }}</div>
+                <div class="info-value">{{ mascota.propietario.nombre }} {{ mascota.propietario.apellido }}</div>
             </div>
             
             <div class="info-item">
@@ -798,6 +797,10 @@
                     <div class="summary-number">{{ productos_aplicados|length }}</div>
                     <div class="summary-label">Productos Aplicados</div>
                 </div>
+                <div class="summary-item">
+                    <div class="summary-number">{{ imagenes_diagnosticas|length }}</div>
+                    <div class="summary-label">Imágenes Diagnósticas</div>
+                </div>
             </div>
         </div>
     </div>
@@ -815,7 +818,7 @@
                 <div class="timeline-item timeline-consultation avoid-break">
                     <div class="timeline-header consultation">
                         <div class="timeline-title">🩺 Consulta Médica</div>
-                        <div class="timeline-date">{{ consulta.cita.fecha|date:'d/m/Y H:i' }}</div>
+                        <div class="timeline-date">{{ consulta.cita.fecha|date:'d/m/Y' }}</div>
                         {% if consulta.es_eutanasia %}
                             <div style="margin-top: 8px;">
                                 <span class="status-badge status-inactive">⚠️ Eutanasia</span>

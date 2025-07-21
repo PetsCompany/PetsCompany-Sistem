@@ -12,44 +12,49 @@ from clientes.models import Mascota
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'reportes/dashboard.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        # Fecha actual
-        hoy = timezone.now().date()
+        today = timezone.now().date()
+        tomorrow = today + timedelta(days=1)
         
-        # Citas para hoy
-        context['citas_hoy'] = Cita.objects.filter(fecha__date=hoy).count()
-        
-        # Citas para mañana
-        manana = hoy + timedelta(days=1)
-        context['citas_manana'] = Cita.objects.filter(fecha__date=manana).count()
-        
-        # Citas para esta semana (restantes)
-        inicio_semana = hoy
-        fin_semana = hoy + timedelta(days=(6 - hoy.weekday()))
-        context['citas_semana'] = Cita.objects.filter(
-            fecha__date__gt=hoy,
-            fecha__date__lte=fin_semana
-        ).count()
-        
-        # Vacunas próximas a vencer (en los próximos 7 días)
-        prox_semana = hoy + timedelta(days=7)
+        proximas_citas_raw = Cita.objects.filter(
+            fecha__isnull=False,
+            fecha__gte=today
+        ).select_related('mascota', 'mascota__cliente').order_by('fecha')[:3]
+
+        proximas_citas = []
+        for cita in proximas_citas_raw:
+            dias_restantes = 0
+            if cita.fecha:
+                try:
+                    dias_restantes = (cita.fecha - today).days if cita.fecha > today else 0
+                except Exception as e:
+                    dias_restantes = 0  # fallback en caso de error
+
+            cita_data = {
+                'cita': cita,
+                'es_hoy': cita.fecha == today,
+                'es_manana': cita.fecha == tomorrow,
+                'dias_restantes': dias_restantes
+            }
+            proximas_citas.append(cita_data)
+
+        context['proximas_citas'] = proximas_citas
+        context['today'] = today
+
+        prox_semana = today + timedelta(days=7)
         context['vacunas_proximas'] = VacunaAplicada.objects.filter(
-            fecha_proxima__gte=hoy,
+            fecha_proxima__gte=today,
             fecha_proxima__lte=prox_semana
         ).count()
-        
-        # Antiparasitarios próximos a vencer
+
         context['antiparasitarios_proximos'] = ProductoAplicado.objects.filter(
-            fecha_proxima__gte=hoy,
+            fecha_proxima__gte=today,
             fecha_proxima__lte=prox_semana
         ).count()
-        
-        # Total de mascotas activas
-        context['total_mascotas'] = Mascota.objects.filter(activa=True).count()
-        
+
         return context
 
 
@@ -80,10 +85,10 @@ class ReporteCitasView(LoginRequiredMixin, View):
             fecha_inicio = primer_dia_mes
             fecha_fin = ultimo_dia_mes
         
-        # Obtener citas en el rango de fechas (siempre se ejecuta)
+        # Obtener citas en el rango de fechas - CORREGIDO: removido __date
         citas = Cita.objects.filter(
-            fecha__date__gte=fecha_inicio,
-            fecha__date__lte=fecha_fin
+            fecha__gte=fecha_inicio,
+            fecha__lte=fecha_fin
         ).select_related('mascota__cliente').order_by('fecha')
         
         return render(request, self.template_name, {
@@ -224,18 +229,18 @@ class ReporteEutanasiasView(LoginRequiredMixin, View):
             fecha_inicio = primer_dia_mes
             fecha_fin = ultimo_dia_mes
         
-        # Obtener eutanasias en el rango de fechas (siempre se ejecuta)
+        # Obtener eutanasias en el rango de fechas - CORREGIDO: removido __date
         eutanasias = Consulta.objects.filter(
             es_eutanasia=True,
-            cita__fecha__date__gte=fecha_inicio,
-            cita__fecha__date__lte=fecha_fin
+            cita__fecha__gte=fecha_inicio,
+            cita__fecha__lte=fecha_fin
         ).select_related('cita__mascota__cliente', 'cita__mascota__especie').order_by('-cita__fecha')
         
-        # Estadísticas por especie
+        # Estadísticas por especie - CORREGIDO: removido __date
         stats_especies = Consulta.objects.filter(
             es_eutanasia=True,
-            cita__fecha__date__gte=fecha_inicio,
-            cita__fecha__date__lte=fecha_fin
+            cita__fecha__gte=fecha_inicio,
+            cita__fecha__lte=fecha_fin
         ).values('cita__mascota__especie__nombre').annotate(total=Count('id')).order_by('-total')
         
         return render(request, self.template_name, {

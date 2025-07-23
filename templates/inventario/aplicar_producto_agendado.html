@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Aplicar Producto Agendado - {{ producto_agendado.mascota.nombre }}{% endblock %}
+{% block title %}Aplicar Desparasitante Agendado - {{ producto_agendado.mascota.nombre }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -657,9 +657,9 @@
             <div>
                 <h1 class="page-title">
                     <i class="fas fa-syringe"></i>
-                    Aplicar Producto Agendado
+                    Aplicar Desparasitante Agendado
                 </h1>
-                <p class="page-subtitle">Registrar la aplicación del producto programado</p>
+                <p class="page-subtitle">Registrar la aplicación del Desparasitante programado</p>
             </div>
             <div>
                 <a href="{% url 'clientes:detalle_mascota' producto_agendado.mascota.id %}" class="btn-back">
@@ -675,7 +675,7 @@
         <div class="info-header">
             <h4>
                 <i class="fas fa-clipboard-check"></i>
-                Información del Producto Agendado
+                Información del Desparasitante Agendado
             </h4>
         </div>
         <div class="info-body">
@@ -735,7 +735,7 @@
         <div class="form-header">
             <h5>
                 <i class="fas fa-check-circle"></i>
-                Registrar Aplicación del Producto
+                Registrar Aplicación del Desparasitante
             </h5>
         </div>
         <div class="form-body">
@@ -758,7 +758,7 @@
                                     </div>
                                 {% endif %}
                                 <div class="form-text">
-                                    Fecha en que se aplica realmente el producto
+                                    Fecha en que se aplica realmente el Desparasitante
                                 </div>
                             </div>
                         </div>
@@ -833,7 +833,7 @@
         <div class="text-muted">
             <i class="fas fa-info-circle"></i>
             <div>
-                <strong>Nota:</strong> Al confirmar la aplicación, este producto pasará del estado "Agendado" a "Aplicado" 
+                <strong>Nota:</strong> Al confirmar la aplicación, este Desparasitante pasará del estado "Agendado" a "Aplicado" 
                 y se registrará la fecha real de aplicación. Esta acción no se puede deshacer.
             </div>
         </div>

@@ -758,15 +758,15 @@
                             <div class="icon">
                                 <i class="fas fa-syringe"></i>
                             </div>
-                            Aplicar Vacunas y Productos
+                            Aplicar Vacunas y Desparasitantes
                         </h2>
-                        <p>Gestión de vacunas y productos durante la consulta</p>
+                        <p>Gestión de vacunas y Desparasitantes durante la consulta</p>
                     </div>
                 </div>
                 <div class="info-body">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle me-1"></i>
-                        <strong>Nota:</strong> Puedes aplicar vacunas y productos durante esta consulta. 
+                        <strong>Nota:</strong> Puedes aplicar vacunas y Desparasitantes durante esta consulta. 
                         Los registros quedarán asociados a la mascota y la fecha de aplicación será registrada.
                     </div>
                     
@@ -791,7 +791,7 @@
                                     class="btn btn-outline-info btn-lg">
                                         <i class="fas fa-pills me-2"></i>
                                         <div>
-                                            <strong>Aplicar Producto</strong>
+                                            <strong>Aplicar Desparasitante</strong>
                                             <br><small>A {{ cita.mascota.nombre }}</small>
                                         </div>
                                     </a>
@@ -802,7 +802,7 @@
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle me-1"></i>
                             <strong>Mascota Inactiva:</strong> Esta mascota está marcada como inactiva. 
-                            No se pueden aplicar vacunas o productos.
+                            No se pueden aplicar vacunas o Desparasitantes.
                         </div>
                         {% endif %}
                     {% elif form.instance.cita %}
@@ -826,7 +826,7 @@
                                     class="btn btn-outline-info btn-lg">
                                         <i class="fas fa-pills me-2"></i>
                                         <div>
-                                            <strong>Aplicar Producto</strong>
+                                            <strong>Aplicar Desparasitante</strong>
                                             <br><small>A {{ form.instance.cita.mascota.nombre }}</small>
                                         </div>
                                     </a>
@@ -837,7 +837,7 @@
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle me-1"></i>
                             <strong>Mascota Inactiva:</strong> Esta mascota está marcada como inactiva. 
-                            No se pueden aplicar vacunas o productos.
+                            No se pueden aplicar vacunas o Desparasitantes.
                         </div>
                         {% endif %}
                     {% endif %}
@@ -898,25 +898,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     function validateField(field) {
-        // Validar campos requeridos
+        // Validar campos requeridos (solo diagnóstico es requerido ahora)
         if (field.hasAttribute('required') && !field.value.trim()) {
             field.classList.add('is-invalid');
             showFieldError(field, 'Este campo es obligatorio');
             return false;
         }
         
-        // Validación específica para textarea de diagnóstico y tratamiento
-        if ((field.name === 'diagnostico' || field.name === 'tratamiento') && 
-            field.value.trim() && field.value.trim().length < 10) {
+        // Validación específica para textarea de diagnóstico (Actualización de historia)
+        if (field.name === 'diagnostico' && field.value.trim() && field.value.trim().length < 10) {
             field.classList.add('is-invalid');
-            showFieldError(field, 'Debe tener al menos 10 caracteres');
+            showFieldError(field, 'La actualización de historia debe tener al menos 10 caracteres');
             return false;
         }
         
-        // Validación para notas (opcional pero mínimo si se llena)
-        if (field.name === 'notas' && field.value.trim() && field.value.trim().length < 5) {
+        // Validación para tratamiento (opcional pero mínimo si se llena)
+        if (field.name === 'tratamiento' && field.value.trim() && field.value.trim().length < 10) {
             field.classList.add('is-invalid');
-            showFieldError(field, 'Debe tener al menos 5 caracteres');
+            showFieldError(field, 'Si proporciona tratamiento, debe tener al menos 10 caracteres');
             return false;
         }
         

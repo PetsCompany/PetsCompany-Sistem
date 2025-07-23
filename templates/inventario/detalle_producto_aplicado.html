@@ -4,9 +4,9 @@
 {% load crispy_forms_tags %}
 {% load static %}
 
-{% block title %}Detalle Producto Aplicado | Sistema Veterinario{% endblock %}
+{% block title %}Detalle Desparasitante Aplicado | Sistema Veterinario{% endblock %}
 
-{% block page_title %}Detalle de Producto Aplicado{% endblock %}
+{% block page_title %}Detalle de Desparasitante Aplicado{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -537,7 +537,7 @@
                     <i class="fas fa-dog me-1"></i>{{ producto_aplicado.mascota.nombre }}
                 </a>
             </li>
-            <li class="breadcrumb-item active">Detalle Producto Aplicado</li>
+            <li class="breadcrumb-item active">Detalle Desparasitante Aplicado</li>
         </ol>
     </nav>
 
@@ -603,7 +603,7 @@
                 <div class="info-item">
                     <div class="info-label">
                         <i class="fas {% if producto_aplicado.producto.tipo == 'V' %}fa-pills{% else %}fa-bug{% endif %}"></i>
-                        Producto
+                        Desparasitante
                     </div>
                     <div class="info-value">
                         <a href="{% url 'inventario:detalle_producto' producto_aplicado.producto.id %}">

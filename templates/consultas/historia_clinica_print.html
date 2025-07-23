@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -157,8 +158,8 @@
         }
 
         .vet-logo {
-            width: 60px;
-            height: 60px;
+            width: 100px;
+            height: 100px;
             background: rgba(255, 255, 255, 0.15);
             border-radius: 50%;
             display: flex;
@@ -367,180 +368,105 @@
             padding: 25px;
         }
 
-        /* Timeline médico rediseñado */
-        .timeline {
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, #dc2626, #b91c1c);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 50px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 14px;
-            top: 12px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 0 2px currentColor;
-            z-index: 2;
-        }
-
-        .timeline-consultation {
-            color: #dc2626;
-        }
-
-        .timeline-vaccine {
-            color: #b91c1c;
-        }
-
-        .timeline-product {
-            color: #991b1b;
-        }
-
-        .timeline-image {
-            color: #333333;
-        }
-
-        .timeline-header {
+        /* Estilos para las nuevas tarjetas condensadas */
+        .condensed-card {
             background: white;
-            border: 2px solid currentColor;
-            border-radius: 8px 8px 0 0;
-            padding: 15px 20px;
-            margin-bottom: 0;
-            position: relative;
-        }
-
-        .timeline-header.consultation {
-            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
-            border-color: #dc2626;
-        }
-
-        .timeline-header.vaccine {
-            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
-            border-color: #b91c1c;
-        }
-
-        .timeline-header.product {
-            background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
-            border-color: #991b1b;
-        }
-
-        .timeline-header.image {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
-            border-color: #333333;
-        }
-
-        .timeline-title {
-            font-size: 12px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .timeline-date {
-            font-size: 10px;
-            color: #666666;
-            font-weight: 500;
-        }
-
-        .timeline-body {
-            background: white;
-            border: 2px solid currentColor;
-            border-top: none;
-            border-radius: 0 0 8px 8px;
-            padding: 20px;
-        }
-
-        .timeline-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .timeline-field {
-            background: #fafafa;
-            padding: 12px;
-            border-radius: 6px;
-            border-left: 3px solid currentColor;
-        }
-
-        .timeline-field-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: #404040;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .timeline-field-value {
-            font-size: 11px;
-            color: #1a1a1a;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        /* Resumen estadístico mejorado */
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .summary-item {
-            text-align: center;
-            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
-            padding: 25px 20px;
-            border-radius: 12px;
             border: 2px solid #e5e5e5;
-            position: relative;
+            border-radius: 8px;
+            margin-bottom: 20px;
             overflow: hidden;
         }
 
-        .summary-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #dc2626, #b91c1c);
-        }
-
-        .summary-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: #dc2626;
-            margin-bottom: 8px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        .summary-label {
-            font-size: 10px;
-            color: #404040;
-            text-transform: uppercase;
+        .condensed-header {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            padding: 12px 20px;
+            border-bottom: 1px solid #e5e5e5;
             font-weight: 700;
-            letter-spacing: 0.8px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .condensed-body {
+            padding: 15px;
+        }
+
+        .condensed-list {
+            list-style-type: none;
+        }
+
+        .condensed-list-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .condensed-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .condensed-list-item .date {
+            font-size: 10px;
+            color: #666;
+            min-width: 70px;
+            text-align: right;
+        }
+
+        .condensed-list-item .name {
+            font-weight: 500;
+            flex-grow: 1;
+        }
+
+        .condensed-list-item .next-date {
+            font-size: 9px;
+            color: #dc2626;
+            background: #fef2f2;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 10px;
+        }
+
+        .condensed-list-item .observations {
+            font-size: 10px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* Consultas individuales */
+        .consultation-item {
+            margin-bottom: 15px;
+            border-left: 3px solid #dc2626;
+            padding-left: 15px;
+        }
+
+        .consultation-date {
+            font-weight: 700;
+            font-size: 11px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .consultation-motive {
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .consultation-diagnosis {
+            font-size: 10px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .consultation-treatment {
+            font-size: 10px;
+            background: #f8f8f8;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
         }
 
         /* Imágenes diagnósticas */
@@ -663,23 +589,13 @@
                 print-color-adjust: exact;
             }
 
-            .timeline::before {
-                background: #dc2626 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .timeline-item::before {
-                box-shadow: 0 0 0 2px #dc2626 !important;
+            .condensed-header {
+                background: #f0f0f0 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
 
             .status-active, .status-inactive,
-            .timeline-header.consultation,
-            .timeline-header.vaccine,
-            .timeline-header.product,
-            .timeline-header.image,
             .summary-item {
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
@@ -695,7 +611,9 @@
                 <h1>HISTORIA CLÍNICA VETERINARIA</h1>
                 <div class="subtitle">Registro Médico Completo</div>
             </div>
-            <div class="vet-logo">🏥</div>
+            <div class="vet-logo">
+                <img src="{% static 'img/logo-empresa.png' %}" alt="Logo Veterinaria" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
         </div>
         <div class="date-print">
             Generado el: <span id="print-date"></span>
@@ -724,7 +642,7 @@
             
             <div class="info-item">
                 <div class="info-label icon-user">Propietario</div>
-                <div class="info-value">{{ mascota.propietario.nombre }} {{ mascota.propietario.apellido }}</div>
+                <div class="info-value">{{ mascota.cliente.nombre }} {{ mascota.cliente.apellido }}</div>
             </div>
             
             <div class="info-item">
@@ -748,13 +666,6 @@
             </div>
             
             <div class="info-item">
-                <div class="info-label">Edad Actual</div>
-                <div class="info-value" id="edad-mascota" data-fecha="{{ mascota.fecha_nacimiento|date:'Y-m-d' }}">
-                    Calculando...
-                </div>
-            </div>
-            
-            <div class="info-item">
                 <div class="info-label">Estado</div>
                 <div class="info-value">
                     {% if mascota.activa %}
@@ -768,40 +679,10 @@
         
         <div class="patient-photo">
             {% if mascota.foto %}
+            <div class="patient-photo">
                 <img src="{{ mascota.foto.url }}" alt="{{ mascota.nombre }}">
-            {% else %}
-                <div class="no-photo">
-                    <div class="no-photo-icon">📷</div>
-                    <div>Sin fotografía</div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-
-    <!-- Resumen Estadístico -->
-    <div class="section avoid-break">
-        <div class="section-header icon-chart">
-            Resumen de Historia Clínica
-        </div>
-        <div class="section-content">
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <div class="summary-number">{{ consultas|length }}</div>
-                    <div class="summary-label">Consultas Médicas</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">{{ vacunas_aplicadas|length }}</div>
-                    <div class="summary-label">Vacunas Aplicadas</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">{{ productos_aplicados|length }}</div>
-                    <div class="summary-label">Productos Aplicados</div>
-                </div>
-                <div class="summary-item">
-                    <div class="summary-number">{{ imagenes_diagnosticas|length }}</div>
-                    <div class="summary-label">Imágenes Diagnósticas</div>
-                </div>
             </div>
+            {% endif %}
         </div>
     </div>
 
@@ -811,152 +692,151 @@
             Historial Médico Completo
         </div>
         <div class="section-content">
-            <div class="timeline">
-                
-                <!-- Consultas -->
-                {% for consulta in consultas %}
-                <div class="timeline-item timeline-consultation avoid-break">
-                    <div class="timeline-header consultation">
-                        <div class="timeline-title">🩺 Consulta Médica</div>
-                        <div class="timeline-date">{{ consulta.cita.fecha|date:'d/m/Y' }}</div>
-                        {% if consulta.es_eutanasia %}
-                            <div style="margin-top: 8px;">
-                                <span class="status-badge status-inactive">⚠️ Eutanasia</span>
+            <!-- Consultas Médicas -->
+            <div class="condensed-card avoid-break">
+                <div class="condensed-header icon-stethoscope">
+                    Consultas Médicas ({{ consultas.count }})
+                </div>
+                <div class="condensed-body">
+                    {% if consultas %}
+                        {% for consulta in consultas %}
+                        <div class="consultation-item">
+                            <div class="consultation-date">
+                                {{ consulta.cita.fecha|date:'d/m/Y' }}
+                                {% if consulta.es_eutanasia %}
+                                    <span class="status-badge status-inactive" style="margin-left: 10px;">EUTANASIA</span>
+                                {% endif %}
                             </div>
-                        {% endif %}
-                    </div>
-                    <div class="timeline-body">
-                        <div class="timeline-grid">
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Motivo de Consulta</div>
-                                <div class="timeline-field-value">{{ consulta.cita.motivo }}</div>
+                            <div class="consultation-motive">
+                                <strong>Motivo:</strong> {{ consulta.cita.motivo }}
                             </div>
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Diagnóstico</div>
-                                <div class="timeline-field-value">{{ consulta.diagnostico }}</div>
+                            {% if consulta.diagnostico %}
+                            <div class="consultation-diagnosis">
+                                <strong>Diagnóstico:</strong> {{ consulta.diagnostico|truncatewords:30 }}
                             </div>
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Tratamiento</div>
-                                <div class="timeline-field-value">{{ consulta.tratamiento }}</div>
+                            {% endif %}
+                            {% if consulta.tratamiento %}
+                            <div class="consultation-treatment">
+                                <strong>Tratamiento:</strong> {{ consulta.tratamiento|truncatewords:30 }}
                             </div>
+                            {% endif %}
                             {% if consulta.notas %}
-                            <div class="timeline-field" style="grid-column: 1 / -1;">
-                                <div class="timeline-field-label">Notas Adicionales</div>
-                                <div class="timeline-field-value">{{ consulta.notas }}</div>
+                            <div class="observations">
+                                <strong>Notas:</strong> {{ consulta.notas|truncatewords:15 }}
                             </div>
                             {% endif %}
                         </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <!-- Vacunas -->
-                {% for vacuna in vacunas_aplicadas %}
-                <div class="timeline-item timeline-vaccine avoid-break">
-                    <div class="timeline-header vaccine">
-                        <div class="timeline-title">💉 Vacuna Aplicada</div>
-                        <div class="timeline-date">{{ vacuna.fecha_aplicacion|date:'d/m/Y' }}</div>
-                    </div>
-                    <div class="timeline-body">
-                        <div class="timeline-grid">
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Vacuna</div>
-                                <div class="timeline-field-value">{{ vacuna.vacuna.nombre }}</div>
-                            </div>
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Próxima Aplicación</div>
-                                <div class="timeline-field-value">{{ vacuna.fecha_proxima|date:'d/m/Y'|default:'No programada' }}</div>
-                            </div>
-                            {% if vacuna.observaciones %}
-                            <div class="timeline-field" style="grid-column: 1 / -1;">
-                                <div class="timeline-field-label">Observaciones</div>
-                                <div class="timeline-field-value">{{ vacuna.observaciones }}</div>
-                            </div>
-                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state" style="padding: 20px;">
+                            No se han registrado consultas para esta mascota
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
-                {% endfor %}
-
-                <!-- Productos -->
-                {% for producto in productos_aplicados %}
-                <div class="timeline-item timeline-product avoid-break">
-                    <div class="timeline-header product">
-                        <div class="timeline-title">💊 Producto Aplicado</div>
-                        <div class="timeline-date">{{ producto.fecha_aplicacion|date:'d/m/Y' }}</div>
-                    </div>
-                    <div class="timeline-body">
-                        <div class="timeline-grid">
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Producto</div>
-                                <div class="timeline-field-value">{{ producto.producto.nombre }}</div>
-                            </div>
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Próxima Aplicación</div>
-                                <div class="timeline-field-value">{{ producto.fecha_proxima|date:'d/m/Y'|default:'No programada' }}</div>
-                            </div>
-                            {% if producto.observaciones %}
-                            <div class="timeline-field" style="grid-column: 1 / -1;">
-                                <div class="timeline-field-label">Observaciones</div>
-                                <div class="timeline-field-value">{{ producto.observaciones }}</div>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <!-- Imágenes Diagnósticas -->
-                {% for imagen in imagenes_diagnosticas %}
-                <div class="timeline-item timeline-image avoid-break">
-                    <div class="timeline-header image">
-                        <div class="timeline-title">📷 Imagen Diagnóstica</div>
-                        <div class="timeline-date">{{ imagen.fecha|date:'d/m/Y' }}</div>
-                    </div>
-                    <div class="timeline-body">
-                        <div class="timeline-grid">
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Tipo de Imagen</div>
-                                <div class="timeline-field-value">{{ imagen.tipo|default:'No especificado' }}</div>
-                            </div>
-                            <div class="timeline-field">
-                                <div class="timeline-field-label">Descripción</div>
-                                <div class="timeline-field-value">{{ imagen.descripcion|default:'Sin descripción' }}</div>
-                            </div>
-                            {% if imagen.observaciones %}
-                            <div class="timeline-field" style="grid-column: 1 / -1;">
-                                <div class="timeline-field-label">Observaciones</div>
-                                <div class="timeline-field-value">{{ imagen.observaciones }}</div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="images-grid">
-                            {% if imagen.archivo %}
-                                <div class="image-item">
-                                    {% if imagen.archivo.url|slice:"-4:" == ".jpg" or imagen.archivo.url|slice:"-4:" == ".png" or imagen.archivo.url|slice:"-5:" == ".jpeg" %}
-                                        <img src="{{ imagen.archivo.url }}" alt="Imagen diagnóstica" class="image-preview">
-                                    {% else %}
-                                        <div class="file-icon">📄</div>
-                                    {% endif %}
-                                    <div class="image-info">{{ imagen.archivo.name }}</div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <!-- Estado vacío si no hay registros -->
-                {% if not consultas and not vacunas_aplicadas and not productos_aplicados and not imagenes_diagnosticas %}
-                <div class="empty-state">
-                    <div>No se encontraron registros médicos para esta mascota.</div>
-                    <div style="margin-top: 10px; font-size: 10px;">
-                        Los registros aparecerán aquí una vez que se realicen consultas, vacunas o tratamientos.
-                    </div>
-                </div>
-                {% endif %}
             </div>
+
+            <!-- Vacunas Aplicadas -->
+            <div class="condensed-card avoid-break">
+                <div class="condensed-header icon-syringe">
+                    Vacunas Aplicadas ({{ vacunas_aplicadas.count }})
+                </div>
+                <div class="condensed-body">
+                    {% if vacunas_aplicadas %}
+                        <ul class="condensed-list">
+                            {% for vacuna in vacunas_aplicadas %}
+                            <li class="condensed-list-item">
+                                <div class="name">{{ vacuna.vacuna.nombre }}</div>
+                                <div class="date">{{ vacuna.fecha_aplicacion|date:'d/m/Y' }}</div>
+                                {% if vacuna.fecha_proxima %}
+                                <div class="next-date">Próxima: {{ vacuna.fecha_proxima|date:'d/m/Y' }}</div>
+                                {% endif %}
+                                {% if vacuna.observaciones %}
+                                <div class="observations">{{ vacuna.observaciones|truncatewords:10 }}</div>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="empty-state" style="padding: 20px;">
+                            No se han registrado vacunas para esta mascota
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Productos Aplicados -->
+            <div class="condensed-card avoid-break">
+                <div class="condensed-header icon-pill">
+                    Desparasitantes Aplicados ({{ productos_aplicados.count }})
+                </div>
+                <div class="condensed-body">
+                    {% if productos_aplicados %}
+                        <ul class="condensed-list">
+                            {% for producto in productos_aplicados %}
+                            <li class="condensed-list-item">
+                                <div class="name">{{ producto.producto.nombre }}</div>
+                                <div class="date">{{ producto.fecha_aplicacion|date:'d/m/Y' }}</div>
+                                {% if producto.fecha_proxima %}
+                                <div class="next-date">Próxima: {{ producto.fecha_proxima|date:'d/m/Y' }}</div>
+                                {% endif %}
+                                {% if producto.observaciones %}
+                                <div class="observations">{{ producto.observaciones|truncatewords:10 }}</div>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="empty-state" style="padding: 20px;">
+                            No se han registrado desparasitantes para esta mascota
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Imágenes Diagnósticas -->
+            <div class="condensed-card avoid-break">
+                <div class="condensed-header icon-image">
+                    Imágenes Diagnósticas ({{ imagenes_diagnosticas.count }})
+                </div>
+                <div class="condensed-body">
+                    {% if imagenes_diagnosticas %}
+                        <div class="images-grid">
+                            {% for imagen in imagenes_diagnosticas %}
+                                <div class="image-item">
+                                    {% if imagen.archivo %}
+                                        {% if imagen.archivo.url|slice:"-4:" == ".jpg" or imagen.archivo.url|slice:"-4:" == ".png" or imagen.archivo.url|slice:"-5:" == ".jpeg" %}
+                                            <img src="{{ imagen.archivo.url }}" alt="Imagen diagnóstica" class="image-preview">
+                                        {% else %}
+                                            <div class="file-icon">📄</div>
+                                        {% endif %}
+                                        <div class="image-info">
+                                            <div>{{ imagen.fecha|date:'d/m/Y' }}</div>
+                                            <div>{{ imagen.tipo|default:'Sin tipo' }}</div>
+                                            {% if imagen.descripcion %}
+                                                <div>{{ imagen.descripcion|truncatewords:5 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state" style="padding: 20px;">
+                            No se han registrado imágenes diagnósticas para esta mascota
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Estado vacío si no hay registros -->
+            {% if not consultas and not vacunas_aplicadas and not productos_aplicados and not imagenes_diagnosticas %}
+            <div class="empty-state">
+                <div>No se encontraron registros médicos para esta mascota.</div>
+                <div style="margin-top: 10px; font-size: 10px;">
+                    Los registros aparecerán aquí una vez que se realicen consultas, vacunas o tratamientos.
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>    
 
@@ -967,8 +847,8 @@
             📝 Observaciones Generales
         </div>
         <div class="section-content">
-            <div class="timeline-field">
-                <div class="timeline-field-value">{{ mascota.observaciones }}</div>
+            <div style="padding: 15px; background: #fafafa; border-radius: 8px;">
+                {{ mascota.observaciones }}
             </div>
         </div>
     </div>
@@ -996,41 +876,6 @@
 
     <!-- Scripts -->
     <script>
-        // Función para calcular la edad
-        function calcularEdad(fechaNacimiento) {
-            const hoy = new Date();
-            const nacimiento = new Date(fechaNacimiento);
-            let años = hoy.getFullYear() - nacimiento.getFullYear();
-            let meses = hoy.getMonth() - nacimiento.getMonth();
-            let días = hoy.getDate() - nacimiento.getDate();
-
-            if (días < 0) {
-                meses--;
-                días += new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate();
-            }
-
-            if (meses < 0) {
-                años--;
-                meses += 12;
-            }
-
-            // Formato de salida más profesional
-            let resultado = '';
-            if (años > 0) {
-                resultado += años + (años === 1 ? ' año' : ' años');
-            }
-            if (meses > 0) {
-                if (resultado) resultado += ', ';
-                resultado += meses + (meses === 1 ? ' mes' : ' meses');
-            }
-            if (días > 0 && años === 0) {
-                if (resultado) resultado += ', ';
-                resultado += días + (días === 1 ? ' día' : ' días');
-            }
-
-            return resultado || '0 días';
-        }
-
         // Función para formatear fecha
         function formatearFecha() {
             const ahora = new Date();
@@ -1046,16 +891,6 @@
 
         // Inicializar cuando se carga la página
         document.addEventListener('DOMContentLoaded', function() {
-            // Calcular edad de la mascota
-            const edadElement = document.getElementById('edad-mascota');
-            if (edadElement) {
-                const fechaNacimiento = edadElement.getAttribute('data-fecha');
-                if (fechaNacimiento) {
-                    const edad = calcularEdad(fechaNacimiento);
-                    edadElement.textContent = edad;
-                }
-            }
-
             // Establecer fechas de generación
             const fechaActual = formatearFecha();
             const printDateElement = document.getElementById('print-date');
@@ -1089,21 +924,6 @@
 
         // Detectar intento de impresión
         window.addEventListener('beforeprint', optimizarParaImpresion);
-
-        // Función para validar datos antes de mostrar
-        function validarDatos() {
-            // Verificar elementos críticos
-            const elementosCriticos = [
-                'nombre de mascota',
-                'información del propietario',
-                'fecha de nacimiento'
-            ];
-
-            console.log('Validación de datos de historia clínica completada');
-        }
-
-        // Ejecutar validación al cargar
-        document.addEventListener('DOMContentLoaded', validarDatos);
     </script>
 </body>
 </html>

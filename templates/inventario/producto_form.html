@@ -4,17 +4,17 @@
 
 {% block title %}
 {% if form.instance.id %}
-    Editar Producto: {{ form.instance.nombre }}
+    Editar Desparasitante: {{ form.instance.nombre }}
 {% else %}
-    Nuevo Producto
+    Nuevo Desparasitante
 {% endif %}
 {% endblock %}
 
 {% block page_title %}
 {% if form.instance.id %}
-    Editar Producto
+    Editar Desparasitante
 {% else %}
-    Nuevo Producto
+    Nuevo Desparasitante
 {% endif %}
 {% endblock %}
 
@@ -633,7 +633,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{% url 'inventario:lista_productos' %}">
-                        <i class="fas fa-boxes me-1"></i>Productos
+                        <i class="fas fa-boxes me-1"></i>Desparasitantes
                     </a>
                 </li>
                 {% if form.instance.id %}
@@ -647,7 +647,7 @@
                 </li>
                 {% else %}
                 <li class="breadcrumb-item active" aria-current="page">
-                    <i class="fas fa-plus me-1"></i>Nuevo Producto
+                    <i class="fas fa-plus me-1"></i>Nuevo Desparasitante
                 </li>
                 {% endif %}
             </ol>
@@ -668,16 +668,16 @@
                         {% endif %}
                     </div>
                     {% if form.instance.id %}
-                        Editar Producto
+                        Editar Desparasitante
                     {% else %}
-                        Registrar Nuevo Producto
+                        Registrar Nuevo Desparasitante
                     {% endif %}
                 </h2>
                 <p>
                     {% if form.instance.id %}
-                        Actualiza la información del producto: <strong>{{ form.instance.nombre }}</strong>
+                        Actualiza la información del Desparasitante: <strong>{{ form.instance.nombre }}</strong>
                     {% else %}
-                        Complete el formulario para agregar un nuevo producto al inventario
+                        Complete el formulario para agregar un nuevo Desparasitante al inventario
                     {% endif %}
                 </p>
             </div>
@@ -694,14 +694,14 @@
                         <div class="form-group">
                             <label for="{{ form.nombre.id_for_label }}" class="form-label required-field">
                                 <i class="fas fa-tag"></i>
-                                Nombre del Producto
+                                Nombre del Desparasitante
                             </label>
                             <input type="text" 
                                    name="nombre" 
                                    id="{{ form.nombre.id_for_label }}"
                                    class="form-control{% if form.nombre.errors %} is-invalid{% endif %}" 
                                    value="{{ form.nombre.value|default:'' }}"
-                                   placeholder="Ingrese el nombre del producto"
+                                   placeholder="Ingrese el nombre del Desparasitante"
                                    required>
                             {% if form.nombre.errors %}
                                 <div class="invalid-feedback">
@@ -718,13 +718,13 @@
                         <div class="form-group">
                             <label for="{{ form.tipo.id_for_label }}" class="form-label required-field">
                                 <i class="fas fa-layer-group"></i>
-                                Tipo de Producto
+                                Tipo de Desparasitante
                             </label>
                             <select name="tipo" 
                                     id="{{ form.tipo.id_for_label }}"
                                     class="form-control{% if form.tipo.errors %} is-invalid{% endif %}" 
                                     required>
-                                <option value="">Seleccione el tipo de producto...</option>
+                                <option value="">Seleccione el tipo de Desparasitante...</option>
                                 {% for choice in form.tipo.field.choices %}
                                     <option value="{{ choice.0 }}" 
                                             {% if form.tipo.value == choice.0 %}selected{% endif %}>
@@ -745,13 +745,13 @@
                         <div class="form-group">
                             <label for="{{ form.descripcion.id_for_label }}" class="form-label">
                                 <i class="fas fa-align-left"></i>
-                                Descripción del Producto
+                                Descripción del Desparasitante
                             </label>
                             <textarea name="descripcion" 
                                       id="{{ form.descripcion.id_for_label }}"
                                       class="form-control{% if form.descripcion.errors %} is-invalid{% endif %}" 
                                       rows="3"
-                                      placeholder="Describa las características principales del producto...">{{ form.descripcion.value|default:'' }}</textarea>
+                                      placeholder="Describa las características principales del Desparasitante...">{{ form.descripcion.value|default:'' }}</textarea>
                             {% if form.descripcion.errors %}
                                 <div class="invalid-feedback">
                                     {{ form.descripcion.errors.0 }}
@@ -770,9 +770,9 @@
                     <button type="submit" class="btn btn-primary" id="submitBtn">
                         <i class="fas fa-save"></i>
                         {% if form.instance.id %}
-                            Actualizar Producto
+                            Actualizar Desparasitante
                         {% else %}
-                            Guardar Producto
+                            Guardar Desparasitante
                         {% endif %}
                     </button>
                 </div>

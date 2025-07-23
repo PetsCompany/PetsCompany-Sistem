@@ -778,9 +778,9 @@
             <div class="header-content">
                 <h3 class="section-title">
                     <i class="fas fa-phone-alt me-2"></i>
-                    Próximas Llamadas
+                    Próximas Acciones
                 </h3>
-                <p class="section-subtitle">Recordatorios de consultas programadas para contactar</p>
+                <p class="section-subtitle">Citas, vacunas y tratamientos programados</p>
             </div>
             <a href="{% url 'consultas:lista_citas' %}" class="view-all-btn hover-lift">
                 <i class="fas fa-list me-1"></i>
@@ -789,21 +789,21 @@
         </div>
         
         <div class="citas-cards-container">
-            {% if proximas_citas %}
-                {% for cita_data in proximas_citas %}
-                <div class="cita-card hover-lift">
+            {% if proximas_acciones %}
+                {% for accion in proximas_acciones %}
+                <div class="cita-card hover-lift {% if accion.tipo == 'vacuna' %}vacuna-card{% elif accion.tipo == 'producto' %}producto-card{% endif %}">
                     <div class="cita-card-header">
                         <div class="cita-date">
-                            <div class="date-day">{{ cita_data.cita.fecha|date:"d" }}</div>
-                            <div class="date-month">{{ cita_data.cita.fecha|date:"M" }}</div>
+                            <div class="date-day">{{ accion.fecha|date:"d" }}</div>
+                            <div class="date-month">{{ accion.fecha|date:"M" }}</div>
                         </div>
                         <div class="cita-priority">
-                            {% if cita_data.es_hoy %}
+                            {% if accion.es_hoy %}
                                 <span class="priority-badge urgent">
                                     <i class="fas fa-exclamation-circle"></i>
                                     HOY
                                 </span>
-                            {% elif cita_data.es_manana %}
+                            {% elif accion.es_manana %}
                                 <span class="priority-badge high">
                                     <i class="fas fa-clock"></i>
                                     MAÑANA
@@ -811,7 +811,7 @@
                             {% else %}
                                 <span class="priority-badge normal">
                                     <i class="fas fa-calendar"></i>
-                                    {{ cita_data.dias_restantes }} días
+                                    {{ accion.dias_restantes }} días
                                 </span>
                             {% endif %}
                         </div>
@@ -820,35 +820,75 @@
                     <div class="cita-card-body">
                         <div class="mascota-info">
                             <h4 class="mascota-nombre">
-                                <i class="fas fa-paw me-1"></i>
-                                {{ cita_data.cita.mascota.nombre }}
+                                <i class="{{ accion.icono }} me-1"></i>
+                                {{ accion.titulo }}
                             </h4>
                             <p class="propietario-nombre">
                                 <i class="fas fa-user me-1"></i>
-                                {{ cita_data.cita.mascota.cliente.nombre }}
+                                {{ accion.subtitulo }}
                             </p>
-                            <p class="mascota-details">
-                                {{ cita_data.cita.mascota.especie }} • {{ cita_data.cita.mascota.raza }}
-                            </p>
+                            {% if accion.tipo == 'cita' %}
+                                <p class="mascota-details">
+                                    {{ accion.objeto.mascota.especie }} • {{ accion.objeto.mascota.raza }}
+                                </p>
+                            {% else %}
+                                <p class="mascota-details">
+                                    {{ accion.objeto.mascota.especie }} • {{ accion.objeto.mascota.raza }}
+                                </p>
+                            {% endif %}
                         </div>
                         
                         <div class="motivo-info">
                             <p class="motivo-text">
                                 <i class="fas fa-clipboard-list me-1"></i>
-                                {{ cita_data.cita.motivo|truncatechars:60 }}
+                                {{ accion.descripcion|truncatechars:60 }}
                             </p>
                         </div>
                     </div>
                     
                     <div class="cita-card-actions">
-                        <a href="{% url 'consultas:detalle_cita' cita_data.cita.id %}" class="btn-card-action primary">
-                            <i class="fas fa-eye"></i>
-                            Ver Detalle
-                        </a>
-                        <a href="{% url 'consultas:crear_consulta' cita_data.cita.id %}" class="btn-card-action success">
-                            <i class="fas fa-stethoscope"></i>
-                            Atender
-                        </a>
+                        {% if accion.tipo == 'cita' %}
+                            <a href="{% url 'consultas:detalle_cita' accion.objeto.id %}" class="btn-card-action primary">
+                                <i class="fas fa-eye"></i>
+                                Ver Detalle
+                            </a>
+                            <a href="{% url 'consultas:crear_consulta' accion.objeto.id %}" class="btn-card-action success">
+                                <i class="fas fa-stethoscope"></i>
+                                Atender
+                            </a>
+                        {% elif accion.tipo == 'vacuna' %}
+                            <a href="{% url 'inventario:detalle_vacuna_aplicada' accion.objeto.id %}" class="btn-card-action primary">
+                                <i class="fas fa-eye"></i>
+                                Ver Detalle
+                            </a>
+                            {% if accion.objeto.es_agendada %}
+                                <a href="{% url 'inventario:aplicar_vacuna_agendada' accion.objeto.id %}" class="btn-card-action success">
+                                    <i class="fas fa-stethoscope"></i>
+                                    Aplicar Vacuna
+                                </a>
+                            {% else %}
+                                <span class="btn-card-action info">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    Próxima Dosis
+                                </span>
+                            {% endif %}
+                        {% elif accion.tipo == 'producto' %}
+                            <a href="{% url 'inventario:detalle_producto_aplicado' accion.objeto.id %}" class="btn-card-action primary">
+                                <i class="fas fa-eye"></i>
+                                Ver Detalle
+                            </a>
+                            {% if accion.objeto.es_agendado %}
+                                <a href="{% url 'inventario:aplicar_producto_agendado' accion.objeto.id %}" class="btn-card-action success">
+                                    <i class="fas fa-stethoscope"></i>
+                                    Aplicar Producto
+                                </a>
+                            {% else %}
+                                <span class="btn-card-action info">
+                                    <i class="fas fa-calendar-plus"></i>
+                                    Próxima Dosis
+                                </span>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -857,8 +897,8 @@
                     <div class="empty-icon">
                         <i class="fas fa-calendar-check"></i>
                     </div>
-                    <h4>No hay citas próximas</h4>
-                    <p>Todas las citas están al día o no hay citas programadas</p>
+                    <h4>No hay acciones próximas</h4>
+                    <p>No hay citas, vacunas o tratamientos programados</p>
                     <a href="{% url 'consultas:crear_cita' %}" class="btn-add-cita">
                         <i class="fas fa-plus me-1"></i>
                         Programar Nueva Cita
@@ -948,7 +988,7 @@
                 <div class="report-icon">
                     <i class="fas fa-pills"></i>
                 </div>
-                <h6 class="report-title">Reporte de Productos</h6>
+                <h6 class="report-title">Reporte de Desparasitantes</h6>
             </a>
             
             <a href="{% url 'reportes:reporte_eutanasias' %}" class="report-card dark">
@@ -1038,5 +1078,6 @@
         }
     `;
     document.head.appendChild(style);
+
 </script>
 {% endblock %}

@@ -22,7 +22,6 @@ class VacunaAplicada(models.Model):
     fecha_proxima = models.DateField(blank=True, null=True)
     observaciones = models.TextField(blank=True, null=True)
     
-    # AGREGAR estas propiedades:
     @property
     def es_agendada(self):
         """Retorna True si la vacuna está agendada (sin aplicar)"""
@@ -52,7 +51,6 @@ class VacunaAplicada(models.Model):
         if not self.fecha_aplicacion and not self.fecha_proxima:
             raise ValidationError("Debe especificar al menos una fecha (aplicación o próxima)")
     
-    # ACTUALIZAR el __str__ method:
     def __str__(self):
         if self.fecha_aplicacion:
             fecha_display = self.fecha_aplicacion.strftime('%d/%m/%Y')
@@ -101,7 +99,6 @@ class ProductoAplicado(models.Model):
     fecha_proxima = models.DateField(blank=True, null=True)
     observaciones = models.TextField(blank=True, null=True)
     
-    # AGREGAR las mismas propiedades que VacunaAplicada:
     @property
     def es_agendado(self):
         """Retorna True si el producto está agendado (sin aplicar)"""
@@ -131,7 +128,6 @@ class ProductoAplicado(models.Model):
         if not self.fecha_aplicacion and not self.fecha_proxima:
             raise ValidationError("Debe especificar al menos una fecha (aplicación o próxima)")
     
-    # ACTUALIZAR el __str__ method:
     def __str__(self):
         if self.fecha_aplicacion:
             fecha_display = self.fecha_aplicacion.strftime('%d/%m/%Y')

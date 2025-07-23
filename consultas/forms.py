@@ -39,11 +39,10 @@ class CitaForm(forms.ModelForm):
 class ConsultaForm(forms.ModelForm):
     class Meta:
         model = Consulta
-        fields = ['diagnostico', 'tratamiento', 'notas', 'es_eutanasia']
+        fields = ['diagnostico', 'tratamiento', 'es_eutanasia']  # Removido 'notas'
         widgets = {
-            'diagnostico': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Describe el diagnóstico realizado...'}),
-            'tratamiento': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Describe el tratamiento aplicado...'}),
-            'notas': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Notas adicionales...'}),
+            'diagnostico': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Describe la actualización de la historia clínica...'}),
+            'tratamiento': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Describe el tratamiento aplicado (opcional)...'}),
         }
     
     def __init__(self, *args, **kwargs):
@@ -51,19 +50,26 @@ class ConsultaForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         
-        # Mejorar etiquetas
-        self.fields['diagnostico'].label = 'Diagnóstico'
-        self.fields['tratamiento'].label = 'Tratamiento'
-        self.fields['notas'].label = 'Notas adicionales'
+        # Mejorar etiquetas - cambiar "diagnóstico" por "Actualización de historia"
+        self.fields['diagnostico'].label = 'Actualización de historia'
+        self.fields['tratamiento'].label = 'Tratamiento (opcional)'
+        self.fields['tratamiento'].required = False  # Hacer tratamiento opcional
         self.fields['es_eutanasia'].label = 'Es un procedimiento de eutanasia'
         
         self.helper.layout = Layout(
             'diagnostico',
             'tratamiento',
-            'notas',
             'es_eutanasia',
             Submit('submit', 'Guardar Consulta', css_class='btn btn-success')
         )
+    
+    def clean_tratamiento(self):
+        """Validación personalizada para tratamiento opcional"""
+        tratamiento = self.cleaned_data.get('tratamiento', '')
+        # Si se proporciona tratamiento, debe tener al menos 10 caracteres
+        if tratamiento and len(tratamiento.strip()) < 10:
+            raise forms.ValidationError('Si proporciona tratamiento, debe tener al menos 10 caracteres.')
+        return tratamiento
 
 class ImagenDiagnosticaForm(forms.ModelForm):
     class Meta:

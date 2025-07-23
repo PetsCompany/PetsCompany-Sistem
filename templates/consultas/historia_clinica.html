@@ -164,7 +164,7 @@
     }
 
     .btn-modern.btn-secondary {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(56, 56, 56, 0.66);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
@@ -591,6 +591,117 @@
     .slide-up {
         animation: slideUp 0.5s ease-out;
     }
+    
+    /* Estilos mejorados para las listas condensadas */
+    .condensed-list {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .condensed-list-item {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(220, 53, 69, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: var(--transition);
+    }
+    
+    .condensed-list-item:last-child {
+        border-bottom: none;
+    }
+    
+    .condensed-list-item:hover {
+        background-color: rgba(220, 53, 69, 0.03);
+        transform: translateX(2px);
+    }
+    
+    .condensed-list-item .item-date {
+        font-size: 0.85rem;
+        color: #666;
+        min-width: 80px;
+        text-align: right;
+    }
+    
+    .condensed-list-item .item-main {
+        flex-grow: 1;
+        padding-right: 1rem;
+    }
+    
+    .condensed-list-item .item-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
+    
+    .condensed-list-item .item-detail {
+        font-size: 0.85rem;
+        color: #666;
+    }
+    
+    .condensed-list-item .item-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .condensed-list-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background-color: rgba(220, 53, 69, 0.05);
+        border-bottom: 1px solid rgba(220, 53, 69, 0.1);
+    }
+    
+    .condensed-list-count {
+        background-color: #dc3545;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    
+    .badge-consultation {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+    
+    .badge-eutanasia {
+        background-color: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+    
+    .expandable-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        background-color: rgba(220, 53, 69, 0.02);
+        border-radius: var(--border-radius-sm);
+    }
+    
+    .expandable-content.show {
+        max-height: 500px; /* Ajusta según necesidad */
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border: 1px solid rgba(220, 53, 69, 0.1);
+    }
+    
+    .toggle-details {
+        color: #dc3545;
+        cursor: pointer;
+        font-size: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .toggle-details:hover {
+        text-decoration: underline;
+    }
 
     @keyframes fadeIn {
         from { opacity: 0; }
@@ -757,157 +868,164 @@
         </div>
         <div class="card-body-modern">
             <div class="timeline">
-                <!-- Consultas -->
-                {% for consulta in consultas %}
+                <!-- Consultas - Nueva versión condensada -->
                 <div class="timeline-item timeline-consultation">
                     <div class="timeline-card">
                         <div class="timeline-card-header consultation">
-                            <div>
+                            <div class="condensed-list-header">
                                 <strong>
                                     <i class="fas fa-stethoscope me-2"></i>
-                                    Consulta - {{ consulta.cita.fecha|date:'d/m/Y' }}
+                                    Consultas Médicas
                                 </strong>
-                                <small class="text-muted ms-2">
-                                    Registrado: {{ consulta.fecha_registro|date:'d/m/Y H:i' }}
-                                </small>
-                                {% if consulta.es_eutanasia %}
-                                    <span class="status-badge ms-2" style="background: rgba(0,0,0,0.2); color: white;">
-                                        <i class="fas fa-heart"></i>
-                                        Eutanasia
-                                    </span>
-                                {% endif %}
+                                <span class="condensed-list-count">{{ consultas|length }}</span>
                             </div>
                         </div>
                         <div class="timeline-card-body">
-                            <div class="timeline-info-grid">
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Motivo de la Cita</div>
-                                    <div class="timeline-info-value">{{ consulta.cita.motivo }}</div>
-                                </div>
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Estado de Cita</div>
-                                    <div class="timeline-info-value">
-                                        {% if consulta.cita.atendida %}
-                                            <span class="status-badge status-active">
-                                                <i class="fas fa-check-circle"></i>
-                                                Atendida
-                                            </span>
-                                        {% else %}
-                                            <span class="status-badge status-pending">
-                                                <i class="fas fa-clock"></i>
-                                                Pendiente
-                                            </span>
-                                        {% endif %}
+                            {% if consultas %}
+                            <ul class="condensed-list">
+                                {% for consulta in consultas %}
+                                <li class="condensed-list-item">
+                                    <div class="item-main">
+                                        <div class="item-title">
+                                            {{ consulta.cita.fecha|date:'d/m/Y' }} - {{ consulta.cita.motivo|truncatechars:40 }}
+                                            {% if consulta.es_eutanasia %}
+                                                <span class="badge badge-eutanasia ms-2">Eutanasia</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="item-detail">
+                                            {{ consulta.diagnostico|truncatechars:60 }}
+                                        </div>
+                                        <div class="expandable-content" id="consulta-details-{{ consulta.id }}">
+                                            <div class="timeline-info-grid mt-2">
+                                                <div class="timeline-info-item">
+                                                    <div class="timeline-info-label">Tratamiento</div>
+                                                    <div class="timeline-info-value">{{ consulta.tratamiento|default:"N/A" }}</div>
+                                                </div>
+                                                {% if consulta.notas %}
+                                                <div class="timeline-info-item">
+                                                    <div class="timeline-info-label">Notas</div>
+                                                    <div class="timeline-info-value">{{ consulta.notas }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="timeline-actions mt-2">
+                                                <a href="{% url 'consultas:detalle_consulta' consulta.pk %}" class="btn-sm-modern btn-light-modern">
+                                                    <i class="fas fa-eye"></i> Ver Detalles
+                                                </a>
+                                                <a href="{% url 'consultas:detalle_cita' consulta.cita.pk %}" class="btn-sm-modern btn-light-modern">
+                                                    <i class="fas fa-calendar-alt"></i> Ver Cita
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Diagnóstico</div>
-                                    <div class="timeline-info-value">{{ consulta.diagnostico }}</div>
-                                </div>
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Tratamiento</div>
-                                    <div class="timeline-info-value">{{ consulta.tratamiento }}</div>
-                                </div>
-                                {% if consulta.notas %}
-                                <div class="timeline-info-item" style="grid-column: 1 / -1;">
-                                    <div class="timeline-info-label">Notas Adicionales</div>
-                                    <div class="timeline-info-value">{{ consulta.notas }}</div>
-                                </div>
-                                {% endif %}
+                                    <div class="item-date">
+                                        {{ consulta.fecha_registro|date:'d/m/Y' }}
+                                    </div>
+                                    <div class="item-actions">
+                                        <span class="toggle-details" onclick="toggleDetails('consulta-details-{{ consulta.id }}', this)">
+                                            <i class="fas fa-chevron-down"></i> Detalles
+                                        </span>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <div class="alert-modern alert-info-modern">
+                                <i class="fas fa-info-circle"></i>
+                                No hay consultas registradas para esta mascota.
                             </div>
-                            <div class="timeline-actions mt-3">
-                                <a href="{% url 'consultas:detalle_consulta' consulta.pk %}" class="btn-sm-modern btn-light-modern">
-                                    <i class="fas fa-eye"></i>
-                                    Ver Detalles
-                                </a>
-                                <a href="{% url 'consultas:detalle_cita' consulta.cita.pk %}" class="btn-sm-modern btn-light-modern">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    Ver Cita
-                                </a>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="alert-modern alert-info-modern">
-                    <i class="fas fa-info-circle"></i>
-                    No hay consultas registradas para esta mascota.
-                </div>
-                {% endfor %}
 
-                <!-- Vacunas Aplicadas -->
-                {% for vacuna in vacunas_aplicadas %}
+                <!-- Vacunas Aplicadas - Versión condensada -->
                 <div class="timeline-item timeline-vaccine">
                     <div class="timeline-card">
                         <div class="timeline-card-header vaccine">
-                            <strong>
-                                <i class="fas fa-syringe me-2"></i>
-                                Vacuna - {{ vacuna.fecha_aplicacion|date:'d/m/Y' }}
-                            </strong>
+                            <div class="condensed-list-header">
+                                <strong>
+                                    <i class="fas fa-syringe me-2"></i>
+                                    Vacunas Aplicadas
+                                </strong>
+                                <span class="condensed-list-count">{{ vacunas_aplicadas|length }}</span>
+                            </div>
                         </div>
                         <div class="timeline-card-body">
-                            <div class="timeline-info-grid">
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Vacuna</div>
-                                    <div class="timeline-info-value">{{ vacuna.vacuna.nombre }}</div>
-                                </div>
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Próxima aplicación</div>
-                                    <div class="timeline-info-value">{{ vacuna.fecha_proxima|date:'d/m/Y'|default:'N/A' }}</div>
-                                </div>
-                                {% if vacuna.observaciones %}
-                                <div class="timeline-info-item" style="grid-column: 1 / -1;">
-                                    <div class="timeline-info-label">Observaciones</div>
-                                    <div class="timeline-info-value">{{ vacuna.observaciones }}</div>
-                                </div>
-                                {% endif %}
+                            {% if vacunas_aplicadas %}
+                            <ul class="condensed-list">
+                                {% for vacuna in vacunas_aplicadas %}
+                                <li class="condensed-list-item">
+                                    <div class="item-main">
+                                        <div class="item-title">{{ vacuna.vacuna.nombre }}</div>
+                                        {% if vacuna.observaciones %}
+                                        <div class="item-detail">{{ vacuna.observaciones|truncatechars:50 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="item-date">
+                                        {{ vacuna.fecha_aplicacion|date:'d/m/Y' }}
+                                    </div>
+                                    <div class="item-actions">
+                                        <span class="badge bg-light text-dark">
+                                            Próxima: {{ vacuna.fecha_proxima|date:'d/m/Y'|default:'N/A' }}
+                                        </span>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <div class="alert-modern alert-info-modern">
+                                <i class="fas fa-syringe"></i>
+                                No hay vacunas registradas para esta mascota.
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="alert-modern alert-info-modern">
-                    <i class="fas fa-syringe"></i>
-                    No hay vacunas registradas para esta mascota.
-                </div>
-                {% endfor %}
 
-                <!-- Productos Aplicados -->
-                {% for producto in productos_aplicados %}
+                <!-- Productos Aplicados - Versión condensada -->
                 <div class="timeline-item timeline-product">
                     <div class="timeline-card">
                         <div class="timeline-card-header product">
-                            <strong>
-                                <i class="fas fa-pills me-2"></i>
-                                Producto Aplicado - {{ producto.fecha_aplicacion|date:'d/m/Y' }}
-                            </strong>
+                            <div class="condensed-list-header">
+                                <strong>
+                                    <i class="fas fa-pills me-2"></i>
+                                    Desparasitantes Aplicados
+                                </strong>
+                                <span class="condensed-list-count">{{ productos_aplicados|length }}</span>
+                            </div>
                         </div>
                         <div class="timeline-card-body">
-                            <div class="timeline-info-grid">
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Producto</div>
-                                    <div class="timeline-info-value">{{ producto.producto.nombre }}</div>
-                                </div>
-                                <div class="timeline-info-item">
-                                    <div class="timeline-info-label">Próxima aplicación</div>
-                                    <div class="timeline-info-value">{{ producto.fecha_proxima|date:'d/m/Y'|default:'N/A' }}</div>
-                                </div>
-                                {% if producto.observaciones %}
-                                <div class="timeline-info-item" style="grid-column: 1 / -1;">
-                                    <div class="timeline-info-label">Observaciones</div>
-                                    <div class="timeline-info-value">{{ producto.observaciones }}</div>
-                                </div>
-                                {% endif %}
+                            {% if productos_aplicados %}
+                            <ul class="condensed-list">
+                                {% for producto in productos_aplicados %}
+                                <li class="condensed-list-item">
+                                    <div class="item-main">
+                                        <div class="item-title">{{ producto.producto.nombre }}</div>
+                                        {% if producto.observaciones %}
+                                        <div class="item-detail">{{ producto.observaciones|truncatechars:50 }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="item-date">
+                                        {{ producto.fecha_aplicacion|date:'d/m/Y' }}
+                                    </div>
+                                    <div class="item-actions">
+                                        <span class="badge bg-light text-dark">
+                                            Próxima: {{ producto.fecha_proxima|date:'d/m/Y'|default:'N/A' }}
+                                        </span>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <div class="alert-modern alert-info-modern">
+                                <i class="fas fa-pills"></i>
+                                No hay Desparasitantes aplicados registrados para esta mascota.
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% empty %}
-                <div class="alert-modern alert-info-modern">
-                    <i class="fas fa-pills"></i>
-                    No hay productos aplicados registrados para esta mascota.
-                </div>
-                {% endfor %}
 
                 <!-- Imágenes Diagnósticas -->
                 {% if imagenes_diagnosticas %}
@@ -1012,240 +1130,196 @@
             </div>
         </div>
     </div>
-
-    <!-- Sección de Estadísticas Rápidas -->
-    <div class="detail-card slide-up">
-        <div class="card-header-modern bg-info-custom">
-            <h5 class="card-title-modern">
-                <i class="fas fa-chart-bar"></i>
-                Resumen de Historia Clínica
-            </h5>
-        </div>
-        <div class="card-body-modern">
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">
-                        <i class="fas fa-stethoscope"></i>
-                        Total Consultas
-                    </div>
-                    <div class="info-value">{{ consultas|length }}</div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-label">
-                        <i class="fas fa-syringe"></i>
-                        Vacunas Aplicadas
-                    </div>
-                    <div class="info-value">{{ vacunas_aplicadas|length }}</div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-label">
-                        <i class="fas fa-pills"></i>
-                        Productos Aplicados
-                    </div>
-                    <div class="info-value">{{ productos_aplicados|length }}</div>
-                </div>
-                
-                <div class="info-item">
-                    <div class="info-label">
-                        <i class="fas fa-images"></i>
-                        Imágenes Diagnósticas
-                    </div>
-                    <div class="info-value">{{ imagenes_diagnosticas.count|default:0 }}</div>
-                </div>
-                
-                {% if consultas %}
-                <div class="info-item">
-                    <div class="info-label">
-                        <i class="fas fa-calendar-alt"></i>
-                        Última Consulta
-                    </div>
-                    <div class="info-value">{{ consultas.first.cita.fecha|date:'d/m/Y' }}</div>
-                </div>
-                {% endif %}
-                
-                <div class="info-item">
-                    <div class="info-label">
-                        <i class="fas fa-clock"></i>
-                        Edad Actual
-                    </div>
-                    <div class="info-value">
-                        <span id="edad-mascota" data-fecha-nacimiento="{{ mascota.fecha_nacimiento|date:'Y-m-d' }}">
-                            Calculando...
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 {% endblock %}
 
 {% block extra_js %}
 <script>
-// Función para calcular la edad de la mascota
-function calcularEdad() {
-    const fechaNacimiento = document.getElementById('edad-mascota').dataset.fechaNacimiento;
-    if (fechaNacimiento) {
-        const nacimiento = new Date(fechaNacimiento);
-        const hoy = new Date();
+    // Función para alternar la visualización de detalles
+    function toggleDetails(id, element) {
+        const content = document.getElementById(id);
+        const icon = element.querySelector('i');
         
-        let años = hoy.getFullYear() - nacimiento.getFullYear();
-        let meses = hoy.getMonth() - nacimiento.getMonth();
+        content.classList.toggle('show');
         
-        if (meses < 0) {
-            años--;
-            meses += 12;
+        if (content.classList.contains('show')) {
+            icon.classList.remove('fa-chevron-down');
+            icon.classList.add('fa-chevron-up');
+            element.innerHTML = element.innerHTML.replace('Detalles', 'Ocultar');
+        } else {
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+            element.innerHTML = element.innerHTML.replace('Ocultar', 'Detalles');
         }
-        
-        if (hoy.getDate() < nacimiento.getDate()) {
-            meses--;
+    }
+
+    // Mantener el resto del JavaScript existente
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... resto del código existente ...
+    });
+
+    // Función para calcular la edad de la mascota
+    function calcularEdad() {
+        const fechaNacimiento = document.getElementById('edad-mascota').dataset.fechaNacimiento;
+        if (fechaNacimiento) {
+            const nacimiento = new Date(fechaNacimiento);
+            const hoy = new Date();
+            
+            let años = hoy.getFullYear() - nacimiento.getFullYear();
+            let meses = hoy.getMonth() - nacimiento.getMonth();
+            
             if (meses < 0) {
                 años--;
                 meses += 12;
             }
+            
+            if (hoy.getDate() < nacimiento.getDate()) {
+                meses--;
+                if (meses < 0) {
+                    años--;
+                    meses += 12;
+                }
+            }
+            
+            let edadTexto = '';
+            if (años > 0) {
+                edadTexto += años + (años === 1 ? ' año' : ' años');
+            }
+            if (meses > 0) {
+                if (edadTexto) edadTexto += ', ';
+                edadTexto += meses + (meses === 1 ? ' mes' : ' meses');
+            }
+            
+            if (!edadTexto) {
+                const dias = Math.floor((hoy - nacimiento) / (1000 * 60 * 60 * 24));
+                edadTexto = dias + (dias === 1 ? ' día' : ' días');
+            }
+            
+            document.getElementById('edad-mascota').textContent = edadTexto;
         }
-        
-        let edadTexto = '';
-        if (años > 0) {
-            edadTexto += años + (años === 1 ? ' año' : ' años');
-        }
-        if (meses > 0) {
-            if (edadTexto) edadTexto += ', ';
-            edadTexto += meses + (meses === 1 ? ' mes' : ' meses');
-        }
-        
-        if (!edadTexto) {
-            const dias = Math.floor((hoy - nacimiento) / (1000 * 60 * 60 * 24));
-            edadTexto = dias + (dias === 1 ? ' día' : ' días');
-        }
-        
-        document.getElementById('edad-mascota').textContent = edadTexto;
     }
-}
 
-// Función para mejorar la experiencia de impresión
-function configurarImpresion() {
-    const mediaQueryList = window.matchMedia('print');
-    mediaQueryList.addListener(function(mql) {
-        if (mql.matches) {
-            // Antes de imprimir
-            document.body.classList.add('printing');
-        } else {
-            // Después de imprimir
-            document.body.classList.remove('printing');
-        }
-    });
-}
-
-// Función para agregar efectos de hover en tarjetas
-function inicializarEfectos() {
-    const tarjetas = document.querySelectorAll('.detail-card, .timeline-card');
-    
-    tarjetas.forEach(tarjeta => {
-        tarjeta.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-        });
-        
-        tarjeta.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-}
-
-// Función para animar elementos al hacer scroll
-function animarAlScroll() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('slide-up');
+    // Función para mejorar la experiencia de impresión
+    function configurarImpresion() {
+        const mediaQueryList = window.matchMedia('print');
+        mediaQueryList.addListener(function(mql) {
+            if (mql.matches) {
+                // Antes de imprimir
+                document.body.classList.add('printing');
+            } else {
+                // Después de imprimir
+                document.body.classList.remove('printing');
             }
         });
-    }, observerOptions);
-    
-    // Observar elementos que no tienen la clase slide-up
-    const elementos = document.querySelectorAll('.timeline-item:not(.slide-up)');
-    elementos.forEach(elemento => {
-        observer.observe(elemento);
-    });
-}
+    }
 
-// Función para manejar imágenes con lightbox básico
-function configurarImagenes() {
-    const imagenes = document.querySelectorAll('.image-preview, .pet-photo');
-    
-    imagenes.forEach(img => {
-        img.addEventListener('click', function() {
-            // Crear lightbox simple
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.9);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-                cursor: pointer;
-            `;
+    // Función para agregar efectos de hover en tarjetas
+    function inicializarEfectos() {
+        const tarjetas = document.querySelectorAll('.detail-card, .timeline-card');
+        
+        tarjetas.forEach(tarjeta => {
+            tarjeta.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
             
-            const imgClone = this.cloneNode();
-            imgClone.style.cssText = `
-                max-width: 90%;
-                max-height: 90%;
-                object-fit: contain;
-                border-radius: 8px;
-                box-shadow: 0 0 30px rgba(255,255,255,0.3);
-            `;
-            
-            overlay.appendChild(imgClone);
-            document.body.appendChild(overlay);
-            
-            overlay.addEventListener('click', function() {
-                document.body.removeChild(overlay);
+            tarjeta.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
             });
         });
+    }
+
+    // Función para animar elementos al hacer scroll
+    function animarAlScroll() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
         
-        img.style.cursor = 'pointer';
-        img.title = 'Clic para ampliar';
-    });
-}
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('slide-up');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos que no tienen la clase slide-up
+        const elementos = document.querySelectorAll('.timeline-item:not(.slide-up)');
+        elementos.forEach(elemento => {
+            observer.observe(elemento);
+        });
+    }
 
-// Inicializar todo cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
-    calcularEdad();
-    configurarImpresion();
-    inicializarEfectos();
-    animarAlScroll();
-    configurarImagenes();
-    
-    // Actualizar edad cada minuto (por si alguien deja la página abierta mucho tiempo)
-    setInterval(calcularEdad, 60000);
-});
+    // Función para manejar imágenes con lightbox básico
+    function configurarImagenes() {
+        const imagenes = document.querySelectorAll('.image-preview, .pet-photo');
+        
+        imagenes.forEach(img => {
+            img.addEventListener('click', function() {
+                // Crear lightbox simple
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                    cursor: pointer;
+                `;
+                
+                const imgClone = this.cloneNode();
+                imgClone.style.cssText = `
+                    max-width: 90%;
+                    max-height: 90%;
+                    object-fit: contain;
+                    border-radius: 8px;
+                    box-shadow: 0 0 30px rgba(255,255,255,0.3);
+                `;
+                
+                overlay.appendChild(imgClone);
+                document.body.appendChild(overlay);
+                
+                overlay.addEventListener('click', function() {
+                    document.body.removeChild(overlay);
+                });
+            });
+            
+            img.style.cursor = 'pointer';
+            img.title = 'Clic para ampliar';
+        });
+    }
 
-// Función adicional para ordenar timeline por fecha (si es necesario)
-function ordenarTimeline() {
-    const timeline = document.querySelector('.timeline');
-    const items = Array.from(timeline.querySelectorAll('.timeline-item'));
-    
-    // Esta función estaría disponible para uso futuro si necesitas ordenar dinámicamente
-    items.sort((a, b) => {
-        const fechaA = a.dataset.fecha || '1970-01-01';
-        const fechaB = b.dataset.fecha || '1970-01-01';
-        return new Date(fechaB) - new Date(fechaA);
+    // Inicializar todo cuando se carga la página
+    document.addEventListener('DOMContentLoaded', function() {
+        calcularEdad();
+        configurarImpresion();
+        inicializarEfectos();
+        animarAlScroll();
+        configurarImagenes();
+        
+        // Actualizar edad cada minuto (por si alguien deja la página abierta mucho tiempo)
+        setInterval(calcularEdad, 60000);
     });
-    
-    items.forEach(item => timeline.appendChild(item));
-}
+
+    // Función adicional para ordenar timeline por fecha (si es necesario)
+    function ordenarTimeline() {
+        const timeline = document.querySelector('.timeline');
+        const items = Array.from(timeline.querySelectorAll('.timeline-item'));
+        
+        // Esta función estaría disponible para uso futuro si necesitas ordenar dinámicamente
+        items.sort((a, b) => {
+            const fechaA = a.dataset.fecha || '1970-01-01';
+            const fechaB = b.dataset.fecha || '1970-01-01';
+            return new Date(fechaB) - new Date(fechaA);
+        });
+        
+        items.forEach(item => timeline.appendChild(item));
+    }
 </script>
 {% endblock %}

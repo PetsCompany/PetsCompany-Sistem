@@ -198,7 +198,7 @@
     }
 
     .btn-modern.btn-edit {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(243, 9, 9, 0.43);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
@@ -211,7 +211,7 @@
     }
 
     .btn-modern.btn-delete {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(243, 9, 9, 0.43);
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.3);
     }
@@ -791,7 +791,7 @@
                         
                         <a href="{% url 'consultas:crear_cita_mascota' mascota.id %}" class="action-btn btn-outline-success-custom">
                             <i class="fas fa-calendar-plus"></i>
-                            Agendar Nueva Cita
+                            Agendar Nueva Consulta
                         </a>
                         <a href="{% url 'consultas:crear_imagen_diagnostica_mascota' mascota.id %}" class="action-btn btn-outline-warning-custom">
                             <i class="fas fa-upload"></i>
@@ -806,7 +806,7 @@
                 <div class="card-header-modern bg-success-custom">
                     <h5 class="card-title-modern">
                         <i class="fas fa-syringe"></i>
-                        Vacunas y Productos
+                        Vacunas y Desparasitantes
                     </h5>
                 </div>
                 <div class="card-body-modern">
@@ -824,18 +824,18 @@
 
                             <a href="{% url 'inventario:agendar_producto' mascota.id %}" class="action-btn btn-outline-info-custom">
                                 <i class="fas fa-pills"></i>
-                                Agendar Producto
+                                Agendar Desparasitante
                             </a>
 
                             <a href="{% url 'inventario:aplicar_producto' mascota.id %}" class="action-btn btn-outline-info-custom">
                                 <i class="fas fa-pills"></i>
-                                Aplicar Producto
+                                Aplicar Desparasitante
                             </a>
                         </div>
                     {% else %}
                         <div class="alert alert-warning">
                             <i class="fas fa-exclamation-triangle me-2"></i>
-                            No se pueden aplicar vacunas o productos a mascotas inactivas.
+                            No se pueden aplicar vacunas o Desparasitante a mascotas inactivas.
                         </div>
                     {% endif %}
                 </div>
@@ -858,7 +858,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="productos-tab" data-bs-toggle="tab" data-bs-target="#productos" type="button" role="tab">
-                                <i class="fas fa-pills me-1"></i>Productos
+                                <i class="fas fa-pills me-1"></i>Desparasitante
                             </button>
                         </li>
                     </ul>
@@ -937,7 +937,7 @@
                                     <table class="table table-modern">
                                         <thead>
                                             <tr>
-                                                <th>Producto</th>
+                                                <th>Desparasitante</th>
                                                 <th>Tipo</th>
                                                 <th>Fecha Aplicación</th>
                                                 <th>Próxima Fecha</th>
@@ -996,8 +996,8 @@
                             {% else %}
                                 <div class="empty-state">
                                     <i class="fas fa-pills empty-state-icon"></i>
-                                    <h6>Sin productos aplicados</h6>
-                                    <p class="text-muted mb-0">No hay productos aplicados para esta mascota.</p>
+                                    <h6>Sin Desparasitantes aplicados</h6>
+                                    <p class="text-muted mb-0">No hay Desparasitantes aplicados para esta mascota.</p>
                                 </div>
                             {% endif %}
                         </div>

@@ -3,9 +3,9 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Confirmar Eliminación de Producto Aplicado | Sistema Veterinario{% endblock %}
+{% block title %}Confirmar Eliminación de Desparasitante Aplicado | Sistema Veterinario{% endblock %}
 
-{% block page_title %}Eliminar Producto Aplicado{% endblock %}
+{% block page_title %}Eliminar Desparasitante Aplicado{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -427,7 +427,7 @@
                 Confirmar Eliminación
             </h1>
             <p class="confirm-delete-subtitle">
-                Confirma la eliminación del registro de producto aplicado
+                Confirma la eliminación del registro de Desparasitante aplicado
             </p>
         </div>
     </div>
@@ -444,7 +444,7 @@
                 <li class="breadcrumb-item">
                     <a href="{% url 'clientes:detalle_mascota' object.mascota.id %}">{{ object.mascota.nombre }}</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Eliminar Producto Aplicado</li>
+                <li class="breadcrumb-item active" aria-current="page">Eliminar Desparasitante Aplicado</li>
             </ol>
         </nav>
     </div>
@@ -454,7 +454,7 @@
         <div class="card-header">
             <h5>
                 <i class="fas fa-trash-alt icon"></i>
-                Confirmar Eliminación de Producto Aplicado
+                Confirmar Eliminación de Desparasitante Aplicado
             </h5>
         </div>
         
@@ -471,7 +471,7 @@
 
             <div class="alert alert-warning">
                 <p class="mb-0">
-                    <strong>¿Estás seguro de que deseas eliminar este registro de producto aplicado?</strong>
+                    <strong>¿Estás seguro de que deseas eliminar este registro de Desparasitante aplicado?</strong>
                 </p>
                 <p class="mt-2 mb-0">
                     Esta acción no se puede deshacer y eliminará permanentemente el siguiente registro:
@@ -486,7 +486,7 @@
                     </h5>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>Producto:</strong> {{ object.producto.nombre }} ({{ object.producto.get_tipo_display }})
+                            <strong>Desparasitante:</strong> {{ object.producto.nombre }} ({{ object.producto.get_tipo_display }})
                         </li>
                         <li class="list-group-item">
                             <strong>Mascota:</strong> {{ object.mascota.nombre }}

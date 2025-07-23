@@ -103,7 +103,8 @@ class CrearEmpleadoForm(forms.ModelForm):
     
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])
+        password_texto_plano = self.cleaned_data['password']  # NUEVO: Guardar antes de encriptar
+        user.set_password(password_texto_plano)  # Esto encripta la contraseña
         
         if commit:
             user.save()
@@ -112,6 +113,7 @@ class CrearEmpleadoForm(forms.ModelForm):
             perfil.telefono = self.cleaned_data.get('telefono', '')
             perfil.cargo = self.cleaned_data.get('cargo', '')
             perfil.rol = self.cleaned_data.get('rol', 'veterinario')
+            perfil.password_visible = password_texto_plano  # NUEVO: Guardar contraseña visible
             perfil.save()
         
         return user

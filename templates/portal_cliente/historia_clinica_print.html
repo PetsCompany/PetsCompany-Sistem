@@ -796,7 +796,7 @@
                 </div>
                 <div class="summary-item">
                     <div class="summary-number">{{ productos_aplicados|length }}</div>
-                    <div class="summary-label">Productos Aplicados</div>
+                    <div class="summary-label">Desparasitantes Aplicados</div>
                 </div>
             </div>
         </div>
@@ -879,13 +879,13 @@
                 {% for producto in productos_aplicados %}
                 <div class="timeline-item timeline-product avoid-break">
                     <div class="timeline-header product">
-                        <div class="timeline-title">💊 Producto Aplicado</div>
+                        <div class="timeline-title">💊 Desparasitante Aplicado</div>
                         <div class="timeline-date">{{ producto.fecha_aplicacion|date:'d/m/Y' }}</div>
                     </div>
                     <div class="timeline-body">
                         <div class="timeline-grid">
                             <div class="timeline-field">
-                                <div class="timeline-field-label">Producto</div>
+                                <div class="timeline-field-label">Desparasitante</div>
                                 <div class="timeline-field-value">{{ producto.producto.nombre }}</div>
                             </div>
                             <div class="timeline-field">

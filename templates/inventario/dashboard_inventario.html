@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Dashboard de Inventario | Sistema Veterinario{% endblock %}
+{% block title %}Panel de Inventario | Sistema Veterinario{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -631,7 +631,7 @@
     <!-- Welcome Section -->
     <div class="welcome-section animate-on-scroll">
         <div class="welcome-content">
-            <h1><i class="fas fa-boxes me-2"></i>Dashboard de Inventario</h1>
+            <h1><i class="fas fa-boxes me-2"></i>Panel de Inventario</h1>
             <p>Controla y administra tu inventario de vacunas y Desparasitantes veterinarios</p>
         </div>
     </div>
@@ -748,14 +748,152 @@
         </div>
     </div>
     
-    <!-- Próximas vacunaciones -->
+    <!-- Vacunas Agendadas (sin aplicar) -->
+    <div class="data-section animate-on-scroll hover-lift" id="vacunas-agendadas">
+        <div class="data-header">
+            <h5>
+                <i class="fas fa-calendar-alt text-info"></i>
+                Vacunas Agendadas (Pendientes)
+            </h5>
+            <span class="data-badge" style="background: linear-gradient(135deg, var(--info-color), #17a2b8);">{{ vacunas_agendadas_count }}</span>
+        </div>
+        <div class="data-body">
+            {% if vacunas_agendadas %}
+            <div class="table-responsive">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Vacuna</th>
+                            <th>Fecha de Aplicación</th>
+                            <th>Fecha Agendada</th>
+                            <th style="text-align: right;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vacuna in vacunas_agendadas %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'clientes:detalle_mascota' vacuna.mascota.id %}">
+                                    {{ vacuna.mascota.nombre }}
+                                </a>
+                            </td>
+                            <td>{{ vacuna.vacuna.nombre }}</td>
+                            <td>
+                                <span class="text-muted">
+                                    <i class="fas fa-clock"></i> Pendiente
+                                </span>
+                            </td>
+                            <td>
+                                {% if vacuna.fecha_proxima %}
+                                    <span class="status-badge {% if vacuna.fecha_proxima|date:'Y-m-d' <= hoy %}danger{% elif vacuna.dias_restantes <= 7 %}warning{% else %}info{% endif %}">
+                                        {{ vacuna.fecha_proxima|date:"d/m/Y" }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">No programada</span>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: right;">
+                                <a href="{% url 'inventario:detalle_vacuna_aplicada' vacuna.id %}" class="btn-modern primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'inventario:aplicar_vacuna_agendada' vacuna.id %}" class="btn-modern success">
+                                    <i class="fas fa-syringe"></i> Aplicar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-calendar-check"></i>
+                <h5>No hay vacunas agendadas pendientes</h5>
+                <p>No tienes vacunas programadas sin aplicar</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Productos Agendados (sin aplicar) -->
+    <div class="data-section animate-on-scroll hover-lift" id="productos-agendados">
+        <div class="data-header">
+            <h5>
+                <i class="fas fa-calendar-alt text-info"></i>
+                Desparasitantes Agendados (Pendientes)
+            </h5>
+            <span class="data-badge" style="background: linear-gradient(135deg, var(--info-color), #17a2b8);">{{ productos_agendados_count }}</span>
+        </div>
+        <div class="data-body">
+            {% if productos_agendados %}
+            <div class="table-responsive">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Mascota</th>
+                            <th>Desparasitante</th>
+                            <th>Tipo</th>
+                            <th>Fecha de Aplicación</th>
+                            <th>Fecha Agendada</th>
+                            <th style="text-align: right;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos_agendados %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'clientes:detalle_mascota' producto.mascota.id %}">
+                                    {{ producto.mascota.nombre }}
+                                </a>
+                            </td>
+                            <td>{{ producto.producto.nombre }}</td>
+                            <td>{{ producto.producto.get_tipo_display }}</td>
+                            <td>
+                                <span class="text-muted">
+                                    <i class="fas fa-clock"></i> Pendiente
+                                </span>
+                            </td>
+                            <td>
+                                {% if producto.fecha_proxima %}
+                                    <span class="status-badge {% if producto.fecha_proxima|date:'Y-m-d' <= hoy %}danger{% elif producto.dias_restantes <= 7 %}warning{% else %}info{% endif %}">
+                                        {{ producto.fecha_proxima|date:"d/m/Y" }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">No programada</span>
+                                {% endif %}
+                            </td>
+                            <td style="text-align: right;">
+                                <a href="{% url 'inventario:detalle_producto_aplicado' producto.id %}" class="btn-modern primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{% url 'inventario:aplicar_producto_agendado' producto.id %}" class="btn-modern success">
+                                    <i class="fas fa-pills"></i> Aplicar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-calendar-check"></i>
+                <h5>No hay desparasitantes agendados pendientes</h5>
+                <p>No tienes productos programados sin aplicar</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Próximas vacunaciones (ya aplicadas) -->
     <div class="data-section animate-on-scroll hover-lift" id="proximas-vacunaciones">
         <div class="data-header">
             <h5>
                 <i class="fas fa-syringe text-primary"></i>
-                Próximas Vacunaciones
+                Próximas Vacunaciones (Refuerzos)
             </h5>
-            <span class="data-badge">{{ proximas_vacunaciones }}</span>
+            <span class="data-badge">{{ proximas_vacunaciones_count }}</span>
         </div>
         <div class="data-body">
             {% if proximas_vacunas %}
@@ -812,14 +950,14 @@
         </div>
     </div>
     
-    <!-- Próximas aplicaciones de productos -->
+    <!-- Próximas aplicaciones de productos (ya aplicados) -->
     <div class="data-section animate-on-scroll hover-lift" id="proximas-aplicaciones">
         <div class="data-header">
             <h5>
                 <i class="fas fa-pills text-warning"></i>
-                Próximas Aplicaciones de Desparasitantes
+                Próximas Aplicaciones de Desparasitantes (Refuerzos)
             </h5>
-            <span class="data-badge" style="background: linear-gradient(135deg, var(--warning-color), #e67e22);">{{ proximas_aplicaciones }}</span>
+            <span class="data-badge" style="background: linear-gradient(135deg, var(--warning-color), #e67e22);">{{ proximas_aplicaciones_count }}</span>
         </div>
         <div class="data-body">
             {% if proximos_productos %}

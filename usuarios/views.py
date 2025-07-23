@@ -261,6 +261,10 @@ class ListaEmpleadosView(AdminRequiredMixin, ListView):
         # Solo mostrar usuarios que tienen perfil
         return User.objects.filter(perfil__isnull=False).select_related('perfil').order_by('-date_joined')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Los perfiles ya incluyen password_visible, no hay que hacer nada más
+        return context
 
 class EditarEmpleadoView(AdminRequiredMixin, TemplateView):
     """Vista para editar empleados"""

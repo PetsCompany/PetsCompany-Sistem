@@ -5,7 +5,7 @@
 
 {% block title %}{{ producto.nombre }} | Sistema Veterinario{% endblock %}
 
-{% block page_title %}Detalle del Producto{% endblock %}
+{% block page_title %}Detalle del Desparasitante{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -524,7 +524,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="{% url 'inventario:lista_productos' %}">
-                    <i class="fas fa-box me-1"></i>Productos
+                    <i class="fas fa-box me-1"></i>Desparasitantes
                 </a>
             </li>
             <li class="breadcrumb-item active">{{ producto.nombre }}</li>
@@ -544,7 +544,7 @@
                         {{ producto.nombre }}
                     </h1>
                     <p class="product-subtitle">
-                        Producto tipo {{ producto.get_tipo_display }}
+                        Desparasitante tipo {{ producto.get_tipo_display }}
                     </p>
                     
                     <!-- Mini Stats -->
@@ -580,7 +580,7 @@
                 <div class="card-header-modern">
                     <h3 class="card-title-modern">
                         <i class="fas fa-info-circle"></i>
-                        Información del Producto
+                        Información del Desparasitante
                     </h3>
                     <div class="card-actions">
                         <a href="{% url 'inventario:editar_producto' producto.id %}" class="btn-modern btn-edit">
@@ -600,7 +600,7 @@
                         <div class="info-item">
                             <div class="info-label">
                                 <i class="fas fa-tag"></i>
-                                Nombre del Producto
+                                Nombre del Desparasitante
                             </div>
                             <div class="info-value">{{ producto.nombre }}</div>
                         </div>
@@ -608,7 +608,7 @@
                         <div class="info-item">
                             <div class="info-label">
                                 <i class="fas fa-layer-group"></i>
-                                Tipo de Producto
+                                Tipo de Desparasitante
                             </div>
                             <div class="info-value">
                                 <span class="tipo-badge {% if producto.tipo == 'V' %}bg-success{% else %}bg-info{% endif %}">
@@ -753,7 +753,7 @@
                     <i class="fas fa-clipboard-list"></i>
                 </div>
                 <h4>No hay aplicaciones registradas</h4>
-                <p>Este producto aún no ha sido aplicado a ninguna mascota.</p>
+                <p>Este Desparasitante aún no ha sido aplicado a ninguna mascota.</p>
             </div>
             {% endif %}
         </div>

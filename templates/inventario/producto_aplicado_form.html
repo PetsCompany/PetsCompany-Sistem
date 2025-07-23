@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Aplicar Producto | Sistema Veterinario{% endblock %}
+{% block title %}Aplicar Desparasitante | Sistema Veterinario{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -708,7 +708,7 @@
                 {% if form.instance.id %}
                 <li class="breadcrumb-item">
                     <a href="{% url 'inventario:detalle_producto_aplicado' form.instance.id %}">
-                        <i class="fas fa-eye me-1"></i>Detalle de Producto Aplicado
+                        <i class="fas fa-eye me-1"></i>Detalle de Desparasitante Aplicado
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -716,7 +716,7 @@
                 </li>
                 {% else %}
                 <li class="breadcrumb-item active" aria-current="page">
-                    <i class="fas fa-syringe me-1"></i>Aplicar Producto
+                    <i class="fas fa-syringe me-1"></i>Aplicar Desparasitante
                 </li>
                 {% endif %}
             </ol>
@@ -737,16 +737,16 @@
                         {% endif %}
                     </div>
                     {% if form.instance.id %}
-                        Editar Aplicación de Producto
+                        Editar Aplicación de Desparasitante
                     {% else %}
-                        Aplicar Producto
+                        Aplicar Desparasitante
                     {% endif %}
                 </h1>
                 <p>
                     {% if form.instance.id %}
-                        Modifica los detalles de la aplicación del producto para <strong>{{ mascota.nombre }}</strong>
+                        Modifica los detalles de la aplicación del Desparasitante para <strong>{{ mascota.nombre }}</strong>
                     {% else %}
-                        Registra la aplicación de un producto veterinario para <strong>{{ mascota.nombre }}</strong>
+                        Registra la aplicación de un Desparasitante veterinario para <strong>{{ mascota.nombre }}</strong>
                     {% endif %}
                 </p>
             </div>
@@ -758,7 +758,7 @@
             <div class="alert alert-warning">
                 <i class="fas fa-exclamation-triangle"></i>
                 <strong>¡Atención!</strong> Esta mascota está marcada como inactiva. 
-                No se pueden aplicar productos a mascotas inactivas.
+                No se pueden aplicar Desparasitantes a mascotas inactivas.
             </div>
             {% endif %}
             
@@ -837,7 +837,7 @@
                                         id="{{ form.producto.id_for_label }}" 
                                         class="form-control{% if form.producto.errors %} is-invalid{% endif %}"
                                         {% if form.producto.field.required %}required{% endif %}>
-                                    <option value="">Selecciona un producto...</option>
+                                    <option value="">Selecciona un Desparasitante...</option>
                                     {% for choice in form.producto.field.queryset %}
                                         <option value="{{ choice.pk }}" 
                                                 {% if choice.pk == form.producto.value %}selected{% endif %}>
@@ -903,7 +903,7 @@
                                           id="{{ form.observaciones.id_for_label }}"
                                           class="form-control{% if form.observaciones.errors %} is-invalid{% endif %}"
                                           rows="3"
-                                          placeholder="Observaciones sobre la aplicación del producto..."
+                                          placeholder="Observaciones sobre la aplicación del Desparasitante..."
                                           {% if form.observaciones.field.required %}required{% endif %}>{% if form.observaciones.value %}{{ form.observaciones.value }}{% endif %}</textarea>
                                 {% if form.observaciones.errors %}
                                     <div class="invalid-feedback d-block">
@@ -934,7 +934,7 @@
                             {% if form.instance.id %}
                                 Actualizar Aplicación
                             {% else %}
-                                Aplicar Producto
+                                Aplicar Desparasitante
                             {% endif %}
                         </button>
                     </div>
@@ -944,9 +944,9 @@
                     <div class="no-access-icon">
                         <i class="fas fa-ban"></i>
                     </div>
-                    <h3 class="no-access-title">No se pueden aplicar productos</h3>
+                    <h3 class="no-access-title">No se pueden aplicar Desparasitantes</h3>
                     <p class="no-access-text">
-                        Esta mascota está marcada como inactiva. Para poder aplicar productos, 
+                        Esta mascota está marcada como inactiva. Para poder aplicar Desparasitante, 
                         primero debes activarla desde su perfil.
                     </p>
                     <a href="{% url 'clientes:editar_mascota' mascota.id %}" class="btn-primary">

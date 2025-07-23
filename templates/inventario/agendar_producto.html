@@ -2,7 +2,7 @@
 {% load static %}
 {% csrf_token %}
 
-{% block title %}Agendar Producto - {{ mascota.nombre|default:"Mascota" }}{% endblock %}
+{% block title %}Agendar Desparasitante - {{ mascota.nombre|default:"Mascota" }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -688,7 +688,7 @@
             <div>
                 <h1 class="page-title">
                     <i class="fas fa-calendar-plus"></i>
-                    Agendar Producto
+                    Agendar Desparasitante
                 </h1>
                 <p class="page-subtitle">Programar aplicación de antiparasitario o vermífugo</p>
             </div>
@@ -757,7 +757,7 @@
                 </div>
                 <div class="pet-body">
                     <div class="pet-history">
-                        <h6><i class="fas fa-history"></i>Últimos Productos</h6>
+                        <h6><i class="fas fa-history"></i>Últimos Desparasitantes</h6>
                         {% if mascota.productos_aplicados.all %}
                             {% for producto_aplicado in mascota.productos_aplicados.all|slice:":3" %}
                                 <div class="history-item">
@@ -778,7 +778,7 @@
                         {% else %}
                             <div class="empty-history">
                                 <i class="fas fa-info-circle"></i>
-                                <p>Sin productos previos</p>
+                                <p>Sin Desparasitantes previos</p>
                             </div>
                         {% endif %}
                     </div>
@@ -806,7 +806,7 @@
                 <div class="form-header">
                     <h5>
                         <i class="fas fa-pills"></i>
-                        Programar Aplicación de Producto
+                        Programar Aplicación de Desparasitante
                     </h5>
                 </div>
                 <div class="form-body">
@@ -814,7 +814,7 @@
                         <div class="alert-info-custom">
                             <i class="fas fa-info-circle"></i>
                             <div>
-                                <strong>Desde Consulta:</strong> Estás agendando un producto desde una consulta. 
+                                <strong>Desde Consulta:</strong> Estás agendando un Desparasitante desde una consulta. 
                                 Al guardar regresarás al perfil de la mascota.
                             </div>
                         </div>
@@ -830,7 +830,7 @@
                         <div class="form-section">
                             <h6 class="section-title">
                                 <i class="fas fa-clipboard-list"></i>
-                                Información del Producto
+                                Información del Desparasitante
                             </h6>
                             
                             <div class="row">
@@ -838,13 +838,13 @@
                                     <div class="mb-4 form-group-animated">
                                         <label for="{{ form.producto.id_for_label|default:'id_producto' }}" class="form-label">
                                             <i class="fas fa-pills"></i>
-                                            <strong>Producto *</strong>
+                                            <strong>Desparasitante*</strong>
                                         </label>
                                         {% if form.producto %}
                                             {{ form.producto }}
                                         {% else %}
                                             <select name="producto" id="id_producto" class="form-select" required>
-                                                <option value="">Selecciona un producto</option>
+                                                <option value="">Selecciona un Desparasitante</option>
                                                 <!-- Aquí deberían cargarse los productos desde el contexto -->
                                             </select>
                                         {% endif %}
@@ -878,7 +878,7 @@
                                             </div>
                                         {% endif %}
                                         <div class="form-text">
-                                            Cuándo se debe aplicar este producto
+                                            Cuándo se debe aplicar este Desparasitante
                                         </div>
                                     </div>
                                 </div>
@@ -917,9 +917,9 @@
                                 Información Importante
                             </h6>
                             <ul>
-                                <li><strong>Agendamiento:</strong> El producto quedará programado para aplicar en la fecha seleccionada</li>
-                                <li><strong>Recordatorios:</strong> Aparecerá en el dashboard y en la agenda general</li>
-                                <li><strong>Aplicación:</strong> Cuando apliques el producto, se actualizará automáticamente el registro</li>
+                                <li><strong>Agendamiento:</strong> El Desparasitantequedará programado para aplicar en la fecha seleccionada</li>
+                                <li><strong>Recordatorios:</strong> Aparecerá en el Inicio y en la agenda general</li>
+                                <li><strong>Aplicación:</strong> Cuando apliques el Desparasitante, se actualizará automáticamente el registro</li>
                                 <li><strong>Seguimiento:</strong> Podrás ver el historial completo en el perfil de la mascota</li>
                             </ul>
                         </div>
@@ -934,7 +934,7 @@
                     </a>
                     <button type="submit" form="agendarProductoForm" class="btn-modern" id="btnAgendar">
                         <i class="fas fa-calendar-plus"></i>
-                        Agendar Producto
+                        Agendar Desparasitante
                     </button>
                 </div>
             </div>
@@ -1059,7 +1059,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Validar producto
             if (!producto.trim()) {
-                showFieldError('producto', 'Por favor selecciona un producto');
+                showFieldError('producto', 'Por favor selecciona un Desparasitante');
                 hasErrors = true;
             } else {
                 clearFieldError('producto');
@@ -1223,7 +1223,7 @@ function showLoadingState() {
         btnAgendar.disabled = true;
         btnAgendar.classList.add('btn-loading');
         const originalText = btnAgendar.innerHTML;
-        btnAgendar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agendando Producto...';
+        btnAgendar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agendando Desparasitante...';
         
         // Restaurar estado original si no se redirige en 10 segundos
         setTimeout(() => {

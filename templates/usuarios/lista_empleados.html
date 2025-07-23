@@ -519,6 +519,7 @@
                         <th>Email</th>
                         <th>Rol</th>
                         <th>Cargo</th>
+                        <th>Contraseña</th>
                         <th>Estado</th>
                         <th>Fecha Registro</th>
                         <th>Acciones</th>
@@ -567,6 +568,15 @@
                         </td>
                         <td>
                             <div class="cargo-info">{{ empleado.perfil.cargo|default:"Sin asignar" }}</div>
+                        </td>
+                        <td>
+                            <div class="password-info" style="font-family: monospace; font-size: 0.85rem; color: #495057;">
+                                {% if empleado.perfil.password_visible %}
+                                    <span class="text-muted">{{ empleado.perfil.password_visible }}</span>
+                                {% else %}
+                                    <span class="text-muted fst-italic">No disponible</span>
+                                {% endif %}
+                            </div>
                         </td>
                         <td>
                             {% if empleado.is_active %}

@@ -19,9 +19,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         today = timezone.now().date()
         tomorrow = today + timedelta(days=1)
         
+        # Obtener próximas citas NO ATENDIDAS (máximo 3)
         proximas_citas_raw = Cita.objects.filter(
             fecha__isnull=False,
-            fecha__gte=today
+            fecha__gte=today,
+            atendida=False  # FILTRO AGREGADO: Solo citas no atendidas
         ).select_related('mascota', 'mascota__cliente').order_by('fecha')[:3]
 
         proximas_citas = []
@@ -31,28 +33,107 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 try:
                     dias_restantes = (cita.fecha - today).days if cita.fecha > today else 0
                 except Exception as e:
-                    dias_restantes = 0  # fallback en caso de error
+                    dias_restantes = 0
 
             cita_data = {
-                'cita': cita,
+                'tipo': 'cita',
+                'objeto': cita,
+                'fecha': cita.fecha,
                 'es_hoy': cita.fecha == today,
                 'es_manana': cita.fecha == tomorrow,
-                'dias_restantes': dias_restantes
+                'dias_restantes': dias_restantes,
+                'titulo': f"{cita.mascota.nombre} - Consulta",
+                'subtitulo': cita.mascota.cliente.nombre,
+                'descripcion': cita.motivo,
+                'icono': 'fas fa-stethoscope',
+                'color': 'primary'
             }
             proximas_citas.append(cita_data)
 
-        context['proximas_citas'] = proximas_citas
+        # Obtener próximas vacunas AGENDADAS (no aplicadas) - máximo 3
+        proximas_vacunas = VacunaAplicada.objects.filter(
+            fecha_proxima__isnull=False,
+            fecha_proxima__gte=today,
+            fecha_aplicacion__isnull=True  # FILTRO AGREGADO: Solo vacunas agendadas (no aplicadas)
+        ).select_related('mascota', 'mascota__cliente', 'vacuna').order_by('fecha_proxima')
+
+        # Obtener próximos productos AGENDADOS (no aplicados) - máximo 3
+        proximos_productos = ProductoAplicado.objects.filter(
+            fecha_proxima__isnull=False,
+            fecha_proxima__gte=today,
+            fecha_aplicacion__isnull=True  # FILTRO AGREGADO: Solo productos agendados (no aplicados)
+        ).select_related('mascota', 'mascota__cliente', 'producto').order_by('fecha_proxima')
+
+        # Combinar vacunas y productos y ordenar por fecha
+        recordatorios_medicos = []
+        
+        for vacuna in proximas_vacunas:
+            dias_restantes = (vacuna.fecha_proxima - today).days if vacuna.fecha_proxima > today else 0
+            
+            recordatorio = {
+                'tipo': 'vacuna',
+                'objeto': vacuna,
+                'fecha': vacuna.fecha_proxima,
+                'es_hoy': vacuna.fecha_proxima == today,
+                'es_manana': vacuna.fecha_proxima == tomorrow,
+                'dias_restantes': dias_restantes,
+                'titulo': f"{vacuna.mascota.nombre} - {vacuna.vacuna.nombre}",
+                'subtitulo': vacuna.mascota.cliente.nombre,
+                'descripcion': f"Vacuna {'agendada' if vacuna.es_agendada else 'próxima dosis'}",
+                'icono': 'fas fa-syringe',
+                'color': 'success'
+            }
+            recordatorios_medicos.append(recordatorio)
+
+        for producto in proximos_productos:
+            dias_restantes = (producto.fecha_proxima - today).days if producto.fecha_proxima > today else 0
+            
+            recordatorio = {
+                'tipo': 'producto',
+                'objeto': producto,
+                'fecha': producto.fecha_proxima,
+                'es_hoy': producto.fecha_proxima == today,
+                'es_manana': producto.fecha_proxima == tomorrow,
+                'dias_restantes': dias_restantes,
+                'titulo': f"{producto.mascota.nombre} - {producto.producto.nombre}",
+                'subtitulo': producto.mascota.cliente.nombre,
+                'descripcion': f"{producto.producto.get_tipo_display()} {'agendado' if producto.es_agendado else 'próxima dosis'}",
+                'icono': 'fas fa-pills',
+                'color': 'info'
+            }
+            recordatorios_medicos.append(recordatorio)
+
+        # Ordenar por fecha y tomar solo los 3 más próximos
+        recordatorios_medicos.sort(key=lambda x: x['fecha'])
+        recordatorios_medicos = recordatorios_medicos[:3]
+
+        # Combinar todo en una lista unificada de próximas acciones
+        proximas_acciones = proximas_citas + recordatorios_medicos
+        
+        # Ordenar toda la lista por fecha
+        proximas_acciones.sort(key=lambda x: x['fecha'])
+        
+        # Limitar a 6 elementos máximo
+        proximas_acciones = proximas_acciones[:6]
+
+        context['proximas_acciones'] = proximas_acciones
         context['today'] = today
 
+        # Mantener los contadores existentes (también filtrados para consistencia)
         prox_semana = today + timedelta(days=7)
+        
+        # Contar solo vacunas agendadas (no aplicadas)
         context['vacunas_proximas'] = VacunaAplicada.objects.filter(
             fecha_proxima__gte=today,
-            fecha_proxima__lte=prox_semana
+            fecha_proxima__lte=prox_semana,
+            fecha_aplicacion__isnull=True  # Solo agendadas
         ).count()
 
+        # Contar solo productos agendados (no aplicados)
         context['antiparasitarios_proximos'] = ProductoAplicado.objects.filter(
             fecha_proxima__gte=today,
-            fecha_proxima__lte=prox_semana
+            fecha_proxima__lte=prox_semana,
+            fecha_aplicacion__isnull=True  # Solo agendados
         ).count()
 
         return context

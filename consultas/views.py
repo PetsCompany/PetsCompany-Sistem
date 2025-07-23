@@ -19,25 +19,75 @@ import mimetypes
 import os
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 
-# Vistas para Citas
 class CitaListView(LoginRequiredMixin, ListView):
     model = Cita
     template_name = 'consultas/lista_citas.html'
     context_object_name = 'citas'
     ordering = ['-fecha']
+    paginate_by = 10  # Paginación para citas
 
     def get_queryset(self):
         queryset = super().get_queryset()
         # Filtrar por fecha si se proporciona en la URL
         fecha_filtro = self.request.GET.get('fecha')
-        estado_filtro = self.request.GET.get('estado')
         
         if fecha_filtro:
             queryset = queryset.filter(fecha=fecha_filtro)
             
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Obtener vacunas agendadas (sin aplicar)
+        vacunas_agendadas = VacunaAplicada.objects.filter(
+            fecha_aplicacion__isnull=True,
+            fecha_proxima__isnull=False,
+            mascota__activa=True
+        ).select_related('mascota', 'vacuna', 'mascota__cliente').order_by('fecha_proxima')
+        
+        # Obtener productos agendados (sin aplicar)
+        productos_agendados = ProductoAplicado.objects.filter(
+            fecha_aplicacion__isnull=True,
+            fecha_proxima__isnull=False,
+            mascota__activa=True
+        ).select_related('mascota', 'producto', 'mascota__cliente').order_by('fecha_proxima')
+        
+        # APLICAR FILTROS ANTES DE PAGINAR
+        fecha_filtro = self.request.GET.get('fecha')
+        if fecha_filtro:
+            try:
+                fecha_obj = timezone.datetime.strptime(fecha_filtro, '%Y-%m-%d').date()
+                vacunas_agendadas = vacunas_agendadas.filter(fecha_proxima=fecha_obj)
+                productos_agendados = productos_agendados.filter(fecha_proxima=fecha_obj)
+            except ValueError:
+                pass
+        
+        # CONTAR ANTES DE PAGINAR
+        total_vacunas = vacunas_agendadas.count()
+        total_productos = productos_agendados.count()
+        #total_citas_pendientes = context['citas'].filter(atendida=False).count()
+        
+        # Paginación para vacunas (DESPUÉS del filtro)
+        vacunas_paginator = Paginator(vacunas_agendadas, 10)
+        vacunas_page = self.request.GET.get('vacunas_page', 1)
+        vacunas_paginadas = vacunas_paginator.get_page(vacunas_page)
+        
+        # Paginación para productos (DESPUÉS del filtro)
+        productos_paginator = Paginator(productos_agendados, 10)
+        productos_page = self.request.GET.get('productos_page', 1)
+        productos_paginados = productos_paginator.get_page(productos_page)
+        
+        context.update({
+            'vacunas_agendadas': vacunas_paginadas,
+            'productos_agendados': productos_paginados,
+            #'total_pendientes': total_citas_pendientes + total_vacunas + total_productos
+        })
+        
+        return context
 
 
 class CitaDetailView(LoginRequiredMixin, DetailView):

@@ -555,6 +555,85 @@
         color: #6c757d;
         background: rgba(0, 0, 0, 0.02);
     }
+    
+    /* Estilos para botones de acción adicionales */
+    .btn-action.phone {
+        background: linear-gradient(45deg, #28a745, #20c997);
+        color: white;
+    }
+
+    .btn-action.phone:hover {
+        background: linear-gradient(45deg, #218838, #1ea888);
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .btn-action.success {
+        background: linear-gradient(45deg, #17a2b8, #138496);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-action.success:hover {
+        background: linear-gradient(45deg, #138496, #117a8b);
+    }
+
+    /* Animaciones para las nuevas filas */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    /* Estilos para indicadores de fecha */
+    .fecha-info small {
+        display: block;
+        margin-top: 0.25rem;
+        font-weight: 500;
+    }
+
+    /* Responsive para las nuevas tablas */
+    @media (max-width: 768px) {
+        .btn-action.success {
+            padding: 0.3rem 0.5rem;
+            font-size: 0.7rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+    }
+
+    /* Colores específicos para vacunas y productos */
+    .vacuna-row:hover {
+        background: linear-gradient(90deg, rgba(0, 123, 255, 0.05), rgba(0, 123, 255, 0.02)) !important;
+    }
+
+    .producto-row:hover {
+        background: linear-gradient(90deg, rgba(23, 162, 184, 0.05), rgba(23, 162, 184, 0.02)) !important;
+    }
+
+    .mascota-link {
+        color: #dc3545;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .mascota-link:hover {
+        color: #dc3545;
+        text-decoration: underline;
+    }
 
     @media (max-width: 768px) {
         .citas-title {
@@ -615,7 +694,7 @@
                         Consultas Programadas
                     </h1>
                     <p class="citas-subtitle">
-                        Lista diaria de consultas a revisar y llamar
+                        Lista diaria de consultas, vacunas y desparasitantes pendientes por atender
                     </p>
                 </div>
                 <a href="{% url 'consultas:crear_cita' %}" class="add-cita-btn hover-lift">
@@ -673,7 +752,7 @@
                 <i class="fas fa-list"></i>
                 Lista de Consultas programadas
             </h3>
-            <span class="text-white-50">Total: <strong id="resultCount">{{ citas.count }}</strong> consultas</span>
+            <span class="text-white-50">Total: <strong id="resultCount">{{ total_pendientes }}</strong> elementos pendientes</span>
         </div>
         
         {% if citas %}
@@ -701,7 +780,11 @@
                         >
                         <td>
                             <div class="mascota-info">
-                                <div class="mascota-name">{{ cita.mascota.nombre }}</div>
+                                <div class="mascota-name">
+                                    <a href="{% url 'clientes:detalle_mascota' cita.mascota.id %}" class="mascota-link">
+                                        {{ cita.mascota.nombre }}
+                                    </a>
+                                </div>
                                 <div class="mascota-details">
                                     <span>{{ cita.mascota.especie }} - {{ cita.mascota.raza }}</span>
                                 </div>
@@ -709,6 +792,7 @@
                         </td>
                         <td>
                             <div class="propietario-name">{{ cita.mascota.cliente.nombre }}</div>
+                            <div class="text-muted small">{{ cita.mascota.cliente.telefono }}</div>
                         </td>
                         <td>
                             <div class="fecha-info">
@@ -796,6 +880,263 @@
                 <i class="fas fa-plus"></i>
                 Programar Primera Consulta
             </a>
+        </div>
+        {% endif %}
+
+        {% if vacunas_agendadas %}
+        <div class="citas-table-container slide-up mt-4">
+            <div class="table-header">
+                <h3 class="table-title">
+                    <i class="fas fa-syringe"></i>
+                    Vacunas Agendadas
+                </h3>
+                <span class="text-white-50">Total: <strong>{{ vacunas_agendadas.paginator.count }}</strong> vacunas pendientes</span>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table citas-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-paw me-1"></i>Mascota</th>
+                            <th><i class="fas fa-user me-1"></i>Propietario</th>
+                            <th><i class="fas fa-syringe me-1"></i>Vacuna</th>
+                            <th><i class="fas fa-calendar me-1"></i>Fecha Agendada</th>
+                            <th><i class="fas fa-sticky-note me-1"></i>Observaciones</th>
+                            <th><i class="fas fa-cogs me-1"></i>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for vacuna in vacunas_agendadas %}
+                        <tr class="pending-row vacuna-row fade-in" 
+                            data-mascota-name="{{ vacuna.mascota.nombre|lower }}"
+                            data-cliente-name="{{ vacuna.mascota.cliente.nombre|lower }}"
+                            data-vacuna="{{ vacuna.vacuna.nombre|lower }}"
+                            data-fecha="{{ vacuna.fecha_proxima|date:'Y-m-d' }}"
+                            style="animation-delay: {{ forloop.counter|floatformat:2|add:'s' }}">
+                            
+                            <td>
+                                <div class="mascota-info">
+                                    <div class="mascota-name">
+                                        <a href="{% url 'clientes:detalle_mascota' vacuna.mascota.id %}" class="mascota-link">
+                                            {{ vacuna.mascota.nombre }}
+                                        </a>
+                                    </div>
+                                    <div class="mascota-details">
+                                        <span>{{ vacuna.mascota.especie }} - {{ vacuna.mascota.raza }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="propietario-name">{{ vacuna.mascota.cliente.nombre }}</div>
+                                <div class="text-muted small">{{ vacuna.mascota.cliente.telefono }}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">{{ vacuna.vacuna.nombre }}</div>
+                                {% if vacuna.vacuna.descripcion %}
+                                <div class="text-muted small">{{ vacuna.vacuna.descripcion|truncatechars:30 }}</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="fecha-info">
+                                    <div class="fecha-principal">{{ vacuna.fecha_proxima|date:"d/m/Y" }}</div>
+                                    {% now 'Y-m-d' as today %}
+                                    {% if vacuna.fecha_proxima|date:'Y-m-d' < today %}
+                                    <small class="text-danger"><i class="fas fa-exclamation-triangle"></i> Vencida</small>
+                                    {% elif vacuna.fecha_proxima|date:'Y-m-d' == today %}
+                                    <small class="text-warning"><i class="fas fa-clock"></i> Hoy</small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="observaciones-text">
+                                    {{ vacuna.observaciones|default:"Sin observaciones"|truncatechars:40 }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{% url 'clientes:detalle_mascota' vacuna.mascota.id %}" 
+                                    class="btn-action view" 
+                                    title="Ver mascota">
+                                        <i class="fas fa-paw"></i>
+                                    </a>
+                                    <a href="#" onclick="llamarCliente('{{ vacuna.mascota.cliente.telefono }}', '{{ vacuna.mascota.cliente.nombre }}')" 
+                                    class="btn-action phone" 
+                                    title="Llamar cliente">
+                                        <i class="fas fa-phone"></i>
+                                    </a>
+                                    <a href="{% url 'inventario:aplicar_vacuna' vacuna.id %}" 
+                                    class="btn-action success" 
+                                    title="Aplicar vacuna">
+                                        <i class="fas fa-check"></i>
+                                        Aplicar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginación para vacunas -->
+            {% if vacunas_agendadas.has_other_pages %}
+            <nav aria-label="Paginación de vacunas" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    {% if vacunas_agendadas.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if request.GET.fecha %}fecha={{ request.GET.fecha }}&{% endif %}vacunas_page={{ vacunas_agendadas.previous_page_number }}">Anterior</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in vacunas_agendadas.paginator.page_range %}
+                        {% if vacunas_agendadas.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > vacunas_agendadas.number|add:'-3' and num < vacunas_agendadas.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% if request.GET.fecha %}fecha={{ request.GET.fecha }}&{% endif %}vacunas_page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if vacunas_agendadas.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if request.GET.fecha %}fecha={{ request.GET.fecha }}&{% endif %}vacunas_page={{ vacunas_agendadas.next_page_number }}">Siguiente</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- TABLA DE PRODUCTOS AGENDADOS -->
+        {% if productos_agendados %}
+        <div class="citas-table-container slide-up mt-4">
+            <div class="table-header">
+                <h3 class="table-title">
+                    <i class="fas fa-pills"></i>
+                    Productos Agendados
+                </h3>
+                <span class="text-white-50">Total: <strong>{{ productos_agendados.paginator.count }}</strong> productos pendientes</span>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table citas-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-paw me-1"></i>Mascota</th>
+                            <th><i class="fas fa-user me-1"></i>Propietario</th>
+                            <th><i class="fas fa-pills me-1"></i>Producto</th>
+                            <th><i class="fas fa-calendar me-1"></i>Fecha Agendada</th>
+                            <th><i class="fas fa-sticky-note me-1"></i>Observaciones</th>
+                            <th><i class="fas fa-cogs me-1"></i>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos_agendados %}
+                        <tr class="pending-row producto-row fade-in" 
+                            data-mascota-name="{{ producto.mascota.nombre|lower }}"
+                            data-cliente-name="{{ producto.mascota.cliente.nombre|lower }}"
+                            data-producto="{{ producto.producto.nombre|lower }}"
+                            data-fecha="{{ producto.fecha_proxima|date:'Y-m-d' }}"
+                            style="animation-delay: {{ forloop.counter|floatformat:2|add:'s' }}">
+                            
+                            <td>
+                                <div class="mascota-info">
+                                    <div class="mascota-name">
+                                        <a href="{% url 'clientes:detalle_mascota' producto.mascota.id %}" class="mascota-link">
+                                            {{ producto.mascota.nombre }}
+                                        </a>
+                                    </div>
+                                    <div class="mascota-details">
+                                        <span>{{ producto.mascota.especie }} - {{ producto.mascota.raza }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="propietario-name">{{ producto.mascota.cliente.nombre }}</div>
+                                <div class="text-muted small">{{ producto.mascota.cliente.telefono }}</div>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-info">{{ producto.producto.nombre }}</div>
+                                <div class="text-muted small">
+                                    <i class="fas fa-tag me-1"></i>{{ producto.producto.get_tipo_display }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="fecha-info">
+                                    <div class="fecha-principal">{{ producto.fecha_proxima|date:"d/m/Y" }}</div>
+                                    {% now 'Y-m-d' as today %}
+                                    {% if producto.fecha_proxima|date:'Y-m-d' < today %}
+                                    <small class="text-danger"><i class="fas fa-exclamation-triangle"></i> Vencida</small>
+                                    {% elif producto.fecha_proxima|date:'Y-m-d' == today %}
+                                    <small class="text-warning"><i class="fas fa-clock"></i> Hoy</small>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="observaciones-text">
+                                    {{ producto.observaciones|default:"Sin observaciones"|truncatechars:40 }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{% url 'clientes:detalle_mascota' producto.mascota.id %}" 
+                                    class="btn-action view" 
+                                    title="Ver mascota">
+                                        <i class="fas fa-paw"></i>
+                                    </a>
+                                    <a href="#" onclick="llamarCliente('{{ producto.mascota.cliente.telefono }}', '{{ producto.mascota.cliente.nombre }}')" 
+                                    class="btn-action phone" 
+                                    title="Llamar cliente">
+                                        <i class="fas fa-phone"></i>
+                                    </a>
+                                    <a href="{% url 'inventario:aplicar_producto' producto.id %}" 
+                                    class="btn-action success" 
+                                    title="Aplicar producto">
+                                        <i class="fas fa-check"></i>
+                                        Aplicar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginación para productos -->
+            {% if productos_agendados.has_other_pages %}
+            <nav aria-label="Paginación de productos" class="mt-3">
+                <ul class="pagination justify-content-center">
+                    {% if productos_agendados.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if request.GET.fecha %}fecha={{ request.GET.fecha }}&{% endif %}productos_page={{ productos_agendados.previous_page_number }}">Anterior</a>
+                        </li>
+                    {% endif %}
+                    
+                    {% for num in productos_agendados.paginator.page_range %}
+                        {% if productos_agendados.number == num %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ num }}</span>
+                            </li>
+                        {% elif num > productos_agendados.number|add:'-3' and num < productos_agendados.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% if request.GET.fecha %}fecha={{ request.GET.fecha }}&{% endif %}productos_page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if productos_agendados.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if request.GET.fecha %}fecha={{ request.GET.fecha }}&{% endif %}productos_page={{ productos_agendados.next_page_number }}">Siguiente</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
         </div>
         {% endif %}
     </div>
@@ -1004,6 +1345,87 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
     });
+
+    // Funciones para las nuevas tablas
+    const vacunaRows = document.querySelectorAll('.vacuna-row');
+    const productoRows = document.querySelectorAll('.producto-row');
+    
+    // Expandir la búsqueda para incluir vacunas y productos
+    function applySearchToAllTables() {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        // Búsqueda en vacunas
+        vacunaRows.forEach(row => {
+            const mascotaName = row.dataset.mascotaName || '';
+            const clienteName = row.dataset.clienteName || '';
+            const vacuna = row.dataset.vacuna || '';
+            
+            const matches = mascotaName.includes(searchTerm) || 
+                           clienteName.includes(searchTerm) || 
+                           vacuna.includes(searchTerm);
+            
+            row.style.display = matches ? '' : 'none';
+        });
+        
+        // Búsqueda en productos
+        productoRows.forEach(row => {
+            const mascotaName = row.dataset.mascotaName || '';
+            const clienteName = row.dataset.clienteName || '';
+            const producto = row.dataset.producto || '';
+            
+            const matches = mascotaName.includes(searchTerm) || 
+                           clienteName.includes(searchTerm) || 
+                           producto.includes(searchTerm);
+            
+            row.style.display = matches ? '' : 'none';
+        });
+    }
+    
+    // Actualizar la función de búsqueda existente
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            currentFilters.search = this.value.toLowerCase();
+            applyAllFilters();
+            applySearchToAllTables(); // Agregar esta línea
+        }, 300);
+    });
+    
+    // Efectos hover para las nuevas filas
+    [...vacunaRows, ...productoRows].forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            if (this.style.display !== 'none') {
+                this.style.transform = 'scale(1.01)';
+                this.style.boxShadow = '0 4px 20px rgba(0, 123, 255, 0.1)';
+            }
+        });
+        
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+            this.style.boxShadow = 'none';
+        });
+    });
+
+    // Función para llamar clientes 
+    window.llamarCliente = function(telefono, nombre) {
+        if (telefono) {
+            // Intentar abrir la app de teléfono
+            window.location.href = `tel:${telefono}`;
+            
+            // Mostrar notificación
+            if (typeof toastr !== 'undefined') {
+                toastr.info(`Llamando a ${nombre}: ${telefono}`);
+            } else {
+                alert(`Llamando a ${nombre}: ${telefono}`);
+            }
+        } else {
+            if (typeof toastr !== 'undefined') {
+                toastr.warning('Este cliente no tiene teléfono registrado');
+            } else {
+                alert('Este cliente no tiene teléfono registrado');
+            }
+        }
+    };
     
     // Inicializar la tabla
     updateResultsCount(citaRows.length);

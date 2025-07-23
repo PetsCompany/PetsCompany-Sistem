@@ -3,9 +3,9 @@
 
 {% load static %}
 
-{% block title %}Eliminar Producto{% endblock %}
+{% block title %}Eliminar Desparasitante{% endblock %}
 
-{% block page_title %}Eliminar Producto{% endblock %}
+{% block page_title %}Eliminar Desparasitante{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -504,7 +504,7 @@
                 Confirmar Eliminación
             </h1>
             <p class="confirm-delete-subtitle">
-                Confirma la eliminación del producto del sistema
+                Confirma la eliminación del Desparasitante del sistema
             </p>
         </div>
     </div>
@@ -515,7 +515,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="{% url 'inventario:lista_productos' %}">
-                        <i class="fas fa-box me-1"></i>Productos
+                        <i class="fas fa-box me-1"></i>Desparasitantes
                     </a>
                 </li>
                 <li class="breadcrumb-item">
@@ -531,7 +531,7 @@
         <div class="card-header">
             <h5>
                 <i class="fas fa-trash-alt icon"></i>
-                Confirmar Eliminación de Producto
+                Confirmar Eliminación de Desparasitante
             </h5>
         </div>
         <div class="card-body">
@@ -541,7 +541,7 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <p class="warning-message">
-                    ¿Estás seguro de que deseas eliminar el producto 
+                    ¿Estás seguro de que deseas eliminar el Desparasitante
                     <span class="product-name">{{ producto.nombre }}</span>?
                 </p>
             </div>
@@ -550,7 +550,7 @@
             <div class="product-info-box">
                 <div class="product-info-title">
                     <i class="fas fa-box"></i>
-                    Información del Producto
+                    Información del Desparasitante
                 </div>
                 <div class="product-details">
                     <div class="product-detail-item">
@@ -598,7 +598,7 @@
                     Advertencia sobre Aplicaciones
                 </div>
                 <p class="alert-text">
-                    Este producto tiene <span class="applications-count">{{ aplicaciones_count }} aplicaciones registradas</span>. 
+                    Este Desparasitante tiene <span class="applications-count">{{ aplicaciones_count }} aplicaciones registradas</span>. 
                     Si lo eliminas, se perderá el vínculo con estas aplicaciones en el historial médico.
                 </p>
             </div>
@@ -611,10 +611,10 @@
                     ¡Advertencia Importante!
                 </div>
                 <p class="warning-text">
-                    Esta acción no se puede deshacer. Al eliminar este producto se perderá permanentemente:
+                    Esta acción no se puede deshacer. Al eliminar este Desparasitante se perderá permanentemente:
                 </p>
                 <ul class="mt-2 ps-3">
-                    <li>La información completa del producto</li>
+                    <li>La información completa del Desparasitante</li>
                     <li>El historial de aplicaciones asociadas</li>
                     <li>Los registros de inventario relacionados</li>
                     <li>Cualquier referencia en tratamientos médicos</li>

@@ -328,7 +328,6 @@ class ProductoAplicadoDeleteView(CanDeleteMixin, DeleteView):
     
 # ============================================================================
 # NUEVAS VISTAS PARA SISTEMA DE AGENDAMIENTO
-# Agregar estas vistas al final de tu archivo views.py
 # ============================================================================
 
 from .forms import (

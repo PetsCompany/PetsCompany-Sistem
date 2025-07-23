@@ -24,6 +24,13 @@ class PerfilUsuario(models.Model):
         verbose_name="Rol"
     )
     
+    password_visible = models.CharField(
+        max_length=128, 
+        blank=True, 
+        null=True, 
+        verbose_name="Contraseña visible"
+    )
+    
     def __str__(self):
         nombre_completo = f"{self.user.first_name} {self.user.last_name}".strip()
         if nombre_completo:

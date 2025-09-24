@@ -208,13 +208,15 @@ class ReporteVacunasView(LoginRequiredMixin, View):
             fecha_inicio = primer_dia_mes
             fecha_fin = ultimo_dia_mes
         
-        # Obtener vacunas aplicadas en el rango de fechas con select_related para optimizar
+        # Obtener vacunas aplicadas en el rango de fechas con select_related optimizado
         vacunas = VacunaAplicada.objects.filter(
             fecha_aplicacion__gte=fecha_inicio,
             fecha_aplicacion__lte=fecha_fin
         ).select_related(
             'vacuna', 
-            'mascota__cliente'
+            'mascota__cliente',
+            'mascota__especie',
+            'mascota__raza'
         ).order_by('-fecha_aplicacion')
         
         # Estadísticas por tipo de vacuna
@@ -223,13 +225,91 @@ class ReporteVacunasView(LoginRequiredMixin, View):
             fecha_aplicacion__lte=fecha_fin
         ).values('vacuna__nombre').annotate(total=Count('id')).order_by('-total')
         
+        # NUEVAS ESTADÍSTICAS POR SEXO
+        # Estadísticas generales por sexo
+        stats_por_sexo = VacunaAplicada.objects.filter(
+            fecha_aplicacion__gte=fecha_inicio,
+            fecha_aplicacion__lte=fecha_fin
+        ).values('mascota__sexo').annotate(total=Count('id')).order_by('-total')
+        
+        # Estadísticas por vacuna y sexo
+        stats_vacunas_por_sexo = VacunaAplicada.objects.filter(
+            fecha_aplicacion__gte=fecha_inicio,
+            fecha_aplicacion__lte=fecha_fin
+        ).values(
+            'vacuna__nombre', 
+            'mascota__sexo'
+        ).annotate(total=Count('id')).order_by('vacuna__nombre', 'mascota__sexo')
+        
+        # Procesar datos para mostrar en tabla cruzada
+        vacunas_cruzadas = {}
+        for stat in stats_vacunas_por_sexo:
+            vacuna_nombre = stat['vacuna__nombre']
+            sexo = stat['mascota__sexo']
+            total = stat['total']
+            
+            if vacuna_nombre not in vacunas_cruzadas:
+                vacunas_cruzadas[vacuna_nombre] = {
+                    'nombre': vacuna_nombre,
+                    'M': 0,  # Macho
+                    'H': 0,  # Hembra
+                    'total': 0
+                }
+            
+            vacunas_cruzadas[vacuna_nombre][sexo] = total
+            vacunas_cruzadas[vacuna_nombre]['total'] += total
+        
+        # Convertir a lista y ordenar por total descendente
+        stats_vacunas_cruzadas = sorted(
+            vacunas_cruzadas.values(), 
+            key=lambda x: x['total'], 
+            reverse=True
+        )
+        
+        # Estadísticas por especie y sexo
+        stats_especies_por_sexo = VacunaAplicada.objects.filter(
+            fecha_aplicacion__gte=fecha_inicio,
+            fecha_aplicacion__lte=fecha_fin
+        ).values(
+            'mascota__especie__nombre', 
+            'mascota__sexo'
+        ).annotate(total=Count('id')).order_by('mascota__especie__nombre', 'mascota__sexo')
+        
+        # Procesar datos de especies para tabla cruzada
+        especies_cruzadas = {}
+        for stat in stats_especies_por_sexo:
+            especie_nombre = stat['mascota__especie__nombre']
+            sexo = stat['mascota__sexo']
+            total = stat['total']
+            
+            if especie_nombre not in especies_cruzadas:
+                especies_cruzadas[especie_nombre] = {
+                    'nombre': especie_nombre,
+                    'M': 0,  # Macho
+                    'H': 0,  # Hembra
+                    'total': 0
+                }
+            
+            especies_cruzadas[especie_nombre][sexo] = total
+            especies_cruzadas[especie_nombre]['total'] += total
+        
+        # Convertir a lista y ordenar por total descendente
+        stats_especies_cruzadas = sorted(
+            especies_cruzadas.values(), 
+            key=lambda x: x['total'], 
+            reverse=True
+        )
+        
         return render(request, self.template_name, {
             'vacunas': vacunas,
             'stats_vacunas': stats_vacunas,
+            'stats_por_sexo': stats_por_sexo,
+            'stats_vacunas_cruzadas': stats_vacunas_cruzadas,
+            'stats_especies_cruzadas': stats_especies_cruzadas,
             'fecha_inicio': fecha_inicio,
             'fecha_fin': fecha_fin,
             'total_vacunas': vacunas.count(),
-            'es_filtro_defecto': not (fecha_inicio_str and fecha_fin_str),  # Para mostrar un mensaje informativo
+            'es_filtro_defecto': not (fecha_inicio_str and fecha_fin_str),
         })
 
 
@@ -302,33 +382,79 @@ class ReporteEutanasiasView(LoginRequiredMixin, View):
                 fecha_inicio = datetime.strptime(fecha_inicio_str, '%Y-%m-%d').date()
                 fecha_fin = datetime.strptime(fecha_fin_str, '%Y-%m-%d').date()
             except ValueError:
-                # Si hay error en las fechas, usar fechas por defecto
                 fecha_inicio = primer_dia_mes
                 fecha_fin = ultimo_dia_mes
         else:
-            # Si no hay fechas en el formulario, usar fechas por defecto
             fecha_inicio = primer_dia_mes
             fecha_fin = ultimo_dia_mes
         
-        # Obtener eutanasias en el rango de fechas - CORREGIDO: removido __date
+        # Obtener eutanasias en el rango de fechas con información adicional del sexo
         eutanasias = Consulta.objects.filter(
             es_eutanasia=True,
             cita__fecha__gte=fecha_inicio,
             cita__fecha__lte=fecha_fin
-        ).select_related('cita__mascota__cliente', 'cita__mascota__especie').order_by('-cita__fecha')
+        ).select_related(
+            'cita__mascota__cliente', 
+            'cita__mascota__especie'
+        ).order_by('-cita__fecha')
         
-        # Estadísticas por especie - CORREGIDO: removido __date
+        # Estadísticas por especie (manteniendo la funcionalidad original)
         stats_especies = Consulta.objects.filter(
             es_eutanasia=True,
             cita__fecha__gte=fecha_inicio,
             cita__fecha__lte=fecha_fin
         ).values('cita__mascota__especie__nombre').annotate(total=Count('id')).order_by('-total')
         
+        # NUEVAS ESTADÍSTICAS POR SEXO
+        # Estadísticas generales por sexo
+        stats_por_sexo = Consulta.objects.filter(
+            es_eutanasia=True,
+            cita__fecha__gte=fecha_inicio,
+            cita__fecha__lte=fecha_fin
+        ).values('cita__mascota__sexo').annotate(total=Count('id')).order_by('-total')
+        
+        # Estadísticas por especie y sexo
+        stats_especies_por_sexo = Consulta.objects.filter(
+            es_eutanasia=True,
+            cita__fecha__gte=fecha_inicio,
+            cita__fecha__lte=fecha_fin
+        ).values(
+            'cita__mascota__especie__nombre', 
+            'cita__mascota__sexo'
+        ).annotate(total=Count('id')).order_by('cita__mascota__especie__nombre', 'cita__mascota__sexo')
+        
+        # Procesar datos para mostrar en tabla cruzada especie/sexo
+        especies_cruzadas = {}
+        for stat in stats_especies_por_sexo:
+            especie_nombre = stat['cita__mascota__especie__nombre']
+            sexo = stat['cita__mascota__sexo']
+            total = stat['total']
+            
+            if especie_nombre not in especies_cruzadas:
+                especies_cruzadas[especie_nombre] = {
+                    'nombre': especie_nombre,
+                    'M': 0,  # Macho
+                    'H': 0,  # Hembra
+                    'total': 0
+                }
+            
+            especies_cruzadas[especie_nombre][sexo] = total
+            especies_cruzadas[especie_nombre]['total'] += total
+        
+        # Convertir a lista y ordenar por total descendente
+        stats_especies_cruzadas = sorted(
+            especies_cruzadas.values(), 
+            key=lambda x: x['total'], 
+            reverse=True
+        )
+        
         return render(request, self.template_name, {
             'eutanasias': eutanasias,
             'stats_especies': stats_especies,
+            'stats_por_sexo': stats_por_sexo,
+            'stats_especies_cruzadas': stats_especies_cruzadas,
             'fecha_inicio': fecha_inicio,
             'fecha_fin': fecha_fin,
             'total_eutanasias': eutanasias.count(),
-            'es_filtro_defecto': not (fecha_inicio_str and fecha_fin_str),  # Para mostrar un mensaje informativo
+            'es_filtro_defecto': not (fecha_inicio_str and fecha_fin_str),
         })

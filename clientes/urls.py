@@ -18,6 +18,7 @@ urlpatterns = [
     path('mascota/<int:pk>/', views.MascotaDetailView.as_view(), name='detalle_mascota'),
     path('mascota/<int:pk>/editar/', views.MascotaUpdateView.as_view(), name='editar_mascota'),
     path('mascota/<int:pk>/eliminar/', views.MascotaDeleteView.as_view(), name='eliminar_mascota'),
+    path('mascotas/cumpleanos/', views.MascotasCumpleanosView.as_view(), name='cumpleanos_mascotas'),
     
     # API endpoint para obtener razas por especie #Check
     path('get_razas_by_especie/', views.get_razas_by_especie, name='get_razas_by_especie'),

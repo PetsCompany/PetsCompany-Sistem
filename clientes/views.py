@@ -10,6 +10,9 @@ from .models import Cliente, Mascota
 from .forms import ClienteForm, MascotaForm
 from django.http import HttpResponseRedirect
 from veterinaria.utils.mixins import CanDeleteMixin
+from django.utils import timezone
+from datetime import date, timedelta
+from django.db.models import Q
 
 
 # Vistas para Clientes
@@ -170,6 +173,109 @@ class MascotaDeleteView(CanDeleteMixin, DeleteView):
         cliente_id = mascota.cliente.id
         messages.success(request, "Mascota eliminada exitosamente.")
         return super().delete(request, *args, **kwargs)
+class MascotasCumpleanosView(LoginRequiredMixin, ListView):
+    model = Mascota
+    template_name = 'clientes/cumpleanos_mascotas.html'
+    context_object_name = 'mascotas'
+    
+    def get_queryset(self):
+        periodo = self.request.GET.get('periodo', 'hoy')
+        
+        # Solo mascotas con fecha de nacimiento y activas
+        queryset = Mascota.objects.filter(
+            fecha_nacimiento__isnull=False,
+            activa=True
+        ).select_related('cliente', 'especie', 'raza').order_by('nombre')
+        
+        today = date.today()
+        
+        if periodo == 'hoy':
+            # Mascotas que cumplen años hoy
+            queryset = queryset.filter(
+                fecha_nacimiento__month=today.month,
+                fecha_nacimiento__day=today.day
+            )
+        elif periodo == 'semana':
+            # Próximos 7 días
+            end_date = today + timedelta(days=7)
+            
+            # Si no cruza el año
+            if today.year == end_date.year:
+                queryset = queryset.filter(
+                    Q(fecha_nacimiento__month=today.month, 
+                      fecha_nacimiento__day__gte=today.day) |
+                    Q(fecha_nacimiento__month=end_date.month,
+                      fecha_nacimiento__day__lte=end_date.day,
+                      fecha_nacimiento__month__gt=today.month)
+                )
+            else:
+                # Cruza el año (ej: diciembre a enero)
+                queryset = queryset.filter(
+                    Q(fecha_nacimiento__month=today.month,
+                      fecha_nacimiento__day__gte=today.day) |
+                    Q(fecha_nacimiento__month=end_date.month,
+                      fecha_nacimiento__day__lte=end_date.day)
+                )
+        elif periodo == 'mes':
+            # Todo el mes actual
+            queryset = queryset.filter(
+                fecha_nacimiento__month=today.month
+            )
+        
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        periodo = self.request.GET.get('periodo', 'hoy')
+        today = date.today()
+        
+        context['periodo_actual'] = periodo
+        context['fecha_hoy'] = today
+        
+        # Calcular información adicional para cada mascota
+        mascotas_con_info = []
+        for mascota in context['mascotas']:
+            # Calcular próximo cumpleaños
+            cumple_este_ano = date(today.year, mascota.fecha_nacimiento.month, mascota.fecha_nacimiento.day)
+            
+            if cumple_este_ano < today:
+                proximo_cumple = date(today.year + 1, mascota.fecha_nacimiento.month, mascota.fecha_nacimiento.day)
+            else:
+                proximo_cumple = cumple_este_ano
+            
+            # Días hasta el cumpleaños
+            dias_hasta = (proximo_cumple - today).days
+            
+            # Edad que cumplirá
+            edad_cumplira = proximo_cumple.year - mascota.fecha_nacimiento.year
+            
+            # Es hoy?
+            es_hoy = dias_hasta == 0
+            
+            mascotas_con_info.append({
+                'mascota': mascota,
+                'proximo_cumple': proximo_cumple,
+                'dias_hasta': dias_hasta,
+                'edad_cumplira': edad_cumplira,
+                'es_hoy': es_hoy,
+                'edad_actual': mascota.edad() or 0
+            })
+        
+        # Ordenar por días hasta cumpleaños
+        mascotas_con_info.sort(key=lambda x: x['dias_hasta'])
+        
+        context['mascotas_info'] = mascotas_con_info
+        context['total_mascotas'] = len(mascotas_con_info)
+        
+        # Estadísticas
+        hoy = sum(1 for m in mascotas_con_info if m['es_hoy'])
+        context['estadisticas'] = {
+            'hoy': hoy,
+            'esta_semana': len([m for m in mascotas_con_info if m['dias_hasta'] <= 7]),
+            'este_mes': len(mascotas_con_info)
+        }
+        
+        return context
 
 @login_required 
 def get_razas_by_especie(request):

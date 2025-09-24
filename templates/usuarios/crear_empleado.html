@@ -483,7 +483,7 @@
                                     <div class="form-group">
                                         <label for="{{ form.email.id_for_label }}" class="form-label">
                                             {{ form.email.label }} 
-                                            <span class="text-danger">*</span>
+                                            
                                         </label>
                                         {{ form.email }}
                                         {% if form.email.errors %}
@@ -846,8 +846,18 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         let hasErrors = false;
         
-        // Validar campos obligatorios
+        // Validar campos obligatorios (excluyendo email)
+        const requiredFields = document.querySelectorAll('input[required], select[required]');
+        
+        // Remover email de la validación obligatoria si no tiene valor
+        const emailField = document.getElementById('{{ form.email.id_for_label }}');
+        
         requiredFields.forEach(field => {
+            // Skip email field validation if it's empty (since it's optional now)
+            if (field === emailField && !field.value.trim()) {
+                return; // Skip validation for empty email
+            }
+            
             if (!field.value.trim()) {
                 field.classList.add('is-invalid');
                 field.classList.remove('is-valid');
@@ -857,6 +867,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 field.classList.add('is-valid');
             }
         });
+        
+        // Validar email SOLO si tiene valor (ya que ahora es opcional)
+        if (emailField && emailField.value.trim()) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailField.value)) {
+                emailField.classList.add('is-invalid');
+                emailField.classList.remove('is-valid');
+                hasErrors = true;
+                showErrorMessage('El formato del correo electrónico no es válido.');
+            } else {
+                emailField.classList.remove('is-invalid');
+                emailField.classList.add('is-valid');
+            }
+        } else if (emailField) {
+            // Si el email está vacío, remover cualquier clase de validación
+            emailField.classList.remove('is-invalid', 'is-valid');
+        }
         
         // Validar coincidencia de contraseñas
         const password = passwordField.value;
@@ -902,6 +929,46 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = document.querySelector('.btn-submit');
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
+        }
+    });
+
+    // También actualizar la validación en tiempo real del email
+    document.addEventListener('DOMContentLoaded', function() {
+        // Validación de email en tiempo real (solo si tiene valor)
+        const emailField = document.getElementById('{{ form.email.id_for_label }}');
+        if (emailField) {
+            emailField.addEventListener('input', function() {
+                // Solo validar si el campo tiene valor
+                if (this.value.trim()) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(this.value)) {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    } else {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                } else {
+                    // Si está vacío, remover clases de validación
+                    this.classList.remove('is-invalid', 'is-valid');
+                }
+            });
+            
+            emailField.addEventListener('blur', function() {
+                // En blur, también validar solo si tiene valor
+                if (this.value.trim()) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(this.value)) {
+                        this.classList.add('is-invalid');
+                        this.classList.remove('is-valid');
+                    } else {
+                        this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
+                    }
+                } else {
+                    this.classList.remove('is-invalid', 'is-valid');
+                }
+            });
         }
     });
     

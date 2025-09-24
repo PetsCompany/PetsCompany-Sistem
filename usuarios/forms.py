@@ -82,10 +82,23 @@ class CrearEmpleadoForm(forms.ModelForm):
             'email': 'Correo Electrónico',
         }
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Hacer el campo email opcional
+        self.fields['email'].required = False
+        self.fields['email'].help_text = "Opcional. Se puede agregar más tarde."
+        
+        # Agregar placeholder para mejor UX
+        self.fields['email'].widget.attrs.update({
+            'placeholder': 'correo@ejemplo.com (opcional)'
+        })
+    
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Ya existe un usuario con este correo.")
+        # Solo validar si se proporciona un email
+        if email:  # Si el email no está vacío
+            if User.objects.filter(email=email).exists():
+                raise ValidationError("Ya existe un usuario con este correo.")
         return email
     
     def clean(self):
@@ -105,6 +118,10 @@ class CrearEmpleadoForm(forms.ModelForm):
         user = super().save(commit=False)
         password_texto_plano = self.cleaned_data['password']  # NUEVO: Guardar antes de encriptar
         user.set_password(password_texto_plano)  # Esto encripta la contraseña
+        
+        # Si el email está vacío, asignar cadena vacía en lugar de None
+        email = self.cleaned_data.get('email', '')
+        user.email = email if email else ''
         
         if commit:
             user.save()

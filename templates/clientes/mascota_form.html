@@ -914,6 +914,42 @@
                             {% endif %}
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.esterilizado.id_for_label }}" class="form-label">
+                                    <i class="fas fa-scissors"></i>
+                                    Estado de Esterilización
+                                </label>
+                                {{ form.esterilizado }}
+                                {% if form.esterilizado.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.esterilizado.errors.0 }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.fecha_esterilizacion.id_for_label }}" class="form-label">
+                                    <i class="fas fa-calendar"></i>
+                                    Fecha de Esterilización
+                                </label>
+                                {{ form.fecha_esterilizacion }}
+                                {% if form.fecha_esterilizacion.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.fecha_esterilizacion.errors.0 }}
+                                    </div>
+                                {% endif %}
+                                <div class="field-help-text">
+                                    <i class="fas fa-info-circle"></i>
+                                    Opcional - Solo si ya está esterilizada
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="{{ form.foto.id_for_label }}" class="form-label">
@@ -1104,6 +1140,41 @@ document.addEventListener('DOMContentLoaded', function() {
                 isValid = false;
                 errorMessage = 'La fecha de nacimiento no puede ser en el futuro';
             }
+        }
+
+        // Validación de esterilización
+        const esterilizadoField = form.querySelector('select[name="esterilizado"]');
+        const fechaEsterilizacionField = form.querySelector('input[name="fecha_esterilizacion"]');
+
+        if (esterilizadoField && fechaEsterilizacionField) {
+            // Función para validar consistencia entre estado y fecha
+            function validarEsterilizacion() {
+                const estadoEsterilizado = esterilizadoField.value;
+                const fechaEsterilizacion = fechaEsterilizacionField.value;
+                
+                // Limpiar validaciones previas
+                fechaEsterilizacionField.classList.remove('is-invalid', 'is-valid');
+                esterilizadoField.classList.remove('is-invalid', 'is-valid');
+                
+                // Si tiene fecha pero no está marcado como esterilizado
+                if (fechaEsterilizacion && estadoEsterilizado === 'N') {
+                    esterilizadoField.classList.add('is-invalid');
+                    let errorElement = esterilizadoField.parentNode.querySelector('.invalid-feedback');
+                    if (!errorElement) {
+                        errorElement = document.createElement('div');
+                        errorElement.className = 'invalid-feedback d-block';
+                        esterilizadoField.parentNode.appendChild(errorElement);
+                    }
+                    errorElement.textContent = 'Si tiene fecha de esterilización, debe marcar el estado como "Esterilizado"';
+                    errorElement.style.display = 'block';
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            esterilizadoField.addEventListener('change', validarEsterilizacion);
+            fechaEsterilizacionField.addEventListener('change', validarEsterilizacion);
         }
 
         // File validation

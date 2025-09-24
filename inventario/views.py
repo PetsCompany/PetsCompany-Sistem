@@ -28,8 +28,49 @@ class VacunaDetailView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Listar todas las aplicaciones de esta vacuna
-        context['aplicaciones'] = VacunaAplicada.objects.filter(vacuna=self.object).order_by('-fecha_aplicacion')
+        
+        # Obtener todas las aplicaciones de esta vacuna con información de mascota relacionada
+        aplicaciones = VacunaAplicada.objects.filter(
+            vacuna=self.object,
+            fecha_aplicacion__isnull=False  # Solo vacunas realmente aplicadas
+        ).select_related(
+            'mascota', 
+            'mascota__cliente', 
+            'mascota__especie', 
+            'mascota__raza'
+        ).order_by('-fecha_aplicacion')
+        
+        context['aplicaciones'] = aplicaciones
+        
+        # === ESTADÍSTICAS MEJORADAS ===
+        
+        # Total de aplicaciones
+        total_aplicaciones = aplicaciones.count()
+        context['total_aplicaciones'] = total_aplicaciones
+        
+        # Aplicaciones por sexo
+        aplicaciones_machos = aplicaciones.filter(mascota__sexo='M').count()
+        aplicaciones_hembras = aplicaciones.filter(mascota__sexo='H').count()
+        
+        context['aplicaciones_machos'] = aplicaciones_machos
+        context['aplicaciones_hembras'] = aplicaciones_hembras
+        
+        # Aplicaciones del último mes
+        fecha_limite = timezone.now().date() - timedelta(days=30)
+        aplicaciones_mes = aplicaciones.filter(fecha_aplicacion__gte=fecha_limite)
+        
+        context['aplicaciones_mes'] = aplicaciones_mes.count()
+        context['aplicaciones_mes_machos'] = aplicaciones_mes.filter(mascota__sexo='M').count()
+        context['aplicaciones_mes_hembras'] = aplicaciones_mes.filter(mascota__sexo='H').count()
+        
+        # Calcular porcentajes
+        if total_aplicaciones > 0:
+            context['porcentaje_machos'] = round((aplicaciones_machos / total_aplicaciones) * 100, 1)
+            context['porcentaje_hembras'] = round((aplicaciones_hembras / total_aplicaciones) * 100, 1)
+        else:
+            context['porcentaje_machos'] = 0
+            context['porcentaje_hembras'] = 0
+        
         return context
 
 

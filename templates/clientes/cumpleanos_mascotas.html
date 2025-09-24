@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cumpleaños de Mascotas - Sistema Veterinario{% endblock %}
+{% block page_title %} Cumpleaños de Mascotas{% endblock %}
+
+{% block extra_css %}
+<style>
+    .birthday-card {
+        background: linear-gradient(135deg, #fff 0%, #f8fafc 100%);
+        border: 2px solid #e5e7eb;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .birthday-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcf7f, #4dabf7, #cc5de8);
+        animation: rainbow 3s ease-in-out infinite;
+    }
+
+    @keyframes rainbow {
+        0%, 100% { transform: translateX(-100%); }
+        50% { transform: translateX(100%); }
+    }
+
+    .birthday-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+        border-color: var(--primary-color);
+    }
+
+    .birthday-today {
+        background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        border-color: var(--primary-color) !important;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+    }
+
+    .birthday-icon {
+        font-size: 2rem;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .stats-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+        border: 1px solid #e5e7eb;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        text-align: center;
+        transition: var(--transition);
+    }
+
+    .stats-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow-lg);
+    }
+
+    .stats-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .pet-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .pet-avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: #6b7280;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .age-badge {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .days-badge {
+        background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .filter-tabs {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 0.5rem;
+        box-shadow: var(--box-shadow);
+        margin-bottom: 2rem;
+    }
+
+    .filter-tab {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        background: none;
+        border-radius: var(--border-radius-sm);
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .filter-tab:hover {
+        background: var(--bg-light);
+        color: var(--text-primary);
+    }
+
+    .filter-tab.active {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-secondary);
+    }
+
+    .empty-state i {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: var(--text-secondary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card hover-lift">
+                <div class="stats-number">{{ estadisticas.hoy }}</div>
+                <div class="text-muted">Hoy</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card hover-lift">
+                <div class="stats-number">{{ estadisticas.esta_semana }}</div>
+                <div class="text-muted">Esta Semana</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card hover-lift">
+                <div class="stats-number">{{ estadisticas.este_mes }}</div>
+                <div class="text-muted">Este Mes</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card hover-lift">
+                <div class="stats-number">{{ total_mascotas }}</div>
+                <div class="text-muted">Total</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filter-tabs text-center">
+        <a href="?periodo=hoy" class="filter-tab {% if periodo_actual == 'hoy' %}active{% endif %}">
+            <i class="fas fa-calendar-day me-2"></i>Hoy
+        </a>
+        <a href="?periodo=semana" class="filter-tab {% if periodo_actual == 'semana' %}active{% endif %}">
+            <i class="fas fa-calendar-week me-2"></i>Esta Semana
+        </a>
+        <a href="?periodo=mes" class="filter-tab {% if periodo_actual == 'mes' %}active{% endif %}">
+            <i class="fas fa-calendar me-2"></i>Este Mes
+        </a>
+    </div>
+
+    <!-- Lista de Mascotas -->
+    {% if mascotas_info %}
+    <div class="row">
+        {% for info in mascotas_info %}
+        <div class="col-xl-4 col-lg-6 mb-4">
+            <div class="birthday-card {% if info.es_hoy %}birthday-today{% endif %} p-4 h-100">
+                <div class="d-flex align-items-start">
+                    <!-- Avatar de la mascota -->
+                    <div class="me-3">
+                        {% if info.mascota.foto %}
+                            <img src="{{ info.mascota.foto.url }}" alt="{{ info.mascota.nombre }}" class="pet-avatar">
+                        {% else %}
+                            <div class="pet-avatar-placeholder">
+                                <i class="fas fa-paw"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Información de la mascota -->
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="mb-1 fw-bold">{{ info.mascota.nombre }}</h5>
+                                <p class="text-muted mb-1">
+                                    <i class="fas fa-user me-1"></i>{{ info.mascota.cliente.nombre }}
+                                </p>
+                            </div>
+                            {% if info.es_hoy %}
+                                <div class="birthday-icon">🎉</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Detalles -->
+                        <div class="mb-3">
+                            <small class="text-muted d-block">
+                                <i class="fas fa-dna me-1"></i>{{ info.mascota.especie.nombre }} - {{ info.mascota.raza.nombre }}
+                            </small>
+                            <small class="text-muted d-block">
+                                <i class="fas fa-venus-mars me-1"></i>{{ info.mascota.get_sexo_display }}
+                            </small>
+                            <small class="text-muted d-block">
+                                <i class="fas fa-birthday-cake me-1"></i>{{ info.mascota.fecha_nacimiento|date:"d/m/Y" }}
+                            </small>
+                        </div>
+
+                        <!-- Badges -->
+                        <div class="d-flex flex-wrap gap-2 mb-3">
+                            <span class="age-badge">
+                                {{ info.edad_actual }} años → {{ info.edad_cumplira }} años
+                            </span>
+                            {% if info.dias_hasta == 0 %}
+                                <span class="badge bg-success">¡Hoy es su cumpleaños! 🎂</span>
+                            {% elif info.dias_hasta == 1 %}
+                                <span class="days-badge">Mañana</span>
+                            {% else %}
+                                <span class="days-badge">En {{ info.dias_hasta }} días</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Fecha del próximo cumpleaños -->
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                Próximo cumpleaños: {{ info.proximo_cumple|date:"d/m/Y" }}
+                            </small>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'clientes:detalle_mascota' info.mascota.pk %}" class="filter-tab">
+                                <i class="fas fa-eye me-1"></i>Ver Perfil
+                            </a>
+                            <a href="{% url 'clientes:detalle_cliente' info.mascota.cliente.pk %}" class="filter-tab">
+                                <i class="fas fa-user me-1"></i>Cliente
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-birthday-cake"></i>
+        <h4>No hay cumpleaños programados</h4>
+        <p class="text-muted">
+            {% if periodo_actual == 'hoy' %}
+                No hay mascotas que cumplan años hoy.
+            {% elif periodo_actual == 'semana' %}
+                No hay mascotas que cumplan años esta semana.
+            {% else %}
+                No hay mascotas que cumplan años este mes.
+            {% endif %}
+        </p>
+        <a href="{% url 'clientes:lista_mascotas' %}" class="btn btn-primary">
+            <i class="fas fa-paw me-2"></i>Ver Todas las Mascotas
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación para las tarjetas de cumpleaños de hoy
+    const birthdayToday = document.querySelectorAll('.birthday-today');
+    
+    birthdayToday.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.animation = 'none';
+            card.offsetHeight; // Trigger reflow
+            card.style.animation = 'pulse 2s infinite';
+        }, index * 200);
+    });
+    
+    // Smooth scroll en los filtros
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', function(e) {
+            // Agregar clase de loading
+            this.style.opacity = '0.7';
+            setTimeout(() => {
+                this.style.opacity = '1';
+            }, 300);
+        });
+    });
+});
+</script>
+{% endblock %}

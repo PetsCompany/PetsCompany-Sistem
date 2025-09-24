@@ -40,12 +40,11 @@
         border-left: 4px solid #dc2626;
     }
     
-    /* Corrección para el problema de la barra de filtros */
     .filter-card {
         background: #ffffff;
         border-radius: var(--border-radius);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        padding: 0; /* Cambiar de 2rem a 0 para eliminar el padding que causa el borde blanco */
+        padding: 0;
         margin-bottom: 2rem;
         border: none;
         position: relative;
@@ -57,28 +56,27 @@
         color: #ffffff;
         border: none;
         padding: 1.25rem 1.5rem;
-        margin-bottom: 0; /* Cambiar de 1.5rem a 0 para eliminar el espacio */
-        border-bottom: none; /* Eliminar el borde inferior */
+        margin-bottom: 0;
+        border-bottom: none;
     }
 
     .filter-card .card-body {
-        padding: 2rem; /* Agregar el padding aquí en lugar del contenedor padre */
+        padding: 2rem;
     }
 
-    /* Corrección para igualar el tamaño de los botones */
     .btn-action, .btn-secondary-custom {
         background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
         border: none;
         border-radius: var(--border-radius-sm);
         color: #ffffff;
         font-weight: 500;
-        padding: 0.75rem 1.5rem; /* Asegurar que ambos tengan el mismo padding */
+        padding: 0.75rem 1.5rem;
         transition: var(--transition);
         position: relative;
         overflow: hidden;
-        min-width: 150px; /* Establecer un ancho mínimo consistente */
-        height: auto; /* Asegurar altura automática */
-        display: inline-flex; /* Usar flexbox para mejor alineación */
+        min-width: 150px;
+        height: auto;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
     }
@@ -87,29 +85,26 @@
         background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
         border: none;
         color: #ffffff;
-        padding: 0.75rem 1.5rem; /* Mismo padding que btn-action */
-        min-width: 150px; /* Mismo ancho mínimo */
+        padding: 0.75rem 1.5rem;
+        min-width: 150px;
     }
 
-    /* Asegurar que ambos botones tengan la misma altura */
     .btn-action, .btn-secondary-custom, .btn-print {
         line-height: 1.5;
-        font-size: 0.875rem; /* Asegurar mismo tamaño de fuente */
+        font-size: 0.875rem;
     }
 
-    /* Ajuste específico para el contenedor de botones */
     .col-md-4.d-flex.align-items-end .w-100 {
         display: flex;
-        gap: 0.5rem; /* Espaciado consistente entre botones */
-        align-items: stretch; /* Hacer que los botones tengan la misma altura */
+        gap: 0.5rem;
+        align-items: stretch;
     }
 
     .col-md-4.d-flex.align-items-end .w-100 .btn {
-        flex: 1; /* Hacer que los botones tengan el mismo ancho */
-        max-width: 150px; /* Limitar el ancho máximo */
+        flex: 1;
+        max-width: 150px;
     }
 
-    /* Mejora responsiva para botones */
     @media (max-width: 768px) {
         .col-md-4.d-flex.align-items-end .w-100 {
             flex-direction: column;
@@ -193,6 +188,26 @@
         font-weight: 500;
         font-size: 0.8rem;
     }
+
+    /* Nuevos estilos para badges de sexo */
+    .badge-sexo {
+        padding: 0.4rem 0.8rem;
+        border-radius: 15px;
+        font-weight: 500;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-sexo.macho {
+        background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+        color: #ffffff;
+    }
+
+    .badge-sexo.hembra {
+        background: linear-gradient(45deg, #ec4899, #be185d);
+        color: #ffffff;
+    }
     
     .pet-name {
         font-weight: 600;
@@ -251,6 +266,43 @@
         background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
         border-radius: 4px;
         transition: width 1s ease-in-out;
+    }
+
+    /* Estilos para estadísticas de género */
+    .gender-stats-card {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #3b82f6;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .gender-stat-item {
+        background: #ffffff;
+        border-radius: var(--border-radius-sm);
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: var(--transition);
+    }
+
+    .gender-stat-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .gender-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .gender-icon.macho {
+        color: #3b82f6;
+    }
+
+    .gender-icon.hembra {
+        color: #ec4899;
     }
     
     .btn-action {
@@ -398,7 +450,6 @@
         }
     }
     
-    /* Animation for percentage bars */
     @keyframes fillBar {
         from { width: 0%; }
         to { width: var(--target-width); }
@@ -418,7 +469,7 @@
                     </div>
                     <div>
                         <h2 class="mb-0" style="color: var(--text-primary); font-weight: 700;">Reporte de Eutanasias</h2>
-                        <p class="mb-0 text-muted">Análisis detallado de procedimientos de eutanasia</p>
+                        <p class="mb-0 text-muted">Análisis detallado de procedimientos de eutanasia con segmentación por género</p>
                     </div>
                 </div>
             </div>
@@ -470,14 +521,63 @@
         </div>
     </div>
 
-    <!-- Estadísticas por Especie -->
-    {% if stats_especies %}
+    <!-- Estadísticas por Sexo -->
+    {% if stats_por_sexo %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="gender-stats-card slide-up">
+                <div class="row align-items-center mb-3">
+                    <div class="col">
+                        <h5 class="mb-0">
+                            <i class="fas fa-venus-mars me-2" style="color: #3b82f6;"></i>Distribución por Sexo
+                        </h5>
+                        <small class="text-muted">Segmentación de eutanasias por género</small>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    {% for stat in stats_por_sexo %}
+                    <div class="col-md-6">
+                        <div class="gender-stat-item">
+                            <div class="gender-icon {% if stat.cita__mascota__sexo == 'M' %}macho{% else %}hembra{% endif %}">
+                                {% if stat.cita__mascota__sexo == 'M' %}
+                                    <i class="fas fa-mars"></i>
+                                {% else %}
+                                    <i class="fas fa-venus"></i>
+                                {% endif %}
+                            </div>
+                            <h4 class="mb-1" style="color: var(--text-primary);">{{ stat.total }}</h4>
+                            <h6 class="mb-2" style="color: {% if stat.cita__mascota__sexo == 'M' %}#3b82f6{% else %}#ec4899{% endif %};">
+                                {% if stat.cita__mascota__sexo == 'M' %}Machos{% else %}Hembras{% endif %}
+                            </h6>
+                            <small class="text-muted">
+                                {% if total_eutanasias > 0 %}
+                                    {% widthratio stat.total total_eutanasias 100 %}% del total
+                                {% else %}
+                                    0% del total
+                                {% endif %}
+                            </small>
+                            <div class="percentage-bar">
+                                <div class="percentage-fill" 
+                                     style="width: {% if total_eutanasias > 0 %}{% widthratio stat.total total_eutanasias 100 %}%{% else %}0%{% endif %}; 
+                                            background: {% if stat.cita__mascota__sexo == 'M' %}linear-gradient(90deg, #3b82f6, #1d4ed8){% else %}linear-gradient(90deg, #ec4899, #be185d){% endif %};"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Estadísticas por Especie y Sexo -->
+    {% if stats_especies_cruzadas %}
     <div class="row mb-4">
         <div class="col-12">
             <div class="stats-card slide-up">
                 <div class="card-header" style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--info-color) 100%); color: white; border: none; padding: 1.5rem;">
                     <h5 class="mb-0">
-                        <i class="fas fa-chart-pie me-2"></i>Distribución por Especie
+                        <i class="fas fa-chart-pie me-2"></i>Distribución por Especie y Sexo
                     </h5>
                 </div>
                 <div class="card-body p-0">
@@ -486,16 +586,24 @@
                             <thead>
                                 <tr>
                                     <th><i class="fas fa-dna me-2"></i>Especie</th>
-                                    <th><i class="fas fa-hashtag me-2"></i>Cantidad</th>
+                                    <th><i class="fas fa-mars me-2" style="color: #3b82f6;"></i>Machos</th>
+                                    <th><i class="fas fa-venus me-2" style="color: #ec4899;"></i>Hembras</th>
+                                    <th><i class="fas fa-hashtag me-2"></i>Total</th>
                                     <th><i class="fas fa-percentage me-2"></i>Porcentaje</th>
                                     <th><i class="fas fa-chart-bar me-2"></i>Distribución</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for stat in stats_especies %}
+                                {% for stat in stats_especies_cruzadas %}
                                 <tr>
                                     <td>
-                                        <strong class="pet-name">{{ stat.cita__mascota__especie__nombre }}</strong>
+                                        <strong class="pet-name">{{ stat.nombre }}</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge-sexo macho">{{ stat.M }} macho{{ stat.M|pluralize }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-sexo hembra">{{ stat.H }} hembra{{ stat.H|pluralize }}</span>
                                     </td>
                                     <td>
                                         <span class="badge-species">{{ stat.total }} caso{{ stat.total|pluralize }}</span>
@@ -589,6 +697,7 @@
                                     <th><i class="fas fa-calendar me-2"></i>Fecha</th>
                                     <th><i class="fas fa-paw me-2"></i>Mascota</th>
                                     <th><i class="fas fa-dna me-2"></i>Especie</th>
+                                    <th><i class="fas fa-venus-mars me-2"></i>Sexo</th>
                                     <th><i class="fas fa-birthday-cake me-2"></i>Edad</th>
                                     <th><i class="fas fa-user me-2"></i>Cliente</th>
                                     <th><i class="fas fa-clipboard-list me-2"></i>Motivo</th>
@@ -609,6 +718,15 @@
                                     </td>
                                     <td>
                                         <span class="badge-species">{{ eutanasia.cita.mascota.especie.nombre }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge-sexo {% if eutanasia.cita.mascota.sexo == 'M' %}macho{% else %}hembra{% endif %}">
+                                            {% if eutanasia.cita.mascota.sexo == 'M' %}
+                                                <i class="fas fa-mars me-1"></i>Macho
+                                            {% else %}
+                                                <i class="fas fa-venus me-1"></i>Hembra
+                                            {% endif %}
+                                        </span>
                                     </td>
                                     <td>
                                         {% if eutanasia.cita.mascota.edad %}

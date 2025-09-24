@@ -34,7 +34,7 @@ class ClienteForm(forms.ModelForm):
 class MascotaForm(forms.ModelForm):
     class Meta:
         model = Mascota
-        fields = ['cliente', 'nombre', 'especie', 'raza', 'sexo', 'fecha_nacimiento', 'foto']
+        fields = ['cliente', 'nombre', 'especie', 'raza', 'sexo', 'fecha_nacimiento', 'foto', 'esterilizado', 'fecha_esterilizacion']
         widgets = {
             'fecha_nacimiento': forms.DateInput(attrs={'type': 'date'}),
         }

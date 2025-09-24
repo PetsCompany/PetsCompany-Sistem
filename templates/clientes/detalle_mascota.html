@@ -745,6 +745,37 @@
                                 {% endif %}
                             </div>
                         </div>
+
+                        <div class="info-item">
+                            <div class="info-label">
+                                <i class="fas fa-scissors"></i>
+                                Estado de Esterilización
+                            </div>
+                            <div class="info-value">
+                                {% if mascota.esterilizado == 'S' %}
+                                    <span class="status-badge status-active">
+                                        <i class="fas fa-check-circle"></i>
+                                        {{ mascota.get_esterilizado_display }}
+                                    </span>
+                                    {% if mascota.fecha_esterilizacion %}
+                                        <br><small class="text-muted">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            Fecha: {{ mascota.fecha_esterilizacion|date:"d/m/Y" }}
+                                        </small>
+                                    {% endif %}
+                                {% elif mascota.esterilizado == 'P' %}
+                                    <span class="status-badge" style="background: rgba(255, 193, 7, 0.1); color: #ffc107; border: 1px solid rgba(255, 193, 7, 0.2);">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        {{ mascota.get_esterilizado_display }}
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-inactive">
+                                        <i class="fas fa-times-circle"></i>
+                                        {{ mascota.get_esterilizado_display }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
                         
                         <div class="info-item">
                             <div class="info-label">

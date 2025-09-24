@@ -31,6 +31,12 @@ class Mascota(models.Model):
         ('H', 'Hembra'),
     ]
     
+    ESTERILIZADO_CHOICES = [
+        ('N', 'No esterilizado'),
+        ('S', 'Esterilizado'),
+        ('P', 'Programado para esterilizar'),
+    ]
+    
     nombre = models.CharField(max_length=100)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='mascotas')
     especie = models.ForeignKey('configuracion.Especie', on_delete=models.PROTECT)
@@ -38,6 +44,17 @@ class Mascota(models.Model):
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
     fecha_nacimiento = models.DateField(blank=True, null=True)
     foto = models.ImageField(upload_to='mascotas/', blank=True, null=True)
+    esterilizado = models.CharField(
+        max_length=1, 
+        choices=ESTERILIZADO_CHOICES, 
+        default='N',
+        help_text="Estado de esterilización de la mascota"
+    )
+    fecha_esterilizacion = models.DateField(
+        blank=True, 
+        null=True,
+        help_text="Fecha en que fue esterilizada la mascota (opcional)"
+    )
     activa = models.BooleanField(default=True)
     fecha_registro = models.DateTimeField(auto_now_add=True)
     
@@ -51,6 +68,15 @@ class Mascota(models.Model):
         today = date.today()
         born = self.fecha_nacimiento
         return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    
+    def get_estado_esterilizacion_display_icon(self):
+        """Retorna un ícono y clase CSS para el estado de esterilización"""
+        if self.esterilizado == 'S':
+            return {'icon': '✅', 'class': 'text-success', 'text': 'Esterilizado'}
+        elif self.esterilizado == 'P':
+            return {'icon': '📅', 'class': 'text-warning', 'text': 'Programado'}
+        else:
+            return {'icon': '❌', 'class': 'text-secondary', 'text': 'No esterilizado'}
     
     class Meta:
         verbose_name = "Mascota"
@@ -71,4 +97,3 @@ class Mascota(models.Model):
         return self.citas.filter(
             fecha__lte=timezone.now().date()
         ).exists()
-

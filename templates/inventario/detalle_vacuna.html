@@ -271,14 +271,14 @@
 
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 1.5rem;
     }
 
     .stat-card {
         background: rgba(255, 255, 255, 0.9);
         border-radius: var(--border-radius-sm);
-        padding: 2rem;
+        padding: 1.5rem;
         text-align: center;
         border: 2px solid rgba(220, 53, 69, 0.1);
         transition: var(--transition);
@@ -308,6 +308,32 @@
         transform: scaleX(1);
     }
 
+    .stat-card.male {
+        border-color: rgba(54, 162, 235, 0.3);
+    }
+
+    .stat-card.male::before {
+        background: linear-gradient(90deg, #36a2eb, #2563eb);
+    }
+
+    .stat-card.male:hover {
+        border-color: #36a2eb;
+        box-shadow: 0 8px 25px rgba(54, 162, 235, 0.15);
+    }
+
+    .stat-card.female {
+        border-color: rgba(255, 99, 132, 0.3);
+    }
+
+    .stat-card.female::before {
+        background: linear-gradient(90deg, #ff6384, #e91e63);
+    }
+
+    .stat-card.female:hover {
+        border-color: #ff6384;
+        box-shadow: 0 8px 25px rgba(255, 99, 132, 0.15);
+    }
+
     .stat-card.success::before {
         background: linear-gradient(90deg, #dc3545, #c62828);
     }
@@ -318,11 +344,19 @@
     }
 
     .stat-number {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
         color: #dc3545;
         display: block;
         margin-bottom: 0.5rem;
+    }
+
+    .stat-card.male .stat-number {
+        color: #36a2eb;
+    }
+
+    .stat-card.female .stat-number {
+        color: #ff6384;
     }
 
     .stat-card.success .stat-number {
@@ -331,8 +365,14 @@
 
     .stat-label {
         color: var(--text-secondary);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 500;
+    }
+
+    .stat-percentage {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 0.25rem;
     }
 
     .applications-table {
@@ -351,9 +391,9 @@
         background: linear-gradient(135deg, #212529 0%, #343a40 100%);
         color: white;
         border: none;
-        padding: 1rem 1.5rem;
+        padding: 1rem 1rem;
         font-weight: 600;
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -369,9 +409,10 @@
     }
 
     .table-modern tbody td {
-        padding: 1rem 1.5rem;
+        padding: 1rem;
         border: none;
         vertical-align: middle;
+        font-size: 0.9rem;
     }
 
     .table-modern a {
@@ -490,6 +531,56 @@
         letter-spacing: 0.5px;
     }
 
+    .sex-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: var(--border-radius-sm);
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .sex-badge.male {
+        background: rgba(54, 162, 235, 0.1);
+        color: #36a2eb;
+        border: 1px solid rgba(54, 162, 235, 0.2);
+    }
+
+    .sex-badge.female {
+        background: rgba(255, 99, 132, 0.1);
+        color: #ff6384;
+        border: 1px solid rgba(255, 99, 132, 0.2);
+    }
+
+    .sterilized-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.2rem 0.4rem;
+        border-radius: var(--border-radius-sm);
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .sterilized-badge.yes {
+        background: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .sterilized-badge.no {
+        background: rgba(108, 117, 125, 0.1);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.2);
+    }
+
+    .sterilized-badge.scheduled {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+        border: 1px solid rgba(255, 193, 7, 0.2);
+    }
+
     @media (max-width: 768px) {
         .vaccine-name {
             font-size: 1.5rem;
@@ -531,7 +622,111 @@
         }
 
         .table-modern {
-            min-width: 600px;
+            min-width: 900px;
+        }
+
+        .table-modern thead th {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.7rem;
+        }
+
+        .table-modern tbody td {
+            padding: 0.75rem 0.5rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .table-modern {
+            min-width: 1100px;
+        }
+        
+        .table-modern thead th {
+            font-size: 0.75rem;
+            padding: 0.8rem 0.6rem;
+        }
+        
+        .table-modern tbody td {
+            font-size: 0.85rem;
+            padding: 0.8rem 0.6rem;
+        }
+        
+        .sex-badge, .sterilized-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.3rem;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .table-modern {
+            font-size: 0.8rem;
+        }
+        
+        .table-modern thead th,
+        .table-modern tbody td {
+            padding: 0.6rem 0.4rem;
+        }
+    }
+
+    /* Mejora para mostrar información en dispositivos pequeños */
+    @media (max-width: 768px) {
+        .table-responsive-custom {
+            border: none;
+            margin-bottom: 0;
+        }
+        
+        .table-responsive-custom table,
+        .table-responsive-custom thead,
+        .table-responsive-custom tbody,
+        .table-responsive-custom th,
+        .table-responsive-custom td,
+        .table-responsive-custom tr {
+            display: block;
+        }
+        
+        .table-responsive-custom thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+        
+        .table-responsive-custom tr {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .table-responsive-custom td {
+            border: none;
+            padding: 8px 0;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 30% !important;
+        }
+        
+        .table-responsive-custom td:before {
+            content: attr(data-label) ": ";
+            position: absolute;
+            left: 6px;
+            width: 25%;
+            padding-right: 10px;
+            white-space: nowrap;
+            font-weight: bold;
+            color: #333;
         }
     }
 
@@ -588,22 +783,22 @@
                         {{ vacuna.nombre }}
                     </h1>
                     <p class="vaccine-subtitle">
-                        Vacuna del sistema veterinario
+                        Reporte detallado de aplicaciones por sexo
                     </p>
                     
                     <!-- Mini Stats -->
                     <div class="stats-mini">
                         <div class="stat-mini">
-                            <span class="stat-mini-number">{{ aplicaciones.count }}</span>
+                            <span class="stat-mini-number">{{ total_aplicaciones }}</span>
                             <span class="stat-mini-label">Total Aplicaciones</span>
                         </div>
                         <div class="stat-mini">
-                            <span class="stat-mini-number">
-                                {% with recientes=aplicaciones|slice:":30" %}
-                                    {{ recientes|length }}
-                                {% endwith %}
-                            </span>
-                            <span class="stat-mini-label">Último Mes</span>
+                            <span class="stat-mini-number">{{ aplicaciones_machos }}</span>
+                            <span class="stat-mini-label">Machos</span>
+                        </div>
+                        <div class="stat-mini">
+                            <span class="stat-mini-number">{{ aplicaciones_hembras }}</span>
+                            <span class="stat-mini-label">Hembras</span>
                         </div>
                     </div>
                 </div>
@@ -625,7 +820,7 @@
 
     <div class="row">
         <!-- Información de la vacuna -->
-        <div class="col-lg-5">
+        <div class="col-lg-4">
             <div class="detail-card slide-up">
                 <div class="card-header-modern">
                     <h3 class="card-title-modern">
@@ -655,28 +850,35 @@
             </div>
         </div>
 
-        <!-- Estadísticas -->
-        <div class="col-lg-7">
+        <!-- Estadísticas Segmentadas por Sexo -->
+        <div class="col-lg-8">
             <div class="detail-card slide-up">
                 <div class="card-header-modern stats-header">
                     <h3 class="card-title-modern">
                         <i class="fas fa-chart-bar"></i>
-                        Estadísticas de Aplicación
+                        Estadísticas Segmentadas por Sexo
                     </h3>
                 </div>
                 <div class="card-body-modern">
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <span class="stat-number">{{ aplicaciones.count }}</span>
-                            <span class="stat-label">Total de aplicaciones</span>
+                            <span class="stat-number">{{ total_aplicaciones }}</span>
+                            <span class="stat-label">Total Aplicaciones</span>
+                        </div>
+                        <div class="stat-card male">
+                            <span class="stat-number">{{ aplicaciones_machos }}</span>
+                            <span class="stat-label">Machos</span>
+                            <div class="stat-percentage">{{ porcentaje_machos }}% del total</div>
+                        </div>
+                        <div class="stat-card female">
+                            <span class="stat-number">{{ aplicaciones_hembras }}</span>
+                            <span class="stat-label">Hembras</span>
+                            <div class="stat-percentage">{{ porcentaje_hembras }}% del total</div>
                         </div>
                         <div class="stat-card success">
-                            <span class="stat-number">
-                                {% with recientes=aplicaciones|slice:":30" %}
-                                    {{ recientes|length }}
-                                {% endwith %}
-                            </span>
-                            <span class="stat-label">Aplicaciones (último mes)</span>
+                            <span class="stat-number">{{ aplicaciones_mes }}</span>
+                            <span class="stat-label">Último Mes</span>
+                            <div class="stat-percentage">♂{{ aplicaciones_mes_machos }} ♀{{ aplicaciones_mes_hembras }}</div>
                         </div>
                     </div>
                 </div>
@@ -689,7 +891,7 @@
         <div class="card-header-modern history-header">
             <h3 class="card-title-modern">
                 <i class="fas fa-history"></i>
-                Historial de Aplicaciones
+                Reporte Detallado de Aplicaciones
             </h3>
         </div>
         <div class="card-body-modern p-0">
@@ -700,8 +902,12 @@
                             <tr>
                                 <th><i class="fas fa-calendar-alt me-2"></i>Fecha</th>
                                 <th><i class="fas fa-paw me-2"></i>Mascota</th>
-                                <th><i class="fas fa-user me-2"></i>Cliente</th>
-                                <th><i class="fas fa-clock me-2"></i>Próxima Aplicación</th>
+                                <th><i class="fas fa-dog me-2"></i>Especie</th>
+                                <th><i class="fas fa-dna me-2"></i>Raza</th>
+                                <th><i class="fas fa-venus-mars me-2"></i>Sexo</th>
+                                <th><i class="fas fa-cut me-2"></i>Esterilizado</th>
+                                <th><i class="fas fa-user me-2"></i>Propietario</th>
+                                <th><i class="fas fa-syringe me-2"></i>Vacuna</th>
                                 <th class="text-end"><i class="fas fa-cogs me-2"></i>Acciones</th>
                             </tr>
                         </thead>
@@ -719,6 +925,45 @@
                                     </a>
                                 </td>
                                 <td>
+                                    <i class="fas fa-tag text-muted me-2"></i>
+                                    {{ aplicacion.mascota.especie.nombre }}
+                                </td>
+                                <td>
+                                    <i class="fas fa-dna text-info me-2"></i>
+                                    {{ aplicacion.mascota.raza.nombre }}
+                                </td>
+                                <td>
+                                    {% if aplicacion.mascota.sexo == 'M' %}
+                                        <span class="sex-badge male">
+                                            <i class="fas fa-mars"></i>
+                                            Macho
+                                        </span>
+                                    {% else %}
+                                        <span class="sex-badge female">
+                                            <i class="fas fa-venus"></i>
+                                            Hembra
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if aplicacion.mascota.esterilizado == 'S' %}
+                                        <span class="sterilized-badge yes">
+                                            <i class="fas fa-check"></i>
+                                            Sí
+                                        </span>
+                                    {% elif aplicacion.mascota.esterilizado == 'P' %}
+                                        <span class="sterilized-badge scheduled">
+                                            <i class="fas fa-calendar-check"></i>
+                                            Programado
+                                        </span>
+                                    {% else %}
+                                        <span class="sterilized-badge no">
+                                            <i class="fas fa-times"></i>
+                                            No
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
                                     {% if aplicacion.mascota.cliente %}
                                     <a href="{% url 'clientes:detalle_cliente' aplicacion.mascota.cliente.pk %}">
                                         <i class="fas fa-user me-2"></i>
@@ -727,20 +972,13 @@
                                     {% else %}
                                     <span class="text-muted">
                                         <i class="fas fa-user-slash me-2"></i>
-                                        Sin cliente
+                                        Sin propietario
                                     </span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if aplicacion.fecha_proxima %}
-                                        <i class="fas fa-clock text-success me-2"></i>
-                                        {{ aplicacion.fecha_proxima|date:"d/m/Y" }}
-                                    {% else %}
-                                        <span class="text-muted">
-                                            <i class="fas fa-minus-circle me-2"></i>
-                                            No programada
-                                        </span>
-                                    {% endif %}
+                                    <i class="fas fa-syringe text-danger me-2"></i>
+                                    {{ aplicacion.vacuna.nombre }}
                                 </td>
                                 <td class="text-end">
                                     <div class="d-flex gap-1 justify-content-end">

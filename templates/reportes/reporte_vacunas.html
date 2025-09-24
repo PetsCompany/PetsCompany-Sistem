@@ -401,6 +401,51 @@
         display: inline-block;
     }
 
+    /* NUEVOS ESTILOS PARA SEGMENTACIÓN POR SEXO */
+    .gender-badge-male {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .gender-badge-female {
+        background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .cross-table {
+        background: var(--bg-white);
+        border-radius: var(--border-radius-sm);
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .cross-table .table th.text-center {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        color: white;
+    }
+
+    .total-row {
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        font-weight: 600;
+    }
+
     /* Responsive improvements */
     @media (max-width: 768px) {
         .report-header h2 {
@@ -420,6 +465,11 @@
         
         .main-table .table-responsive {
             font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
     }
 
@@ -456,7 +506,7 @@
             <i class="fas fa-syringe"></i>
             Reporte de Vacunas
         </h2>
-        <p class="subtitle">Control y seguimiento de vacunación de mascotas</p>
+        <p class="subtitle">Control y seguimiento de vacunación de mascotas por sexo</p>
     </div>
 
     <!-- Formulario de filtros -->
@@ -508,41 +558,260 @@
     </div>
     {% endif %}
 
-    <!-- Estadísticas por tipo de vacuna -->
-    {% if stats_vacunas %}
+    <!-- NUEVAS ESTADÍSTICAS POR SEXO -->
+    <div class="stats-grid">
+        <!-- Estadísticas generales por sexo -->
+        {% if stats_por_sexo %}
+        <div class="stats-card">
+            <div class="card-header">
+                <h5>
+                    <i class="fas fa-venus-mars"></i>
+                    Distribución por Sexo
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="stats-table">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>
+                                    <i class="fas fa-venus-mars me-2"></i>
+                                    Sexo
+                                </th>
+                                <th>
+                                    <i class="fas fa-hashtag me-2"></i>
+                                    Cantidad
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in stats_por_sexo %}
+                            <tr>
+                                <td>
+                                    {% if stat.mascota__sexo == 'M' %}
+                                        <span class="gender-badge-male">
+                                            <i class="fas fa-mars me-1"></i>Macho
+                                        </span>
+                                    {% else %}
+                                        <span class="gender-badge-female">
+                                            <i class="fas fa-venus me-1"></i>Hembra
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="count-badge">{{ stat.total }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Estadísticas por tipo de vacuna (tabla original) -->
+        {% if stats_vacunas %}
+        <div class="stats-card">
+            <div class="card-header">
+                <h5>
+                    <i class="fas fa-chart-pie"></i>
+                    Estadísticas por Tipo de Vacuna
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="stats-table">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>
+                                    <i class="fas fa-syringe me-2"></i>
+                                    Tipo de Vacuna
+                                </th>
+                                <th>
+                                    <i class="fas fa-hashtag me-2"></i>
+                                    Cantidad Aplicada
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in stats_vacunas %}
+                            <tr>
+                                <td>
+                                    <span class="vaccine-badge">{{ stat.vacuna__nombre }}</span>
+                                </td>
+                                <td>
+                                    <span class="count-badge">{{ stat.total }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- TABLA CRUZADA: VACUNAS POR SEXO -->
+    {% if stats_vacunas_cruzadas %}
     <div class="stats-card">
         <div class="card-header">
             <h5>
-                <i class="fas fa-chart-pie"></i>
-                Estadísticas por Tipo de Vacuna
+                <i class="fas fa-table"></i>
+                Vacunas por Tipo y Sexo
             </h5>
         </div>
         <div class="card-body">
-            <div class="stats-table">
+            <div class="cross-table">
                 <table class="table">
-                    <thead class="table-light">
-                        <tr>
+                    <thead>
+                        <tr class="table-dark">
                             <th>
                                 <i class="fas fa-syringe me-2"></i>
                                 Tipo de Vacuna
                             </th>
-                            <th>
-                                <i class="fas fa-hashtag me-2"></i>
-                                Cantidad Aplicada
+                            <th class="text-center">
+                                <i class="fas fa-mars me-1"></i>
+                                Machos
+                            </th>
+                            <th class="text-center">
+                                <i class="fas fa-venus me-1"></i>
+                                Hembras
+                            </th>
+                            <th class="text-center">
+                                <i class="fas fa-calculator me-1"></i>
+                                Total
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for stat in stats_vacunas %}
+                        {% for vacuna in stats_vacunas_cruzadas %}
                         <tr>
                             <td>
-                                <span class="vaccine-badge">{{ stat.vacuna__nombre }}</span>
+                                <span class="vaccine-badge">{{ vacuna.nombre }}</span>
                             </td>
-                            <td>
-                                <span class="count-badge">{{ stat.total }}</span>
+                            <td class="text-center">
+                                <span class="gender-badge-male">{{ vacuna.M }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="gender-badge-female">{{ vacuna.H }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="count-badge">{{ vacuna.total }}</span>
                             </td>
                         </tr>
                         {% endfor %}
+                        <!-- Fila de totales -->
+                        <tr class="total-row">
+                            <td><strong>TOTALES</strong></td>
+                            <td class="text-center">
+                                <strong>
+                                    <span class="gender-badge-male">
+                                        {% for stat in stats_por_sexo %}
+                                            {% if stat.mascota__sexo == 'M' %}{{ stat.total }}{% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>
+                                    <span class="gender-badge-female">
+                                        {% for stat in stats_por_sexo %}
+                                            {% if stat.mascota__sexo == 'H' %}{{ stat.total }}{% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>
+                                    <span class="count-badge">{{ total_vacunas }}</span>
+                                </strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- TABLA CRUZADA: ESPECIES POR SEXO -->
+    {% if stats_especies_cruzadas %}
+    <div class="stats-card">
+        <div class="card-header">
+            <h5>
+                <i class="fas fa-paw"></i>
+                Vacunas por Especie y Sexo
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="cross-table">
+                <table class="table">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>
+                                <i class="fas fa-paw me-2"></i>
+                                Especie
+                            </th>
+                            <th class="text-center">
+                                <i class="fas fa-mars me-1"></i>
+                                Machos
+                            </th>
+                            <th class="text-center">
+                                <i class="fas fa-venus me-1"></i>
+                                Hembras
+                            </th>
+                            <th class="text-center">
+                                <i class="fas fa-calculator me-1"></i>
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for especie in stats_especies_cruzadas %}
+                        <tr>
+                            <td>
+                                <span class="vaccine-badge">{{ especie.nombre }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="gender-badge-male">{{ especie.M }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="gender-badge-female">{{ especie.H }}</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="count-badge">{{ especie.total }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <!-- Fila de totales -->
+                        <tr class="total-row">
+                            <td><strong>TOTALES</strong></td>
+                            <td class="text-center">
+                                <strong>
+                                    <span class="gender-badge-male">
+                                        {% for stat in stats_por_sexo %}
+                                            {% if stat.mascota__sexo == 'M' %}{{ stat.total }}{% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>
+                                    <span class="gender-badge-female">
+                                        {% for stat in stats_por_sexo %}
+                                            {% if stat.mascota__sexo == 'H' %}{{ stat.total }}{% endif %}
+                                        {% endfor %}
+                                    </span>
+                                </strong>
+                            </td>
+                            <td class="text-center">
+                                <strong>
+                                    <span class="count-badge">{{ total_vacunas }}</span>
+                                </strong>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -571,12 +840,14 @@
                     <table class="table">
                         <thead class="table-dark">
                             <tr>
-                                <th>Fecha Aplicación</th>
-                                <th>Tipo de Vacuna</th>
-                                <th>Mascota</th>
-                                <th>Cliente</th>
-                                <th>Observaciones</th>
-                                <th>Próxima Fecha</th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Especie</th>
+                                <th>Raza</th>
+                                <th>Sexo</th>
+                                <th>Esterilizada</th>
+                                <th>Propietario</th>
+                                <th>Vacuna</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -589,9 +860,6 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="vaccine-badge">{{ vacuna.vacuna.nombre }}</span>
-                                </td>
-                                <td>
                                     <div class="client-info">
                                         <span class="pet-name">
                                             <i class="fas fa-paw me-1"></i>
@@ -600,29 +868,38 @@
                                     </div>
                                 </td>
                                 <td>
+                                    <span class="vaccine-badge">{{ vacuna.mascota.especie.nombre }}</span>
+                                </td>
+                                <td>
+                                    {{ vacuna.mascota.raza.nombre }}
+                                </td>
+                                <td>
+                                    {% if vacuna.mascota.sexo == 'M' %}
+                                        <span class="gender-badge-male">
+                                            <i class="fas fa-mars me-1"></i>Macho
+                                        </span>
+                                    {% else %}
+                                        <span class="gender-badge-female">
+                                            <i class="fas fa-venus me-1"></i>Hembra
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="date-badge {% if vacuna.mascota.esterilizado == 'S' %}next-date{% endif %}">
+                                        <i class="fas fa-{% if vacuna.mascota.esterilizado == 'S' %}check{% elif vacuna.mascota.esterilizado == 'P' %}clock{% else %}times{% endif %} me-1"></i>
+                                        {{ vacuna.mascota.get_esterilizado_display }}
+                                    </span>
+                                </td>
+                                <td>
                                     <div class="client-info">
                                         <span class="client-name">
                                             <i class="fas fa-user me-1"></i>
-                                            {{ vacuna.mascota.cliente.nombre }} {{ vacuna.mascota.cliente.apellido }}
+                                            {{ vacuna.mascota.cliente.nombre }}
                                         </span>
                                     </div>
                                 </td>
                                 <td>
-                                    {% if vacuna.observaciones %}
-                                    <span class="observations">{{ vacuna.observaciones|truncatechars:50 }}</span>
-                                    {% else %}
-                                    <span class="text-muted">—</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if vacuna.fecha_proxima %}
-                                    <span class="date-badge next-date">
-                                        <i class="fas fa-clock me-1"></i>
-                                        {{ vacuna.fecha_proxima|date:'d/m/Y' }}
-                                    </span>
-                                    {% else %}
-                                    <span class="text-muted">—</span>
-                                    {% endif %}
+                                    <span class="vaccine-badge">{{ vacuna.vacuna.nombre }}</span>
                                 </td>
                             </tr>
                             {% endfor %}

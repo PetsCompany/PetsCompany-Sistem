@@ -3,6 +3,19 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import os
+
+# Cloudinary Configuration
+cloudinary.config(
+    cloud_name="dtdrwrcbf",
+    api_key="485393467686619",
+    api_secret="Sv3sSne2UD0cp9d14Jt5b8Lnd8g", 
+    secure=True
+)
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Cloudinary apps
+    'cloudinary_storage',
+    'cloudinary',
+    
     # Apps propias
     'usuarios.apps.UsuariosConfig',
     'clientes.apps.ClientesConfig',
@@ -169,3 +186,6 @@ if DEBUG:
         'http://localhost:8000',
         'http://127.0.0.1:8000',
     ])
+    
+# Configuración de archivos media
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

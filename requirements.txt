@@ -76,3 +76,6 @@ crispy-bootstrap5>=0.7
 django-widget-tweaks>=1.4.12
 Pillow>=10.0.0
 decouple>=0.0.7 
+
+cloudinary==1.36.0
+django-cloudinary-storage==0.3.0

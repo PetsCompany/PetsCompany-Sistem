@@ -43,7 +43,7 @@ class Mascota(models.Model):
     raza = models.ForeignKey('configuracion.Raza', on_delete=models.PROTECT)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
     fecha_nacimiento = models.DateField(blank=True, null=True)
-    foto = models.ImageField(upload_to='mascotas/', blank=True, null=True)
+    foto = models.ImageField(upload_to='pets/profiles/', blank=True, null=True)
     esterilizado = models.CharField(
         max_length=1, 
         choices=ESTERILIZADO_CHOICES, 

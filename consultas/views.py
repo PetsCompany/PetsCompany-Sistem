@@ -484,21 +484,7 @@ class ImagenDiagnosticaDetailView(LoginRequiredMixin, DetailView):
     template_name = 'consultas/detalle_imagen_diagnostica.html'
     context_object_name = 'imagen'
     
-    def get_object(self, queryset=None):
-        """Obtener el objeto con verificaciones adicionales"""
-        obj = get_object_or_404(self.model, pk=self.kwargs['pk'])
-        
-        # Verificar que el archivo existe
-        if not obj.file_exists():
-            # Log del error para debugging
-            import logging
-            logger = logging.getLogger(__name__)
-            logger.error(f"Archivo no encontrado: {obj.archivo.path}")
-        
-        return obj
-    
     def get_context_data(self, **kwargs):
-        """Agregar contexto adicional"""
         context = super().get_context_data(**kwargs)
         context['file_exists'] = self.object.file_exists()
         context['file_size'] = self.object.get_file_size()
@@ -542,48 +528,3 @@ class ImagenDiagnosticaDeleteView(CanDeleteMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, "Imagen diagnóstica eliminada exitosamente.")
         return super().delete(request, *args, **kwargs)
-    
-@method_decorator(login_required, name='dispatch')
-@method_decorator(cache_control(max_age=3600), name='dispatch')
-class SecureMediaView(View):
-    """Vista para servir archivos media de forma segura"""
-    
-    def has_permission(self, request, path):
-        """Verificar permisos del usuario para acceder al archivo"""
-        # Por ahora permitir acceso a usuarios autenticados
-        # Aquí puedes agregar lógica más específica si es necesario 
-        return request.user.is_authenticated
-    
-    def get(self, request, path):
-        try:
-            # Construir la ruta completa del archivo
-            full_path = os.path.join(settings.MEDIA_ROOT, path)
-            
-            # Verificar que el archivo existe
-            if not os.path.exists(full_path):
-                raise Http404("Archivo no encontrado")
-            
-            # Verificar que el usuario tiene permisos
-            if not self.has_permission(request, path):
-                raise Http404("Sin permisos para acceder al archivo")
-            
-            # Obtener el tipo MIME
-            content_type, _ = mimetypes.guess_type(full_path)
-            if content_type is None:
-                content_type = 'application/octet-stream'
-            
-            # Servir el archivo
-            response = FileResponse(
-                open(full_path, 'rb'),
-                content_type=content_type
-            )
-            
-            # Headers adicionales para descargas
-            if request.GET.get('download'):
-                filename = os.path.basename(full_path)
-                response['Content-Disposition'] = f'attachment; filename="{filename}"'
-            
-            return response
-            
-        except Exception as e:
-            raise Http404(f"Error al acceder al archivo: {str(e)}")

@@ -74,37 +74,23 @@ class ImagenDiagnostica(models.Model):
         return f"Imagen de {self.mascota.nombre} - {self.fecha.strftime('%d/%m/%Y')}"
     
     def get_absolute_url(self):
-        """URL absoluta del detalle de la imagen"""
         return reverse('consultas:detalle_imagen_diagnostica', kwargs={'pk': self.pk})
     
+    # Método simplificado para Cloudinary
     def get_file_url(self):
-        """URL segura del archivo"""
-        if hasattr(settings, 'USE_SECURE_MEDIA') and settings.USE_SECURE_MEDIA:
-            return reverse('consultas:secure_media', kwargs={'path': self.archivo.name})
-        return self.archivo.url
+        """URL del archivo en Cloudinary"""
+        return self.archivo.url if self.archivo else None
     
     def get_download_url(self):
-        """URL para descargar el archivo"""
-        if hasattr(settings, 'USE_SECURE_MEDIA') and settings.USE_SECURE_MEDIA:
-            return reverse('consultas:secure_media', kwargs={'path': self.archivo.name}) + '?download=1'
-        return self.archivo.url
+        """URL para descargar - con Cloudinary es la misma"""
+        return self.archivo.url if self.archivo else None
     
+    #Con Cloudinary, los archivos siempre "existen" si están en el modelo
     def file_exists(self):
-        """Verificar si el archivo existe físicamente"""
-        return os.path.exists(self.archivo.path) if self.archivo else False
+        return bool(self.archivo)
     
-    def get_file_size(self):
-        """Obtener el tamaño del archivo en formato legible"""
-        if self.archivo and self.file_exists():
-            size = os.path.getsize(self.archivo.path)
-            for unit in ['B', 'KB', 'MB', 'GB']:
-                if size < 1024.0:
-                    return f"{size:.1f} {unit}"
-                size /= 1024.0
-        return "0 B"
-    
+    # Método simplificado para tipo de archivo
     def get_file_type(self):
-        """Determina el tipo de archivo basado en la extensión"""
         if self.archivo and self.archivo.name:
             extension = self.archivo.name.lower().split('.')[-1]
             if extension in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']:
@@ -118,12 +104,10 @@ class ImagenDiagnostica(models.Model):
         return 'unknown'
     
     def is_image(self):
-        """Verificar si el archivo es una imagen"""
         if self.archivo:
             name = self.archivo.name.lower()
             return name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'))
         return False
-    
     class Meta:
         verbose_name = "Imagen Diagnóstica"
         verbose_name_plural = "Imágenes Diagnósticas"

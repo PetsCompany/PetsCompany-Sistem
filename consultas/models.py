@@ -59,14 +59,11 @@ class Consulta(models.Model):
         ordering = ['-fecha_registro']
         
 class ImagenDiagnostica(models.Model):
-    
     def upload_to(instance, filename):
-        """Función personalizada para subir archivos"""
-        # Crear estructura de carpetas por año/mes/mascota
-        return f'imagenes_diagnosticas/{instance.fecha.year}/{instance.fecha.month:02d}/{instance.mascota.id}/{filename}'
+        return f'diagnostics/{instance.mascota.id}/{filename}'
         
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='imagenes')
-    archivo = models.FileField(upload_to=upload_to)  # Cambiado de ImageField a FileField
+    archivo = models.FileField(upload_to=upload_to)
     descripcion = models.TextField()
     fecha = models.DateTimeField(default=timezone.now)
     
@@ -76,38 +73,11 @@ class ImagenDiagnostica(models.Model):
     def get_absolute_url(self):
         return reverse('consultas:detalle_imagen_diagnostica', kwargs={'pk': self.pk})
     
-    # Método simplificado para Cloudinary
-    def get_file_url(self):
-        """URL del archivo en Cloudinary"""
-        return self.archivo.url if self.archivo else None
-    
-    def get_download_url(self):
-        """URL para descargar - con Cloudinary es la misma"""
-        return self.archivo.url if self.archivo else None
-    
-    #Con Cloudinary, los archivos siempre "existen" si están en el modelo
-    def file_exists(self):
-        return bool(self.archivo)
-    
-    # Método simplificado para tipo de archivo
-    def get_file_type(self):
-        if self.archivo and self.archivo.name:
-            extension = self.archivo.name.lower().split('.')[-1]
-            if extension in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']:
-                return 'image'
-            elif extension == 'pdf':
-                return 'pdf'
-            elif extension in ['doc', 'docx']:
-                return 'document'
-            else:
-                return 'other'
-        return 'unknown'
-    
     def is_image(self):
         if self.archivo:
             name = self.archivo.name.lower()
             return name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'))
-        return False
+        return False 
     class Meta:
         verbose_name = "Imagen Diagnóstica"
         verbose_name_plural = "Imágenes Diagnósticas"

@@ -421,17 +421,15 @@ class ImagenDiagnosticaListView(LoginRequiredMixin, ListView):
     model = ImagenDiagnostica
     template_name = 'consultas/lista_imagenes_diagnosticas.html'
     context_object_name = 'imagenes'
-    paginate_by = 12  # Mostrar 12 imágenes por página
+    paginate_by = 12
     
     def get_queryset(self):
         mascota_id = self.kwargs.get('mascota_id')
         if mascota_id:
             mascota = get_object_or_404(Mascota, pk=mascota_id)
-            # No necesitamos select_related aquí ya que tenemos la mascota
             return ImagenDiagnostica.objects.filter(mascota=mascota).order_by('-fecha')
-        # Para la vista general, sí necesitamos select_related
         return ImagenDiagnostica.objects.select_related(
-            'mascota__propietario'
+            'mascota__cliente'
         ).order_by('-fecha')
     
     def get_context_data(self, **kwargs):
@@ -475,7 +473,6 @@ class ImagenDiagnosticaCreateView(LoginRequiredMixin, CreateView):
         mascota_id = self.kwargs.get('mascota_id')
         if mascota_id:
             return reverse_lazy('consultas:lista_imagenes_diagnosticas_mascota', kwargs={'mascota_id': mascota_id})
-        # Si no hay mascota_id, redirigir a la lista general
         return reverse_lazy('consultas:lista_imagenes_diagnosticas')
 
 
@@ -486,9 +483,15 @@ class ImagenDiagnosticaDetailView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['file_exists'] = self.object.file_exists()
-        context['file_size'] = self.object.get_file_size()
-        context['is_image'] = self.object.is_image()
+        # Solo agregamos información básica que funciona con Cloudinary
+        if self.object.archivo:
+            context['has_file'] = True
+            # Determinar si es imagen basado en la extensión
+            file_name = self.object.archivo.name.lower()
+            context['is_image'] = file_name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp'))
+        else:
+            context['has_file'] = False
+            context['is_image'] = False
         return context
 
 
@@ -516,7 +519,7 @@ class ImagenDiagnosticaUpdateView(LoginRequiredMixin, UpdateView):
                           kwargs={'mascota_id': self.object.mascota.pk})
 
 
-class ImagenDiagnosticaDeleteView(CanDeleteMixin, DeleteView):
+class ImagenDiagnosticaDeleteView(LoginRequiredMixin, DeleteView):  # Removido CanDeleteMixin por simplicidad
     model = ImagenDiagnostica
     template_name = 'consultas/confirmar_eliminar_imagen.html'
     context_object_name = 'imagen'

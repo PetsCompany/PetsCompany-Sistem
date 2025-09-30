@@ -74,14 +74,14 @@ class ConsultaForm(forms.ModelForm):
 class ImagenDiagnosticaForm(forms.ModelForm):
     class Meta:
         model = ImagenDiagnostica
-        fields = ['mascota', 'archivo', 'descripcion', 'fecha']  # AGREGAMOS 'fecha'
+        fields = ['mascota', 'archivo', 'descripcion', 'fecha']
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Describe la imagen diagnóstica...'}),
             'archivo': forms.FileInput(attrs={
-                'accept': 'image/*,.pdf,.doc,.docx',
+                'accept': 'image/*,.pdf',  # SOLO IMÁGENES Y PDF
                 'class': 'form-control'
             }),
-            'fecha': forms.DateTimeInput(attrs={  # NUEVO WIDGET
+            'fecha': forms.DateTimeInput(attrs={
                 'type': 'datetime-local',
                 'class': 'form-control'
             }),
@@ -93,22 +93,20 @@ class ImagenDiagnosticaForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_enctype = 'multipart/form-data'
         
-        # Si se proporciona una mascota en initial, pre-establecerla y ocultarla
         if self.initial and 'mascota' in self.initial:
             self.fields['mascota'].initial = self.initial['mascota']
             self.fields['mascota'].widget = forms.HiddenInput()
         
-        # Mejorar etiquetas y placeholder
         self.fields['archivo'].label = 'Archivo diagnóstico'
         self.fields['descripcion'].label = 'Descripción'
-        self.fields['fecha'].label = 'Fecha del estudio'  # NUEVA ETIQUETA
-        self.fields['archivo'].help_text = 'Formatos permitidos: imágenes (JPG, PNG, GIF), PDF, documentos de Word. Máximo 10MB'
+        self.fields['fecha'].label = 'Fecha del estudio'
+        self.fields['archivo'].help_text = 'Formatos permitidos: Imágenes (JPG, PNG, GIF, BMP, WEBP) o PDF. Máximo 10MB'
         
         self.helper.layout = Layout(
             'mascota',
             'archivo',
             'descripcion',
-            'fecha',  # AGREGAMOS AL LAYOUT
+            'fecha',
             Submit('submit', 'Guardar Imagen', css_class='btn btn-primary')
         )
         
@@ -119,18 +117,13 @@ class ImagenDiagnosticaForm(forms.ModelForm):
             if archivo.size > 10 * 1024 * 1024:
                 raise forms.ValidationError("El archivo no puede ser mayor a 10MB.")
             
-            # Validar extensión de archivo
-            allowed_extensions = [
-                'jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp',  # Imágenes
-                'pdf',  # PDF
-                'doc', 'docx'  # Documentos Word
-            ]
+            # SOLO PERMITIR IMÁGENES Y PDF
+            allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'pdf']
             
             file_extension = archivo.name.lower().split('.')[-1]
             if file_extension not in allowed_extensions:
                 raise forms.ValidationError(
-                    f"Tipo de archivo no permitido. "
-                    f"Extensiones permitidas: {', '.join(allowed_extensions)}"
+                    f"Tipo de archivo no permitido. Solo se permiten imágenes (JPG, PNG, GIF, BMP, WEBP, SVG) y PDF."
                 )
                 
         return archivo

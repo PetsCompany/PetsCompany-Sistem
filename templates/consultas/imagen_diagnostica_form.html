@@ -887,24 +887,36 @@ document.addEventListener('DOMContentLoaded', function() {
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    // Crear o actualizar preview
-                    let previewContainer = document.querySelector('.image-preview-container');
-                    if (!previewContainer) {
-                        previewContainer = document.createElement('div');
-                        previewContainer.className = 'image-preview-container';
-                        fileInput.parentNode.appendChild(previewContainer);
-                    }
-                    
+                // Crear o actualizar preview
+                let previewContainer = document.querySelector('.image-preview-container');
+                if (!previewContainer) {
+                    previewContainer = document.createElement('div');
+                    previewContainer.className = 'image-preview-container';
+                    fileInput.parentNode.appendChild(previewContainer);
+                }
+                
+                // Verificar si es PDF
+                if (file.type === 'application/pdf') {
                     previewContainer.innerHTML = `
-                        <img src="${e.target.result}" class="img-fluid" alt="Vista previa">
-                        <div class="image-preview-label">
-                            <i class="fas fa-eye me-2"></i>Vista Previa - ${file.name}
+                        <div class="file-preview-info" style="text-align: center; padding: 30px; background: #f8f9fa; border-radius: 8px;">
+                            <i class="fas fa-file-pdf fa-4x mb-3" style="color: #dc3545;"></i>
+                            <p><strong>${file.name}</strong></p>
+                            <small class="text-muted">${(file.size / 1024 / 1024).toFixed(2)} MB</small>
                         </div>
                     `;
-                };
-                reader.readAsDataURL(file);
+                } else {
+                    // Es una imagen, mostrar preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewContainer.innerHTML = `
+                            <img src="${e.target.result}" class="img-fluid" alt="Vista previa" style="max-height: 300px; border-radius: 8px;">
+                            <div class="image-preview-label">
+                                <i class="fas fa-eye me-2"></i>Vista Previa - ${file.name}
+                            </div>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                }
             }
         });
 
@@ -913,8 +925,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fileDropZone.className = 'file-drop-zone';
         fileDropZone.innerHTML = `
             <i class="fas fa-cloud-upload-alt fa-2x mb-2" style="color: var(--primary-color);"></i>
-            <p><strong>Arrastra tu imagen aquí</strong> o haz clic para seleccionar</p>
-            <small>Formatos soportados: JPG, PNG, GIF</small>
+            <p><strong>Arrastra tu archivo aquí</strong> o haz clic para seleccionar</p>
+            <small>Formatos soportados: Imágenes (JPG, PNG, GIF, BMP, WEBP, SVG) o PDF</small>
         `;
         
         fileInput.parentNode.appendChild(fileDropZone);

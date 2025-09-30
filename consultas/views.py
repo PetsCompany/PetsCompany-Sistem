@@ -168,6 +168,11 @@ class ConsultaCreateView(LoginRequiredMixin, CreateView):
         cita_id = self.kwargs.get('cita_id')
         cita = get_object_or_404(Cita, pk=cita_id)
         context['cita'] = cita
+        
+        # Detectar desde dónde viene el usuario
+        from_param = self.request.GET.get('from', 'nueva_consulta')
+        context['from_actualizar_historia'] = (from_param == 'actualizar_historia')
+        
         return context
     
     @transaction.atomic
@@ -483,15 +488,17 @@ class ImagenDiagnosticaDetailView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Solo agregamos información básica que funciona con Cloudinary
         if self.object.archivo:
             context['has_file'] = True
-            # Determinar si es imagen basado en la extensión
-            file_name = self.object.archivo.name.lower()
-            context['is_image'] = file_name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp'))
+            context['is_image'] = self.object.is_image()
+            context['is_pdf'] = self.object.is_pdf()
+            context['is_document'] = self.object.is_document()
+            context['file_extension'] = self.object.get_file_extension()
         else:
             context['has_file'] = False
             context['is_image'] = False
+            context['is_pdf'] = False
+            context['is_document'] = False
         return context
 
 

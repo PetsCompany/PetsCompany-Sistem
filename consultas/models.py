@@ -77,7 +77,23 @@ class ImagenDiagnostica(models.Model):
         if self.archivo:
             name = self.archivo.name.lower()
             return name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'))
-        return False 
+        return False
+    
+    def is_pdf(self):
+        if self.archivo:
+            return self.archivo.name.lower().endswith('.pdf')
+        return False
+    
+    def is_document(self):
+        if self.archivo:
+            name = self.archivo.name.lower()
+            return name.endswith(('.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'))
+        return False
+    
+    def get_file_extension(self):
+        if self.archivo:
+            return self.archivo.name.split('.')[-1].upper()
+        return ''
     class Meta:
         verbose_name = "Imagen Diagnóstica"
         verbose_name_plural = "Imágenes Diagnósticas"

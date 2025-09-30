@@ -706,11 +706,19 @@
                             <div class="icon">
                                 <i class="fas fa-stethoscope"></i>
                             </div>
-                            {% if form.instance.id %}Editar Consulta{% else %}Nueva Consulta{% endif %}
+                            {% if form.instance.id %}
+                                Editar Consulta
+                            {% elif from_actualizar_historia %}
+                                Actualizar Historia
+                            {% else %}
+                                Nueva Consulta
+                            {% endif %}
                         </h2>
                         <p>
                             {% if form.instance.id %}
                                 Modifica los datos de la consulta médica
+                            {% elif from_actualizar_historia %}
+                                Registra la actualización de la historia clínica de la mascota
                             {% else %}
                                 Complete el formulario para registrar una nueva consulta médica
                             {% endif %}
@@ -742,7 +750,14 @@
                             {% endif %}
                             {% endif %}
                             <button type="submit" class="btn btn-primary" id="submitBtn">
-                                <i class="fas fa-save"></i>Guardar Consulta
+                                <i class="fas fa-save"></i>
+                                {% if form.instance.id %}
+                                    Guardar Cambios
+                                {% elif from_actualizar_historia %}
+                                    Actualizar Historia
+                                {% else %}
+                                    Guardar Consulta
+                                {% endif %}
                             </button>
                         </div>
                     </form>
@@ -876,7 +891,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Animación de carga en el botón
     if (form && submitBtn) {
         form.addEventListener('submit', function(e) {
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Guardando...';
+            const isEdit = submitBtn.textContent.includes('Cambios');
+            const isActualizar = submitBtn.textContent.includes('Actualizar Historia');
+            
+            if (isEdit) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Guardando Cambios...';
+            } else if (isActualizar) {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Actualizando Historia...';
+            } else {
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Guardando Consulta...';
+            }
             submitBtn.disabled = true;
         });
     }
@@ -1009,12 +1033,26 @@ document.addEventListener('DOMContentLoaded', function() {
                     form.eutanasiaConfirmed = true;
                     form.submit();
                 } else {
-                    // Restaurar botón
-                    submitBtn.innerHTML = '<i class="fas fa-save"></i>Guardar Consulta';
+                    // Restaurar botón - mantener el texto original
+                    const isEdit = submitBtn.dataset.originalText ? submitBtn.dataset.originalText.includes('Cambios') : false;
+                    const isActualizar = submitBtn.dataset.originalText ? submitBtn.dataset.originalText.includes('Actualizar') : false;
+                    
+                    if (isEdit) {
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i>Guardar Cambios';
+                    } else if (isActualizar) {
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i>Actualizar Historia';
+                    } else {
+                        submitBtn.innerHTML = '<i class="fas fa-save"></i>Guardar Consulta';
+                    }
                     submitBtn.disabled = false;
                 }
             }
         });
+        
+        // Guardar el texto original del botón al cargar la página
+        if (submitBtn) {
+            submitBtn.dataset.originalText = submitBtn.textContent;
+        }
     }
 });
 </script>

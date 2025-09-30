@@ -733,7 +733,7 @@
         <div class="card-body-modern">
             <div class="register-consultation-card">
                 <p>Esta Consulta Programada aún no ha sido atendida. Puedes registrar la consulta médica ahora.</p>
-                <a href="{% url 'consultas:crear_consulta' cita.id %}" class="btn-modern btn-success">
+                <a href="{% url 'consultas:crear_consulta' cita.id %}?from={{ request.GET.from|default:'nueva_consulta' }}" class="btn-modern btn-success">
                     <i class="fas fa-plus-circle"></i>
                     Registrar Consulta
                 </a>
@@ -746,14 +746,13 @@
         <i class="fas fa-exclamation-triangle"></i>
         <span>
             Esta Consulta Programada está marcada como atendida pero no tiene consultas registradas.
-            <a href="{% url 'consultas:crear_consulta' cita.id %}" class="btn-modern btn-outline-secondary ms-2">
+            <a href="{% url 'consultas:crear_consulta' cita.id %}?from={{ request.GET.from|default:'nueva_consulta' }}" class="btn-modern btn-outline-secondary ms-2">
                 Registrar Consulta
             </a>
         </span>
     </div>
     {% endif %}
     {% endif %}
-
     <!-- Agregar Nueva Consulta (si ya hay consultas) -->
     {% if consultas and cita.atendida %}
     <div class="detail-card slide-up">
@@ -766,9 +765,13 @@
         <div class="card-body-modern">
             <div class="register-consultation-card">
                 <p>Puedes agregar una consulta adicional para esta cita (consulta de seguimiento, revisión, etc.).</p>
-                <a href="{% url 'consultas:crear_consulta' cita.id %}" class="btn-modern btn-info">
+                <a href="{% url 'consultas:crear_consulta' cita.id %}?from={{ request.GET.from|default:'nueva_consulta' }}" class="btn-modern btn-info">
                     <i class="fas fa-plus-circle"></i>
-                    Actualizar Hitoria / Seguimiento
+                    {% if request.GET.from == 'actualizar_historia' %}
+                        Actualizar Historia / Seguimiento
+                    {% else %}
+                        Actualizar Historia / Seguimiento
+                    {% endif %}
                 </a>
             </div>
         </div>

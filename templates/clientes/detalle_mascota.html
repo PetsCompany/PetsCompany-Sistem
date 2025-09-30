@@ -809,16 +809,17 @@
                         
                         <!-- Botón para actualizar historia clínica -->
                         {% if ultima_cita %}
-                            <a href="{% url 'consultas:detalle_cita' ultima_cita.id %}" class="action-btn btn-outline-primary-custom">
+                            <a href="{% url 'consultas:detalle_cita' ultima_cita.id %}?from=actualizar_historia" class="action-btn btn-outline-primary-custom">
                                 <i class="fas fa-plus-circle"></i>
                                 Actualizar Historia
                             </a>
                         {% else %}
-                            <a href="{% url 'consultas:crear_cita_mascota' mascota.id %}" class="action-btn btn-outline-primary-custom">
+                            <a href="{% url 'consultas:crear_cita_mascota' mascota.id %}?from=actualizar_historia" class="action-btn btn-outline-primary-custom">
                                 <i class="fas fa-plus-circle"></i>
                                 Actualizar Historia
                             </a>
                         {% endif %}
+
                         
                         <a href="{% url 'consultas:crear_cita_mascota' mascota.id %}" class="action-btn btn-outline-success-custom">
                             <i class="fas fa-calendar-plus"></i>

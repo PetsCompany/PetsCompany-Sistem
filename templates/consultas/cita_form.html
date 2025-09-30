@@ -926,25 +926,25 @@
             });
         });
 
-        // Configurar campo de fecha-hora
+        // Configurar campo de fecha
         const fechaInput = form.querySelector('input[name="fecha"]');
         if (fechaInput) {
-            // Asegurar que el tipo sea datetime-local
+            // Asegurar que el tipo sea date
             fechaInput.type = 'date';
             
             // Establecer fecha mínima (hoy)
             const now = new Date();
-            const minDate = now.toISOString().split('T')[0]; // Solo la fecha, sin hora
+            const minDate = now.toISOString().split('T')[0];
             fechaInput.min = minDate;
             
             // Validación de fecha en tiempo real
             fechaInput.addEventListener('change', function() {
-                const selectedDate = new Date(this.value);
+                const selectedDate = new Date(this.value + 'T00:00:00');
                 const currentDate = new Date();
-                currentDate.setHours(0, 0, 0, 0); // Resetear horas para comparar solo fechas
+                currentDate.setHours(0, 0, 0, 0);
                 
                 if (selectedDate < currentDate) {
-                    this.setCustomValidity('La fecha debe ser posterior o igual al día actual');
+                    this.setCustomValidity('La fecha debe ser igual o posterior al día actual');
                     this.classList.add('is-invalid');
                     this.classList.remove('is-valid');
                 } else {
@@ -997,12 +997,13 @@
 
             // Validar fecha
             if (fechaInput && fechaInput.value) {
-                const selectedDate = new Date(fechaInput.value);
+                const selectedDate = new Date(fechaInput.value + 'T00:00:00');
                 const currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
                 
                 if (selectedDate < currentDate) {
                     fechaInput.classList.add('is-invalid');
-                    errors.push('La fecha debe ser posterior al momento actual');
+                    errors.push('La fecha debe ser igual o posterior al día actual');
                     isValid = false;
                 }
             } else if (fechaInput) {

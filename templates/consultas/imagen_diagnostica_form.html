@@ -805,13 +805,25 @@
             </div>
             {% endif %}
 
-            <!-- Imagen actual (si existe) -->
+            <!-- Archivo actual (si existe) -->
             {% if form.instance.id and form.instance.archivo %}
             <div class="image-preview-container">
-                <img src="{{ form.instance.archivo.url }}" class="img-fluid" alt="Imagen actual">
-                <div class="image-preview-label">
-                    <i class="fas fa-image me-2"></i>Imagen Actual
-                </div>
+                {% if form.instance.is_image %}
+                    <img src="{{ form.instance.archivo.url }}" class="img-fluid" alt="Archivo actual">
+                    <div class="image-preview-label">
+                        <i class="fas fa-image me-2"></i>Imagen Actual
+                    </div>
+                {% elif form.instance.is_pdf %}
+                    <div class="file-preview-info">
+                        <i class="fas fa-file-pdf fa-3x mb-2" style="color: #dc3545;"></i>
+                        <p><strong>Archivo PDF Actual</strong></p>
+                    </div>
+                {% else %}
+                    <div class="file-preview-info">
+                        <i class="fas fa-file fa-3x mb-2" style="color: #6c757d;"></i>
+                        <p><strong>Archivo {{ form.instance.get_file_extension }} Actual</strong></p>
+                    </div>
+                {% endif %}
             </div>
             {% endif %}
 

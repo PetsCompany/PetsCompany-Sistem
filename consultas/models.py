@@ -3,7 +3,7 @@ from clientes.models import Mascota
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone 
-
+from .storage import SmartCloudinaryStorage
 from django.urls import reverse
 from django.conf import settings
 import os
@@ -65,16 +65,7 @@ class ImagenDiagnostica(models.Model):
         return f'diagnostics/{instance.mascota.id}/{filename}'
         
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='imagenes')
-    
-    # Cambiar FileField por CloudinaryField para mejor control
-    archivo = CloudinaryField(
-        'archivo',
-        folder='diagnostics',
-        resource_type='auto',  # Esto detecta automáticamente si es imagen o raw
-        blank=True,
-        null=True
-    )
-    
+    archivo = models.FileField(upload_to=upload_to)  # Mantener simple
     descripcion = models.TextField()
     fecha = models.DateTimeField(default=timezone.now)
     
@@ -86,36 +77,47 @@ class ImagenDiagnostica(models.Model):
     
     def is_image(self):
         if self.archivo:
-            name = str(self.archivo).lower()
-            return name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'))
+            name = self.archivo.name.lower()
+            return name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.bmp'))
         return False
     
     def is_pdf(self):
         if self.archivo:
-            return str(self.archivo).lower().endswith('.pdf')
+            return self.archivo.name.lower().endswith('.pdf')
         return False
     
     def is_document(self):
         if self.archivo:
-            name = str(self.archivo).lower()
+            name = self.archivo.name.lower()
             return name.endswith(('.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'))
         return False
     
     def get_file_extension(self):
         if self.archivo:
-            return str(self.archivo).split('.')[-1].upper()
+            return self.archivo.name.split('.')[-1].upper()
         return ''
     
     def get_cloudinary_url(self):
-        """Obtiene la URL correcta dependiendo del tipo de archivo"""
+        """Convierte URL de image a raw para documentos"""
         if not self.archivo:
             return ''
         
-        url = self.archivo.url
+        url = str(self.archivo.url)
         
-        # Si es PDF o documento, cambiar de /image/upload/ a /raw/upload/
+        # Si es PDF o documento, cambiar a raw
         if self.is_pdf() or self.is_document():
             url = url.replace('/image/upload/', '/raw/upload/')
+        
+        return url
+    
+    def get_download_url(self):
+        """URL con flag para forzar descarga"""
+        url = self.get_cloudinary_url()
+        
+        if self.is_pdf() or self.is_document():
+            # Agregar flag de descarga
+            if '/upload/' in url and 'fl_attachment' not in url:
+                url = url.replace('/upload/', '/upload/fl_attachment/')
         
         return url
     

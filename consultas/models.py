@@ -65,7 +65,7 @@ class ImagenDiagnostica(models.Model):
         return f'diagnostics/{instance.mascota.id}/{filename}'
         
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='imagenes')
-    archivo = models.FileField(upload_to=upload_to)  # Mantener simple
+    archivo = models.FileField(upload_to=upload_to)
     descripcion = models.TextField()
     fecha = models.DateTimeField(default=timezone.now)
     
@@ -98,26 +98,22 @@ class ImagenDiagnostica(models.Model):
         return ''
     
     def get_cloudinary_url(self):
-        """Convierte URL de image a raw para documentos"""
+        """Retorna la URL normal de Cloudinary"""
+        if not self.archivo:
+            return ''
+        return str(self.archivo.url)
+    
+    def get_download_url(self):
+        """URL que fuerza la descarga del archivo"""
         if not self.archivo:
             return ''
         
         url = str(self.archivo.url)
         
-        # Si es PDF o documento, cambiar a raw
-        if self.is_pdf() or self.is_document():
-            url = url.replace('/image/upload/', '/raw/upload/')
-        
-        return url
-    
-    def get_download_url(self):
-        """URL con flag para forzar descarga"""
-        url = self.get_cloudinary_url()
-        
-        if self.is_pdf() or self.is_document():
-            # Agregar flag de descarga
-            if '/upload/' in url and 'fl_attachment' not in url:
-                url = url.replace('/upload/', '/upload/fl_attachment/')
+        # Para PDFs y documentos, agregar flag de attachment
+        if (self.is_pdf() or self.is_document()) and '/upload/' in url:
+            # Insertar fl_attachment después de /upload/
+            url = url.replace('/upload/', '/upload/fl_attachment/')
         
         return url
     

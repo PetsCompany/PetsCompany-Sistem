@@ -188,4 +188,11 @@ if DEBUG:
     ])
     
 # Configuración de archivos media
+# Configuración de Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'tu_cloud_name',
+    'API_KEY': 'tu_api_key',
+    'API_SECRET': 'tu_api_secret',
+}
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

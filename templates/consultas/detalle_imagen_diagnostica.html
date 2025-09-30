@@ -595,12 +595,12 @@
             <div class="image-container zoom-effect">
                 {% if is_image %}
                     <!-- Mostrar imagen -->
-                    <img src="{{ imagen.archivo.url }}" class="diagnostic-image" alt="Imagen diagnóstica">
+                    <img src="{{ archivo_url }}" class="diagnostic-image" alt="Imagen diagnóstica">
                 
                 {% elif is_pdf %}
                     <!-- Mostrar PDF en iframe -->
                     <div class="pdf-viewer">
-                        <iframe src="{{ imagen.archivo.url }}" 
+                        <iframe src="{{ archivo_url }}" 
                                 frameborder="0" 
                                 style="width: 100%; height: 600px; border-radius: 8px;">
                         </iframe>
@@ -636,10 +636,10 @@
                 {% endif %}
                 
                 <div class="image-actions">
-                    <a href="{{ imagen.archivo.url }}" class="btn-modern btn-outline-primary" target="_blank">
+                    <a href="{{ archivo_url }}" class="btn-modern btn-outline-primary" target="_blank">
                         <span><i class="fas fa-external-link-alt me-1"></i>Abrir en nueva ventana</span>
                     </a>
-                    <a href="{{ imagen.archivo.url }}" class="btn-modern btn-outline-success" download>
+                    <a href="{{ archivo_url }}" class="btn-modern btn-outline-success" download>
                         <span><i class="fas fa-download me-1"></i>Descargar</span>
                     </a>
                 </div>

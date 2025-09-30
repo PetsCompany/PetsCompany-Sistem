@@ -58,12 +58,23 @@ class Consulta(models.Model):
         verbose_name_plural = "Consultas"
         ordering = ['-fecha_registro']
         
+from cloudinary.models import CloudinaryField
+
 class ImagenDiagnostica(models.Model):
     def upload_to(instance, filename):
         return f'diagnostics/{instance.mascota.id}/{filename}'
         
     mascota = models.ForeignKey('clientes.Mascota', on_delete=models.CASCADE, related_name='imagenes')
-    archivo = models.FileField(upload_to=upload_to)
+    
+    # Cambiar FileField por CloudinaryField para mejor control
+    archivo = CloudinaryField(
+        'archivo',
+        folder='diagnostics',
+        resource_type='auto',  # Esto detecta automáticamente si es imagen o raw
+        blank=True,
+        null=True
+    )
+    
     descripcion = models.TextField()
     fecha = models.DateTimeField(default=timezone.now)
     
@@ -75,25 +86,39 @@ class ImagenDiagnostica(models.Model):
     
     def is_image(self):
         if self.archivo:
-            name = self.archivo.name.lower()
+            name = str(self.archivo).lower()
             return name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'))
         return False
     
     def is_pdf(self):
         if self.archivo:
-            return self.archivo.name.lower().endswith('.pdf')
+            return str(self.archivo).lower().endswith('.pdf')
         return False
     
     def is_document(self):
         if self.archivo:
-            name = self.archivo.name.lower()
+            name = str(self.archivo).lower()
             return name.endswith(('.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx'))
         return False
     
     def get_file_extension(self):
         if self.archivo:
-            return self.archivo.name.split('.')[-1].upper()
+            return str(self.archivo).split('.')[-1].upper()
         return ''
+    
+    def get_cloudinary_url(self):
+        """Obtiene la URL correcta dependiendo del tipo de archivo"""
+        if not self.archivo:
+            return ''
+        
+        url = self.archivo.url
+        
+        # Si es PDF o documento, cambiar de /image/upload/ a /raw/upload/
+        if self.is_pdf() or self.is_document():
+            url = url.replace('/image/upload/', '/raw/upload/')
+        
+        return url
+    
     class Meta:
         verbose_name = "Imagen Diagnóstica"
         verbose_name_plural = "Imágenes Diagnósticas"

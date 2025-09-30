@@ -494,11 +494,13 @@ class ImagenDiagnosticaDetailView(LoginRequiredMixin, DetailView):
             context['is_pdf'] = self.object.is_pdf()
             context['is_document'] = self.object.is_document()
             context['file_extension'] = self.object.get_file_extension()
+            context['archivo_url'] = self.object.get_cloudinary_url() 
         else:
             context['has_file'] = False
             context['is_image'] = False
             context['is_pdf'] = False
             context['is_document'] = False
+            context['archivo_url'] = ''
         return context
 
 
